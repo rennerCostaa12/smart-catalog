@@ -32,7 +32,7 @@ export function ProductsDetails({
         <img
           src={url_img}
           alt={name}
-          className="aspect-square w-full object-cover"
+          className="aspect-square w-full object-cover max-md:h-[250px]"
         />
       </div>
 

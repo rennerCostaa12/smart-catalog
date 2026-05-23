@@ -6,7 +6,6 @@ export const productFilters: ProductFilter[] = [
   "Acessorios",
   "Casa",
   "Escritorio",
-  "Promocoes",
 ];
 
 export const productsMock: IProductsMockProps[] = [
@@ -37,13 +36,6 @@ export const productsMock: IProductsMockProps[] = [
     title: "Luminaria Minimalista de Mesa",
     price: 189.9,
     category: "Casa",
-  },
-  {
-    url_img:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
-    title: "Kit de Acessorios Premium",
-    price: 259.9,
-    category: "Promocoes",
   },
   {
     url_img:

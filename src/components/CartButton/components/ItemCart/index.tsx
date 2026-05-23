@@ -34,7 +34,7 @@ export function ItemCart({
           {product.title}
         </Typography>
 
-        <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="mt-3 flex items-center max-sm:items-start justify-between gap-3 max-sm:flex-col">
           <div className="min-w-0">
             <Typography variant="bodySmall" color="muted">
               Unitario: {brlFormatter.format(product.price)}
@@ -60,7 +60,7 @@ export function ItemCart({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center self-end gap-2 max-sm:self-start">
             <Typography variant="bodySmall" weight="bold" color="primary">
               {brlFormatter.format(product.price * product.quantity)}
             </Typography>

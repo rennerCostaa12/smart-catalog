@@ -8,6 +8,7 @@ import { WhatsAppIcon } from "../../../WhatsAppIcon";
 import { colors } from "../../../../constants/themeColors";
 import { useModalListItems } from "./useModalListItems";
 import { ItemCart } from "../ItemCart";
+import { ItemCartMobile } from "../ItemCartMobile";
 
 export function ModalListItems({ closeModal }: IModalListItemsProps) {
   const {
@@ -20,7 +21,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
   } = useModalListItems();
 
   return (
-    <div className="absolute right-0 z-50 mt-2 w-[min(92vw,32rem)] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
+    <div className="absolute right-5 z-50 mt-2 w-[min(92vw,32rem)] max-md:w-[95vw] max-md:right-[-20%] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
       <div className="flex justify-between items-center">
         <div>
           <Typography weight="bold">Itens Selecionados</Typography>
@@ -31,6 +32,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             variant="outline"
             onClick={closeModal}
             className="cursor-pointer"
+            size="sm"
           >
             <X size={20} />
           </Button>
@@ -48,13 +50,25 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
         )}
 
         {items.map((product) => (
-          <ItemCart
-            key={product.title}
-            handleDecreaseCart={handleDecreaseCart}
-            handleIncreaseCart={handleIncreaseCart}
-            handleRemoveProductCart={handleRemoveProductCart}
-            product={product}
-          />
+          <div key={product.title}>
+            <div className="md:hidden">
+              <ItemCartMobile
+                handleDecreaseCart={handleDecreaseCart}
+                handleIncreaseCart={handleIncreaseCart}
+                handleRemoveProductCart={handleRemoveProductCart}
+                product={product}
+              />
+            </div>
+
+            <div className="hidden md:block">
+              <ItemCart
+                handleDecreaseCart={handleDecreaseCart}
+                handleIncreaseCart={handleIncreaseCart}
+                handleRemoveProductCart={handleRemoveProductCart}
+                product={product}
+              />
+            </div>
+          </div>
         ))}
       </div>
 

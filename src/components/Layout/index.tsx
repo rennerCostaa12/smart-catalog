@@ -14,7 +14,7 @@ export function Layout({ children }: LayoutProps) {
 
       <Container className="flex flex-1 max-h-[89.3vh]">
         <section className="flex flex-1 flex-col overflow-hidden bg-surface shadow-sm lg:flex-row max-h-screen">
-          <SideMenu />
+          <SideMenu className="max-md:hidden" />
           {children}
         </section>
       </Container>
