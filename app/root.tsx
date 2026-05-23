@@ -11,6 +11,7 @@ import type { CSSProperties } from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { colors } from "../src/constants/themeColors";
+import { CartProvider } from "../src/context/cart";
 
 const themeCssVariables = Object.fromEntries(
   Object.entries(colors).map(([name, value]) => [`--theme-${name}`, value]),
@@ -48,7 +49,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <CartProvider>
+      <Outlet />
+    </CartProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

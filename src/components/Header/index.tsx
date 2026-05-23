@@ -1,4 +1,4 @@
-import { Phone, Search } from "lucide-react";
+import { Phone, Search, ShoppingCart } from "lucide-react";
 import { Container } from "../Container";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -8,10 +8,15 @@ import { Typography } from "../ui/typography";
 import { RedirectContact } from "../../utils/redirectContact";
 import { WhatsAppIcon } from "../WhatsAppIcon";
 
+import { CartButton } from "../CartButton";
+import { useCart } from "../../context/cart/useCart";
+
 export function Header() {
+  const { cart } = useCart();
+
   return (
     <header className="w-full border-b border-border bg-surface">
-      <Container className="flex items-center gap-4 py-4 max-md:flex-col">
+      <Container className="flex items-center gap-4 py-4 max-md:flex-col px-4">
         <div className="flex w-full flex-row items-center max-md:justify-between">
           <img src={pathLogo} width={200} height={200} />
 
@@ -27,7 +32,11 @@ export function Header() {
           </div>
         </div>
 
-        <div className="max-md:w-full">
+        <div className="flex gap-3 max-md:w-full">
+          <div className="relative">
+            <CartButton itemsCart={cart ?? []} />
+          </div>
+
           <Button
             leftIcon={<WhatsAppIcon />}
             className="w-[200px] cursor-pointer max-md:hidden"

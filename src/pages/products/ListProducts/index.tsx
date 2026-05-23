@@ -8,7 +8,12 @@ import { ProductsDetails } from "../../../components/ProductsDetails";
 import { useListProducts } from "./useListProducts";
 
 export function ListProductsPage() {
-  const { handleSelectItem, productSelected, handleCloseDetailsProduct } = useListProducts();
+  const {
+    handleSelectItem,
+    productSelected,
+    handleCloseDetailsProduct,
+    handleAddInCart,
+  } = useListProducts();
 
   return (
     <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
@@ -60,7 +65,7 @@ export function ListProductsPage() {
               price={productSelected?.price}
               category={productSelected.category}
               url_img={productSelected?.url_img}
-              onAddToCart={() => alert("ADD")}
+              onAddToCart={() => handleAddInCart(productSelected)}
               closeProductDetails={handleCloseDetailsProduct}
             />
           </div>
