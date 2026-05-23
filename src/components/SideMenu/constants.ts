@@ -1,4 +1,4 @@
-import { LayoutGrid, Info, Phone } from "lucide-react";
+import { LayoutGrid, Phone } from "lucide-react";
 
 const menuItems = [
   {
@@ -6,11 +6,11 @@ const menuItems = [
     href: "listar-produtos",
     icon: LayoutGrid,
   },
-  {
-    label: "Sobre nos",
-    href: "sobre-nos",
-    icon: Info,
-  },
+  // {
+  //   label: "Sobre nos",
+  //   href: "sobre-nos",
+  //   icon: Info,
+  // },
   {
     label: "Contato",
     href: "contato",
