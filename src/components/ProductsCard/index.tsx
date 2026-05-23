@@ -8,10 +8,12 @@ export function ProductsCard({
   title,
   price,
   className,
+  onClick
 }: IProductsCardProps) {
   return (
     <article
       className={`overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-sm ${className}`}
+      onClick={onClick}
     >
       <div className="aspect-square w-full bg-surface-soft">
         <img src={url_img} alt={title} className="h-full w-full object-cover" />

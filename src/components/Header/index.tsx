@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import pathLogo from "../../assets/images/logo-smart-catalog.png";
 import { Typography } from "../ui/typography";
 import { RedirectContact } from "../../utils/redirectContact";
+import { WhatsAppIcon } from "../WhatsAppIcon";
 
 export function Header() {
   return (
@@ -28,7 +29,7 @@ export function Header() {
 
         <div className="max-md:w-full">
           <Button
-            leftIcon={<Phone />}
+            leftIcon={<WhatsAppIcon />}
             className="w-[200px] cursor-pointer max-md:hidden"
             variant="outline"
             onClick={() => RedirectContact()}

@@ -3,4 +3,5 @@ export interface IProductsCardProps {
   title: string;
   price: number;
   className?: string;
+  onClick?: () => void;
 };
