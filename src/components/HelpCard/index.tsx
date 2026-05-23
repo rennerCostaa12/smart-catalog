@@ -1,6 +1,7 @@
 import { Bot, Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { Typography } from "../ui/typography";
+import { RedirectContact } from "../../utils/redirectContact";
 
 export function HelpCard() {
   return (
@@ -23,6 +24,7 @@ export function HelpCard() {
         fullWidth
         leftIcon={<Phone />}
         className="cursor-pointer"
+        onClick={() => RedirectContact()}
       >
         Conversar no WhatsApp
       </Button>

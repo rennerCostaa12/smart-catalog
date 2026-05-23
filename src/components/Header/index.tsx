@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 
 import pathLogo from "../../assets/images/logo-smart-catalog.png";
 import { Typography } from "../ui/typography";
+import { RedirectContact } from "../../utils/redirectContact";
 
 export function Header() {
   return (
@@ -30,6 +31,7 @@ export function Header() {
             leftIcon={<Phone />}
             className="w-[200px] cursor-pointer max-md:hidden"
             variant="outline"
+            onClick={() => RedirectContact()}
           >
             Fale conosco
           </Button>

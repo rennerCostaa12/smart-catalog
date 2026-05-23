@@ -1,8 +1,9 @@
-import { Phone } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
 import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
 import { colors } from "../../../constants/themeColors";
+
+import { RedirectContact } from "../../../utils/redirectContact";
 
 export function ContactPage() {
   return (
@@ -34,6 +35,7 @@ export function ContactPage() {
             className="cursor-pointer"
             leftIcon={<WhatsAppIcon color={colors.white} size={30} />}
             size="lg"
+            onClick={() => RedirectContact()}
           >
             Falar no WhatsApp
           </Button>
