@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Typography } from "../ui/typography";
 
 import { HelpCard } from "../HelpCard";
@@ -11,15 +12,15 @@ export function SideMenu() {
           <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
             {menuItems.map(({ label, href, icon: Icon }) => (
               <li key={label}>
-                <a
+                <Link
                   className="flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-text transition hover:border-primary-light hover:bg-primary-light hover:text-primary-dark"
-                  href={href}
+                  to={href}
                 >
                   <span className="shrink-0">
                     <Icon size={25} />
                   </span>
                   <Typography className="font-medium">{label}</Typography>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

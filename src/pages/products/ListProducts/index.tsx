@@ -1,11 +1,11 @@
-import { ProductsCard } from "../../../../components/ProductsCard";
-import { Button } from "../../../../components/ui/button";
-import { Typography } from "../../../../components/ui/typography";
-import { productFilters, productsMock } from "../../constants";
+import { ProductsCard } from "../../../components/ProductsCard";
+import { Button } from "../../../components/ui/button";
+import { Typography } from "../../../components/ui/typography";
+import { productFilters, productsMock } from "../constants";
 
-export function ListProducts() {
+export function ListProductsPage() {
   return (
-    <div className="flex-1 p-4 sm:p-6 lg:p-8">
+    <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
       <div>
         <Typography variant="h1">Catálogo de Produtos</Typography>
 
