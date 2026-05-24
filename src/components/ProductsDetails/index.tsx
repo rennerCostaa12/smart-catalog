@@ -15,7 +15,7 @@ export function ProductsDetails({
 }: IProductsDetailsProps) {
   return (
     <section
-      className={`relative flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm ${className || ""}`}
+      className={`relative flex flex-col gap-4 rounded-2xl max-lg:rounded-b-none border border-border bg-surface p-6 shadow-sm ${className || ""}`}
     >
       {closeProductDetails && (
         <button
@@ -32,7 +32,7 @@ export function ProductsDetails({
         <img
           src={url_img}
           alt={name}
-          className="aspect-square w-full object-cover max-md:h-[250px]"
+          className="aspect-square w-full object-cover max-lg:h-[250px]"
         />
       </div>
 

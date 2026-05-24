@@ -25,7 +25,7 @@ export function ListProductsPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-      <div className="flex max-md:block gap-4">
+      <div className="flex max-lg:block gap-4">
         <div>
           <div>
             <Typography variant="h1">Catálogo de Produtos</Typography>
@@ -95,13 +95,12 @@ export function ListProductsPage() {
             <button
               type="button"
               aria-label="Fechar detalhes do produto"
-              className="fixed inset-0 z-40 bg-black/55 md:hidden"
+              className="fixed inset-0 z-40 bg-black/55 hidden max-lg:block"
               onClick={handleCloseDetailsProduct}
             />
 
-            <div className="fixed inset-x-0 bottom-0 z-40 md:static md:w-full md:p-0">
+            <div className="fixed inset-x-0 bottom-0 z-40 lg:static lg:w-full lg:p-0">
               <ProductsDetails
-                className="max-h-[85vh] w-full overflow-y-auto md:max-h-none"
                 name={productSelected?.title}
                 price={productSelected?.price}
                 category={productSelected.category}
