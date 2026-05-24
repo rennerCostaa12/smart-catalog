@@ -34,7 +34,7 @@ export function ContactPage() {
             variant="whatsapp"
             fullWidth
             className="cursor-pointer"
-            leftIcon={<WhatsAppIcon color={colors.white} size={30} />}
+            leftIcon={<WhatsAppIcon color={colors.white} size={25} className="max-sm:hidden" />}
             size="lg"
             onClick={() => RedirectContact()}
           >

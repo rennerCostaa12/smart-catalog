@@ -21,7 +21,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
   } = useModalListItems();
 
   return (
-    <div className="absolute right-5 z-50 mt-2 w-[min(92vw,32rem)] max-md:w-[95vw] max-md:right-[-20%] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
+    <div className="absolute right-5 z-50 mt-2 w-[min(92vw,32rem)] max-md:w-[95vw] max-md:top-4 max-md:right-[-100%] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
       <div className="flex justify-between items-center">
         <div>
           <Typography weight="bold">Itens Selecionados</Typography>
@@ -39,7 +39,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
         </div>
       </div>
 
-      <div className="mt-4 max-h-80 space-y-3 overflow-y-auto pr-1">
+      <div className="mt-4 flex-1 space-y-3 overflow-y-auto pr-1 lg:max-h-80 max-lg:max-h-72 lg:flex-none">
         {items.length === 0 && (
           <div className="rounded-2xl bg-surface-soft px-4 py-6 text-center">
             <Typography weight="medium">Seu carrinho esta vazio</Typography>

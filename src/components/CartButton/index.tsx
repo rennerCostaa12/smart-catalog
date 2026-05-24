@@ -18,6 +18,10 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
     setShowListCart(!showListCart);
   };
 
+  const handleCloseListItems = () => {
+    setShowListCart(false);
+  };
+
   return (
     <div className="relative">
       <Button
@@ -35,7 +39,17 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
         <ShoppingCart cursor={30} />
       </Button>
 
-      {showListCart && <ModalListItems closeModal={handleToggleListItems} />}
+      {showListCart && (
+        <>
+          <button
+            type="button"
+            aria-label="Fechar carrinho"
+            className="fixed inset-0 z-50 cursor-default bg-black/55"
+            onClick={handleCloseListItems}
+          />
+          <ModalListItems closeModal={handleCloseListItems} />
+        </>
+      )}
     </div>
   );
 }
