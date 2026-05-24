@@ -8,24 +8,31 @@ import { WhatsAppIcon } from "../WhatsAppIcon";
 
 import { CartButton } from "../CartButton";
 import { useCart } from "../../context/cart/useCart";
+import { LogoApp } from "../LogoApp";
 
-export function Header() {
+type HeaderProps = {
+  onOpenMenu?: () => void;
+};
+
+export function Header({ onOpenMenu }: HeaderProps) {
   const { cart } = useCart();
 
   return (
     <header className="w-full border-b border-border bg-surface">
       <Container className="flex items-center gap-4 py-4 px-4 max-sm:px-2">
-        <div className="hidden max-md:block">
-          <Button size="sm" variant="outline">
+        <div className="hidden max-lg:block">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onOpenMenu}
+            aria-label="Abrir menu lateral"
+          >
             <Menu size={20} />
           </Button>
         </div>
 
         <div className="flex w-full flex-row items-center max-md:justify-between">
-          <img
-            src={pathLogo}
-            className="w-[200px] max-md:w-[70%] min-w-[150px]"
-          />
+          <LogoApp width={200} className="max-lg:hidden" />
         </div>
 
         <div className="flex gap-3 max-sm:gap-1 max-md:w-full max-md:justify-end">
@@ -34,9 +41,18 @@ export function Header() {
           </div>
 
           <div>
+            <div className="hidden max-lg:block">
+              <Button
+                className="cursor-pointer"
+                variant="outline"
+                onClick={() => RedirectContact()}
+              >
+                <WhatsAppIcon />
+              </Button>
+            </div>
             <Button
               leftIcon={<WhatsAppIcon />}
-              className="w-[200px] cursor-pointer max-md:hidden"
+              className="w-[200px] cursor-pointer max-lg:hidden"
               variant="outline"
               onClick={() => RedirectContact()}
             >

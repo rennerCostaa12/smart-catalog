@@ -1,7 +1,7 @@
 import { ProductsCard } from "../../../components/ProductsCard";
 import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
-import { productFilters, productsMock } from "../constants";
+import { productFilters } from "../constants";
 
 import { ProductsDetails } from "../../../components/ProductsDetails";
 
