@@ -10,11 +10,11 @@ import type { CSSProperties } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { colors } from "../src/constants/themeColors";
+import { ThemeColors } from "../src/constants/themeColors";
 import { CartProvider } from "../src/context/cart";
 
 const themeCssVariables = Object.fromEntries(
-  Object.entries(colors).map(([name, value]) => [`--theme-${name}`, value]),
+  Object.entries(ThemeColors).map(([name, value]) => [`--theme-${name}`, value]),
 ) as CSSProperties;
 
 export const links: Route.LinksFunction = () => [

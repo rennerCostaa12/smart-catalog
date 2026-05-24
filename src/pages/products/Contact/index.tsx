@@ -1,7 +1,7 @@
 import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
 import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
-import { colors } from "../../../constants/themeColors";
+import { ThemeColors } from "../../../constants/themeColors";
 import { Container } from "../../../components/Container";
 
 import { RedirectContact } from "../../../utils/redirectContact";
@@ -34,7 +34,7 @@ export function ContactPage() {
             variant="whatsapp"
             fullWidth
             className="cursor-pointer"
-            leftIcon={<WhatsAppIcon color={colors.white} size={25} className="max-sm:hidden" />}
+            leftIcon={<WhatsAppIcon color={ThemeColors.white} size={25} className="max-sm:hidden" />}
             size="lg"
             onClick={() => RedirectContact()}
           >

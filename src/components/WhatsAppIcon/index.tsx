@@ -1,9 +1,9 @@
 import type { IWhatsAppIconProps } from "./types";
 
-import { colors } from "../../constants/themeColors";
+import { ThemeColors } from "../../constants/themeColors";
 
 export function WhatsAppIcon({
-  color = colors.secondary,
+  color = ThemeColors.secondary,
   size = 24,
   ...props
 }: IWhatsAppIconProps) {

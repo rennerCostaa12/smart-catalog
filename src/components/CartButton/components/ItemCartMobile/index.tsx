@@ -3,7 +3,6 @@ import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Button } from "../../../ui/button";
 import { Typography } from "../../../ui/typography";
 import type { IItemCartProps } from "../ItemCart/types";
-import { colors } from "../../../../constants/themeColors";
 
 export function ItemCartMobile({
   product,

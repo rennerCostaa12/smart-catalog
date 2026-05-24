@@ -5,7 +5,7 @@ import { Typography } from "../../../ui/typography";
 
 import { type IModalListItemsProps } from "./types";
 import { WhatsAppIcon } from "../../../WhatsAppIcon";
-import { colors } from "../../../../constants/themeColors";
+import { ThemeColors } from "../../../../constants/themeColors";
 import { useModalListItems } from "./useModalListItems";
 import { ItemCart } from "../ItemCart";
 import { ItemCartMobile } from "../ItemCartMobile";
@@ -86,7 +86,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             className="mt-4 cursor-pointer"
             fullWidth
             variant="whatsapp"
-            leftIcon={<WhatsAppIcon color={colors.white} />}
+            leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
             onClick={handleBuyWpp}
           >
             Finalizar no WhatsApp
