@@ -1,5 +1,7 @@
 import { useCart } from "../../../../context/cart/useCart";
+import { brlFormatter } from "../../../../utils/brlFormatter";
 import { RedirectContact } from "../../../../utils/redirectContact";
+import { getOrderWhatsAppMessage } from "./constants";
 
 export function useModalListItems() {
   const { addCart, removeCart, removeProductCart, cart: items } = useCart();
@@ -22,7 +24,10 @@ export function useModalListItems() {
   };
 
   const handleBuyWpp = () => {
-    RedirectContact("5585989734951", "Olá vi comprar coisas!");
+    RedirectContact(
+      "5585989734951",
+      getOrderWhatsAppMessage(items, brlFormatter.format(totalPrice)),
+    );
   };
 
   return {
