@@ -80,16 +80,18 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
           </Typography>
         </div>
 
-        <Button
-          title="Finalizar compra"
-          className="mt-4 cursor-pointer"
-          fullWidth
-          variant="whatsapp"
-          leftIcon={<WhatsAppIcon color={colors.white} />}
-          onClick={handleBuyWpp}
-        >
-          Finalizar WhatsApp
-        </Button>
+        {items?.length > 0 && (
+          <Button
+            title="Finalizar compra"
+            className="mt-4 cursor-pointer"
+            fullWidth
+            variant="whatsapp"
+            leftIcon={<WhatsAppIcon color={colors.white} />}
+            onClick={handleBuyWpp}
+          >
+            Finalizar no WhatsApp
+          </Button>
+        )}
       </div>
     </div>
   );

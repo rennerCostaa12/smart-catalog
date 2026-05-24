@@ -3,8 +3,15 @@ export type ProductFilter =
   | "Eletronicos"
   | "Acessorios"
   | "Casa"
-  | "Escritorio"
-  | "Promocoes";
+  | "Escritorio";
+
+export enum CategoryEnum {
+  ALL = "todos",
+  ELETRONIC = "eletronicos",
+  ACCESSORY = "acessorios",
+  HOME = "casa",
+  ESCRITÓRIO = "escritorio",
+}
 
 export type ProductCategory = Exclude<ProductFilter, "Todos">;
 
