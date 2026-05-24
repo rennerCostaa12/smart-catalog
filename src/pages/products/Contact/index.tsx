@@ -2,12 +2,13 @@ import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
 import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
 import { colors } from "../../../constants/themeColors";
+import { Container } from "../../../components/Container";
 
 import { RedirectContact } from "../../../utils/redirectContact";
 
 export function ContactPage() {
   return (
-    <div className="my-10 w-full flex justify-center">
+    <Container className="my-10 w-full flex justify-center max-md:px-6">
       <div className="flex flex-col gap-4">
         <div>
           <Typography variant="h1" align="center">
@@ -22,7 +23,7 @@ export function ContactPage() {
 
         <div className="shadow-xl inset-shadow-2xs rounded-2xl p-15 border border-border flex flex-col gap-4">
           <div className="flex justify-center">
-            <WhatsAppIcon size={100} />
+            <WhatsAppIcon size={80} />
           </div>
 
           <Typography variant="h2" weight="medium" align="center">
@@ -41,6 +42,6 @@ export function ContactPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
