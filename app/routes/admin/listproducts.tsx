@@ -1,5 +1,5 @@
 import type { Route } from "./+types/listproducts";
-import { AdminPage } from "../../../src/pages/admin";
+import { ListProductsPage } from "../../../src/pages/admin/ListProducts";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,10 +12,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AdminListProducts() {
-  return (
-    <AdminPage
-      title="Lista de produtos"
-      description="Visualize e acompanhe os produtos cadastrados no catálogo."
-    />
-  );
+  return <ListProductsPage />;
 }

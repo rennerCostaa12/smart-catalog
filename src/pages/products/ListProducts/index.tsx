@@ -78,14 +78,22 @@ export function ListProductsPage() {
 
           <div className="mt-8 grid grid-cols-2 max-sm:grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
             {itemsFiltered.map((product) => (
-              <ProductsCard
+              <ProductsCard.Root
                 className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
                 key={product.title}
-                price={product.price}
-                title={product.title}
-                url_img={product.url_img}
                 onClick={() => handleSelectItem(product)}
-              />
+              >
+                <ProductsCard.Image src={product.url_img} alt={product.title} />
+
+                <ProductsCard.Content>
+                  <ProductsCard.Title>{product.title}</ProductsCard.Title>
+
+                  <ProductsCard.Footer>
+                    <ProductsCard.Price price={product.price} />
+                    <ProductsCard.Icon />
+                  </ProductsCard.Footer>
+                </ProductsCard.Content>
+              </ProductsCard.Root>
             ))}
           </div>
         </div>

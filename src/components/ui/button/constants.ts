@@ -5,9 +5,9 @@ export const buttonBaseClasses =
 
 export const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-blue-600 text-white shadow-sm hover:bg-blue-700 focus-visible:ring-blue-500 active:bg-blue-800",
+    "bg-primary text-white shadow-sm hover:bg-primary-dark focus-visible:ring-primary active:bg-primary-dark",
   secondary:
-    "bg-slate-900 text-white shadow-sm hover:bg-slate-800 focus-visible:ring-slate-500 active:bg-slate-950",
+    "bg-secondary text-white shadow-sm hover:bg-secondary-dark focus-visible:ring-secondary active:bg-secondary-dark",
   outline:
     "border border-slate-200 bg-white text-slate-900 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus-visible:ring-blue-500",
   ghost:
