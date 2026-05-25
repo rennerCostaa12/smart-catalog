@@ -1,15 +1,13 @@
-import type { ReactNode } from "react";
 import { useState } from "react";
 import { Container } from "../Container";
 import { Header } from "../Header";
 import { MenuMobile } from "../Menu";
 import { SideMenu } from "../SideMenu";
 
-type LayoutProps = {
-  children: ReactNode;
-};
+import type { ILayoutProps } from "./types";
+import { menuItemsProducts } from "./constants";
 
-export function Layout({ children }: LayoutProps) {
+export function LayoutProduct({ children }: ILayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleOpenMenu = () => {
@@ -27,7 +25,7 @@ export function Layout({ children }: LayoutProps) {
 
       <Container className="flex flex-1 max-h-[89.3vh]">
         <section className="flex flex-1 flex-col overflow-hidden bg-surface shadow-sm lg:flex-row max-h-screen">
-          <SideMenu className="max-lg:hidden" />
+          <SideMenu className="max-lg:hidden" menuItems={menuItemsProducts} />
           {children}
         </section>
       </Container>

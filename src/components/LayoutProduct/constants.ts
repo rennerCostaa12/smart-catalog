@@ -1,7 +1,7 @@
 import { LayoutGrid, Phone } from "lucide-react";
-import type { IMenuItemProps } from "./components/MenuItem/types";
+import type { IMenuItemProps } from "../SideMenu/components/MenuItem/types";
 
-const menuItems: IMenuItemProps[] = [
+const menuItemsProducts: IMenuItemProps[] = [
   {
     label: "Catalogo",
     href: "listar-produtos",
@@ -14,4 +14,4 @@ const menuItems: IMenuItemProps[] = [
   },
 ];
 
-export { menuItems };
+export { menuItemsProducts };

@@ -1,7 +1,7 @@
 import type { Route } from "./+types/products";
 import { Outlet } from "react-router";
 
-import { Layout } from "../../src/components/Layout";
+import { LayoutProduct } from "../../src/components/LayoutProduct";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,8 +12,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Products() {
   return (
-    <Layout>
+    <LayoutProduct>
       <Outlet />
-    </Layout>
-  )
+    </LayoutProduct>
+  );
 }

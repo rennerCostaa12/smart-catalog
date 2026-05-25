@@ -1,5 +1,6 @@
 import type { Route } from "./+types/admin";
-import { AdminPage } from "../../src/pages/admin";
+import { LayoutAdmin } from "../../src/components/LayoutAdmin";
+import { Outlet } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +10,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Admin() {
-  return <AdminPage />;
+  return (
+    <LayoutAdmin>
+      <Outlet />
+    </LayoutAdmin>
+  );
 }

@@ -3,10 +3,13 @@ import { HelpCard } from "../HelpCard";
 import { LogoApp } from "../LogoApp";
 import { Typography } from "../ui/typography";
 import { MenuItem } from "./components/MenuItem";
-import { menuItems } from "./constants";
 import type { ISideMenuProps } from "./types";
 
-export function SideMenu({ className, onNavigate }: ISideMenuProps) {
+export function SideMenu({
+  className,
+  onNavigate,
+  menuItems = [],
+}: ISideMenuProps) {
   const location = useLocation();
 
   return (
@@ -21,14 +24,17 @@ export function SideMenu({ className, onNavigate }: ISideMenuProps) {
 
           <nav aria-label="Menu lateral">
             <ul className="grid gap-2 lg:grid-cols-1">
-              {menuItems.map((item) => (
-                <ResolvedMenuItem
-                  key={item.label}
-                  pathname={location.pathname}
-                  onNavigate={onNavigate}
-                  {...item}
-                />
-              ))}
+              {menuItems.map((item) => {
+                const resolvedPath = useResolvedPath(item.href);
+
+                return (
+                  <MenuItem
+                    {...item}
+                    selected={location.pathname === resolvedPath.pathname}
+                    onClick={onNavigate}
+                  />
+                );
+              })}
             </ul>
           </nav>
         </div>
@@ -46,24 +52,5 @@ export function SideMenu({ className, onNavigate }: ISideMenuProps) {
         </div>
       </div>
     </aside>
-  );
-}
-
-function ResolvedMenuItem({
-  pathname,
-  onNavigate,
-  ...item
-}: {
-  pathname: string;
-  onNavigate?: () => void;
-} & (typeof menuItems)[number]) {
-  const resolvedPath = useResolvedPath(item.href);
-
-  return (
-    <MenuItem
-      {...item}
-      selected={pathname === resolvedPath.pathname}
-      onClick={onNavigate}
-    />
   );
 }

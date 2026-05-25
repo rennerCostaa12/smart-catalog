@@ -2,19 +2,15 @@ import { Menu } from "lucide-react";
 import { Container } from "../Container";
 import { Button } from "../ui/button";
 
-import pathLogo from "../../assets/images/logo-smart-catalog.png";
 import { RedirectContact } from "../../utils/redirectContact";
 import { WhatsAppIcon } from "../WhatsAppIcon";
 
 import { CartButton } from "../CartButton";
 import { useCart } from "../../context/cart/useCart";
 import { LogoApp } from "../LogoApp";
+import type { IHeaderProps } from "./types";
 
-type HeaderProps = {
-  onOpenMenu?: () => void;
-};
-
-export function Header({ onOpenMenu }: HeaderProps) {
+export function Header({ onOpenMenu }: IHeaderProps) {
   const { cart } = useCart();
 
   return (
