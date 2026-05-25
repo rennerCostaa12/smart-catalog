@@ -3,8 +3,8 @@ import type { IMenuItemProps } from "../SideMenu/components/MenuItem/types";
 
 const menuItemsAdmin: IMenuItemProps[] = [
   {
-    label: "Catalogo",
-    href: "listar-produtos",
+    label: "Lista de produtos",
+    href: "lista-produtos",
     icon: LayoutGrid,
   },
   {

@@ -8,6 +8,7 @@ import type { IMenuProps } from "./types";
 export function MenuMobile({
   isMobileMenuOpen,
   setIsMobileMenuOpen,
+  menuItems,
 }: IMenuProps) {
   const location = useLocation();
 
@@ -44,6 +45,7 @@ export function MenuMobile({
       >
         <SideMenu
           className="h-full border-b-0 border-r shadow-xl"
+          menuItems={menuItems}
           onNavigate={handleCloseMenu}
         />
       </div>

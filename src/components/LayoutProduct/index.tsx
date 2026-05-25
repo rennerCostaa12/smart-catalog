@@ -21,6 +21,7 @@ export function LayoutProduct({ children }: ILayoutProps) {
       <MenuMobile
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
+        menuItems={menuItemsProducts}
       />
 
       <Container className="flex flex-1 max-h-[89.3vh]">

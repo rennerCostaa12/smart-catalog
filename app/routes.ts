@@ -8,7 +8,12 @@ export const routesApplication = [
     route("sobre-nos", "routes/products/aboutus.tsx"),
     route("contato", "routes/products/contact.tsx"),
   ]),
-  route("/admin", "routes/admin.tsx"),
+  route("/admin", "routes/admin.tsx", [
+    index("routes/admin/index.tsx"),
+    route("lista-produtos", "routes/admin/listproducts.tsx"),
+    route("produtos", "routes/admin/products.tsx"),
+    route("configuracoes", "routes/admin/settings.tsx"),
+  ]),
 ];
 
 export default routesApplication satisfies RouteConfig;
