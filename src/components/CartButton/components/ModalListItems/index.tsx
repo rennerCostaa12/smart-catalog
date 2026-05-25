@@ -9,9 +9,15 @@ import { ThemeColors } from "../../../../constants/themeColors";
 import { useModalListItems } from "./useModalListItems";
 import { ItemCart } from "../ItemCart";
 import { ItemCartMobile } from "../ItemCartMobile";
+import { MethodPayment } from "../MethodPayment";
 
 export function ModalListItems({ closeModal }: IModalListItemsProps) {
   const {
+    methodPayment,
+    setMethodPayment,
+    cashChangeValue,
+    setCashChangeValue,
+    cashChangeError,
     handleDecreaseCart,
     handleIncreaseCart,
     handleRemoveProductCart,
@@ -72,7 +78,19 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
         ))}
       </div>
 
-      <div className="mt-4 border-t border-border pt-4">
+      <div className="mt-4 border-t border-border pt-4 flex flex-col gap-4">
+        {items?.length > 0 && (
+          <div>
+            <MethodPayment
+              value={methodPayment}
+              onValueChange={setMethodPayment}
+              cashChangeValue={cashChangeValue}
+              onCashChangeValue={setCashChangeValue}
+              error={cashChangeError}
+            />
+          </div>
+        )}
+
         <div className="flex items-center justify-between">
           <Typography weight="bold">Total</Typography>
           <Typography variant="price" color="primary">
@@ -88,6 +106,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             variant="whatsapp"
             leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
             onClick={handleBuyWpp}
+            disabled={Boolean(cashChangeError)}
           >
             Finalizar no WhatsApp
           </Button>

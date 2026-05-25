@@ -30,7 +30,11 @@ export function ItemCartMobile({
                 {product.category}
               </Typography>
 
-              <Typography className="mt-1 line-clamp-2" weight="medium">
+              <Typography
+                variant="bodySmall"
+                className="mt-1 line-clamp-2"
+                weight="medium"
+              >
                 {product.title}
               </Typography>
             </div>
@@ -48,10 +52,6 @@ export function ItemCartMobile({
 
           <div className="mt-3 flex items-end justify-between gap-3">
             <div>
-              <Typography variant="bodySmall" color="muted">
-                Unitario: {brlFormatter.format(product.price)}
-              </Typography>
-
               <div className="mt-2 flex items-center gap-2">
                 <Button
                   variant="outline"
