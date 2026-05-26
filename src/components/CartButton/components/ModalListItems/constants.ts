@@ -5,6 +5,9 @@ const ORDER_WHATSAPP_MESSAGE_TEMPLATE = `Olá! Tenho interesse em comprar os seg
 
 {products}
 
+Entrega: {deliveryMethod}
+{deliveryDetails}
+
 Forma de pagamento: {methodPayment}
 {cashChange}
 
@@ -13,6 +16,8 @@ Total do pedido: {total}`;
 export function getOrderWhatsAppMessage(
   items: ICartItem[],
   totalPrice: string,
+  deliveryMethod: string,
+  deliveryDetails: string,
   methodPayment: string,
   cashChangeValue?: string,
 ) {
@@ -26,6 +31,8 @@ export function getOrderWhatsAppMessage(
   const cashChange = cashChangeValue ? `Troco para: ${cashChangeValue}` : "";
 
   return ORDER_WHATSAPP_MESSAGE_TEMPLATE.replace("{products}", products)
+    .replace("{deliveryMethod}", deliveryMethod)
+    .replace("{deliveryDetails}", deliveryDetails)
     .replace("{methodPayment}", methodPayment)
     .replace("{cashChange}", cashChange)
     .replace("{total}", totalPrice);

@@ -9,5 +9,5 @@ export interface IMethodPaymentProps {
   onValueChange: (value: MethodPaymentEnum) => void;
   cashChangeValue: string;
   onCashChangeValue: (value: string) => void;
-  error?: string;
+  cashChangeError?: string;
 }

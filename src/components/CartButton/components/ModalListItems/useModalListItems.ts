@@ -1,37 +1,52 @@
-import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import type { Resolver } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCart } from "../../../../context/cart/useCart";
 import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Mask } from "../../../../utils/mask";
 import { RedirectContact } from "../../../../utils/redirectContact";
-import { getOrderWhatsAppMessage } from "./constants";
+import { DeliveryMethodEnum } from "../DeliveryMethod/types";
 import { MethodPaymentEnum } from "../MethodPayment/types";
+import { getOrderWhatsAppMessage } from "./constants";
+import { modalListItemsSchema } from "./schema";
+import type { IModalListItemsFormData } from "./types";
 
 export function useModalListItems() {
   const { addCart, removeCart, removeProductCart, cart: items } = useCart();
-  const [methodPayment, setMethodPayment] = useState<MethodPaymentEnum>(
-    MethodPaymentEnum.CARD,
-  );
-  const [cashChangeValue, setCashChangeValue] = useState("");
 
   const totalPrice = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
   );
 
-  const getMessageErrorCashChange = () => {
-    if (methodPayment === MethodPaymentEnum.MONEY && cashChangeValue) {
-      const hasIncorrectChangeAmount =
-        Mask.parseCurrencyBRL(cashChangeValue) < totalPrice;
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IModalListItemsFormData>({
+    resolver: yupResolver(
+      modalListItemsSchema,
+    ) as Resolver<IModalListItemsFormData>,
+    defaultValues: {
+      deliveryMethod: DeliveryMethodEnum.DELIVERY,
+      addressValue: "",
+      receiverNameValue: "",
+      methodPayment: MethodPaymentEnum.CARD,
+      cashChangeValue: "",
+    },
+    mode: "onChange",
+  });
 
-      if (hasIncorrectChangeAmount) {
-        return "O troco nao pode ser menor que o valor total do pedido.";
-      }
-    }
+  const watchedMethodPayment = watch("methodPayment");
+  const watchedCashChangeValue = watch("cashChangeValue");
 
-    return undefined;
-  };
-
-  const cashChangeError = getMessageErrorCashChange();
+  const cashChangeError =
+    watchedMethodPayment === MethodPaymentEnum.MONEY &&
+    watchedCashChangeValue &&
+    Mask.parseCurrencyBRL(watchedCashChangeValue) < totalPrice
+      ? "O troco nao pode ser menor que o valor total do pedido."
+      : undefined;
 
   const handleDecreaseCart = (productTitle: string) => {
     removeCart(productTitle);
@@ -45,27 +60,43 @@ export function useModalListItems() {
     removeProductCart(productTitle);
   };
 
-  const handleBuyWpp = () => {
-    if (cashChangeError) {
+  const handleBuyWpp = handleSubmit((values) => {
+    if (
+      values.methodPayment === MethodPaymentEnum.MONEY &&
+      values.cashChangeValue &&
+      Mask.parseCurrencyBRL(values.cashChangeValue) < totalPrice
+    ) {
       return;
     }
+
+    const deliveryMethodLabel =
+      values.deliveryMethod === DeliveryMethodEnum.DELIVERY
+        ? "Entrega"
+        : "Retirar";
+
+    const deliveryDetails =
+      values.deliveryMethod === DeliveryMethodEnum.DELIVERY
+        ? `Endereco: ${values.addressValue}\nRecebedor: ${values.receiverNameValue}`
+        : "Retirada no local";
 
     RedirectContact(
       "5585989734951",
       getOrderWhatsAppMessage(
         items,
         brlFormatter.format(totalPrice),
-        methodPayment === "cartao" ? "Cartão" : "Dinheiro",
-        methodPayment === MethodPaymentEnum.MONEY ? cashChangeValue : undefined,
+        deliveryMethodLabel,
+        deliveryDetails,
+        values.methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Dinheiro",
+        values.methodPayment === MethodPaymentEnum.MONEY
+          ? values.cashChangeValue
+          : undefined,
       ),
     );
-  };
+  });
 
   return {
-    methodPayment,
-    setMethodPayment,
-    cashChangeValue,
-    setCashChangeValue,
+    control,
+    errors,
     cashChangeError,
     totalPrice,
     handleDecreaseCart,

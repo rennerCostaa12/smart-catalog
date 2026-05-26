@@ -11,7 +11,7 @@ export function MethodPayment({
   onValueChange,
   cashChangeValue,
   onCashChangeValue,
-  error,
+  cashChangeError,
 }: IMethodPaymentProps) {
   return (
     <section
@@ -21,7 +21,7 @@ export function MethodPayment({
       )}
     >
       <div className="mb-4">
-        <Typography weight="bold">Metodo de pagamento</Typography>
+        <Typography weight="bold">Método de pagamento</Typography>
 
         {/* TODO: Implementar futuramente */}
         {/* <Typography variant="bodySmall" color="muted">
@@ -50,10 +50,11 @@ export function MethodPayment({
       {value === MethodPaymentEnum.MONEY && (
         <div className="mt-4">
           <Input
+            inputSize="sm"
             label="Troco para quanto?"
             placeholder="R$ 0,00"
             value={cashChangeValue}
-            error={error}
+            error={cashChangeError}
             onChange={(event) =>
               onCashChangeValue(Mask.currencyBRL(event.target.value))
             }

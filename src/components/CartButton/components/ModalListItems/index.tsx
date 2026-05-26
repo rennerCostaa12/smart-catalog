@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { Controller } from "react-hook-form";
 import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Button } from "../../../ui/button";
 import { Typography } from "../../../ui/typography";
@@ -10,13 +11,12 @@ import { useModalListItems } from "./useModalListItems";
 import { ItemCart } from "../ItemCart";
 import { ItemCartMobile } from "../ItemCartMobile";
 import { MethodPayment } from "../MethodPayment";
+import { DeliveryMethod } from "../DeliveryMethod";
 
 export function ModalListItems({ closeModal }: IModalListItemsProps) {
   const {
-    methodPayment,
-    setMethodPayment,
-    cashChangeValue,
-    setCashChangeValue,
+    control,
+    errors,
     cashChangeError,
     handleDecreaseCart,
     handleIncreaseCart,
@@ -27,7 +27,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
   } = useModalListItems();
 
   return (
-    <div className="absolute right-5 z-50 mt-2 w-[min(92vw,32rem)] max-md:w-[95vw] max-md:top-4 max-md:right-[-100%] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
+    <div className="absolute right-5 z-50 w-[min(92vw,32rem)] max-md:w-[95vw] top-8 max-md:top-0 max-md:right-[-100%] rounded-2xl border border-border bg-white px-4 py-4 shadow-2xl">
       <div className="flex justify-between items-center">
         <div>
           <Typography weight="bold">Itens Selecionados</Typography>
@@ -81,12 +81,56 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
       <div className="mt-4 border-t border-border pt-4 flex flex-col gap-4">
         {items?.length > 0 && (
           <div>
-            <MethodPayment
-              value={methodPayment}
-              onValueChange={setMethodPayment}
-              cashChangeValue={cashChangeValue}
-              onCashChangeValue={setCashChangeValue}
-              error={cashChangeError}
+            <Controller
+              name="deliveryMethod"
+              control={control}
+              render={({ field: deliveryMethodField }) => (
+                <Controller
+                  name="addressValue"
+                  control={control}
+                  render={({ field: addressField }) => (
+                    <Controller
+                      name="receiverNameValue"
+                      control={control}
+                      render={({ field: receiverNameField }) => (
+                        <DeliveryMethod
+                          value={deliveryMethodField.value}
+                          onValueChange={deliveryMethodField.onChange}
+                          addressValue={addressField.value ?? ""}
+                          onAddressChange={addressField.onChange}
+                          receiverNameValue={receiverNameField.value ?? ""}
+                          onReceiverNameChange={receiverNameField.onChange}
+                          addressError={errors.addressValue?.message}
+                          receiverNameError={errors.receiverNameValue?.message}
+                          className="mb-4"
+                        />
+                      )}
+                    />
+                  )}
+                />
+              )}
+            />
+
+            <Controller
+              name="methodPayment"
+              control={control}
+              render={({ field: methodPaymentField }) => (
+                <Controller
+                  name="cashChangeValue"
+                  control={control}
+                  render={({ field: cashChangeField }) => (
+                    <MethodPayment
+                      value={methodPaymentField.value}
+                      onValueChange={methodPaymentField.onChange}
+                      cashChangeValue={cashChangeField.value ?? ""}
+                      onCashChangeValue={cashChangeField.onChange}
+                      cashChangeError={
+                        errors.cashChangeValue?.message ?? cashChangeError
+                      }
+                    />
+                  )}
+                />
+              )}
             />
           </div>
         )}
@@ -106,7 +150,9 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             variant="whatsapp"
             leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
             onClick={handleBuyWpp}
-            disabled={Boolean(cashChangeError)}
+            disabled={Boolean(
+              errors.cashChangeValue?.message || cashChangeError,
+            )}
           >
             Finalizar no WhatsApp
           </Button>

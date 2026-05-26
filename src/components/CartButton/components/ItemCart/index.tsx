@@ -13,7 +13,7 @@ export function ItemCart({
   return (
     <div
       key={product.title}
-      className="flex items-start gap-3 rounded-2xl border border-border bg-surface-soft p-3"
+      className="relative flex items-start gap-3 rounded-2xl border border-border bg-surface-soft p-3"
     >
       <img
         src={product.url_img}
@@ -34,13 +34,14 @@ export function ItemCart({
           {product.title}
         </Typography>
 
-        <div className="mt-3 flex items-center max-sm:items-start justify-between gap-3 max-sm:flex-col">
+        <div className="flex items-center max-sm:items-start justify-between gap-3 max-sm:flex-col">
           <div className="min-w-0">
             <Typography variant="bodySmall" color="muted">
               Unitario: {brlFormatter.format(product.price)}
             </Typography>
             <div className="mt-2 flex items-center gap-2">
               <Button
+                size="sm"
                 variant="outline"
                 className="cursor-pointer"
                 onClick={() => handleDecreaseCart(product.title)}
@@ -48,8 +49,11 @@ export function ItemCart({
               >
                 <Minus size={16} />
               </Button>
-              <Typography weight="bold">{product.quantity}</Typography>
+              <Typography weight="bold" variant="caption">
+                {product.quantity}
+              </Typography>
               <Button
+                size="sm"
                 variant="outline"
                 className="cursor-pointer"
                 onClick={() => handleIncreaseCart(product)}
@@ -68,7 +72,7 @@ export function ItemCart({
             <Button
               title="Deletar produto"
               variant="outline"
-              className="cursor-pointer text-danger hover:border-red-200 hover:bg-red-50 hover:text-danger"
+              className="absolute top-2 right-2 cursor-pointer text-danger hover:border-red-200 hover:bg-red-50 hover:text-danger"
               onClick={() => handleRemoveProductCart(product.title)}
             >
               <Trash2 size={16} />

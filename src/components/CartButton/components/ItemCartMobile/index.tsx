@@ -12,7 +12,7 @@ export function ItemCartMobile({
 }: IItemCartProps) {
   return (
     <div className="rounded-2xl border border-border bg-surface-soft p-3">
-      <div className="flex items-start gap-3">
+      <div className="flex items-center gap-3">
         <img
           src={product.url_img}
           alt={product.title}
@@ -50,7 +50,7 @@ export function ItemCartMobile({
             </Button>
           </div>
 
-          <div className="mt-3 flex items-end justify-between gap-3">
+          <div className="flex items-end justify-between gap-3">
             <div>
               <div className="mt-2 flex items-center gap-2">
                 <Button
@@ -62,7 +62,9 @@ export function ItemCartMobile({
                 >
                   <Minus size={16} />
                 </Button>
-                <Typography weight="bold">{product.quantity}</Typography>
+                <Typography variant="caption" weight="bold">
+                  {product.quantity}
+                </Typography>
                 <Button
                   variant="outline"
                   className="cursor-pointer"
