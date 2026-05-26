@@ -1,22 +1,26 @@
+import { forwardRef } from "react";
 import { cn } from "../../../utils/mergeClass";
 import { inputPaddingClasses, inputSizeClasses, inputWrapperVariantClasses } from "./constants";
 import type { InputProps } from "./types";
 
-export function Input({
-  id,
-  label,
-  helperText,
-  error,
-  variant = "default",
-  inputSize = "md",
-  fullWidth = true,
-  leftIcon,
-  rightIcon,
-  className,
-  containerClassName,
-  disabled,
-  ...props
-}: InputProps) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    id,
+    label,
+    helperText,
+    error,
+    variant = "default",
+    inputSize = "md",
+    fullWidth = true,
+    leftIcon,
+    rightIcon,
+    className,
+    containerClassName,
+    disabled,
+    ...props
+  }: InputProps,
+  ref,
+) {
   const inputId = id || props.name;
   const hasError = Boolean(error);
 
@@ -47,6 +51,7 @@ export function Input({
         )}
 
         <input
+          ref={ref}
           id={inputId}
           disabled={disabled}
           aria-invalid={hasError}
@@ -83,4 +88,4 @@ export function Input({
       )}
     </div>
   );
-}
+});

@@ -108,14 +108,27 @@ export function ListProductsPage() {
             />
 
             <div className="fixed inset-x-0 bottom-0 z-40 lg:static lg:w-full lg:p-0">
-              <ProductsDetails
-                name={productSelected?.title}
-                price={productSelected?.price}
-                category={productSelected.category}
-                url_img={productSelected?.url_img}
-                onAddToCart={() => handleAddInCart(productSelected)}
-                closeProductDetails={handleCloseDetailsProduct}
-              />
+              <ProductsDetails.Root>
+                <ProductsDetails.CloseButton
+                  onClick={handleCloseDetailsProduct}
+                />
+                <ProductsDetails.Image
+                  src={productSelected.url_img}
+                  alt={productSelected.title}
+                />
+                <ProductsDetails.Content>
+                  <ProductsDetails.Category>
+                    {productSelected.category}
+                  </ProductsDetails.Category>
+                  <ProductsDetails.Title>
+                    {productSelected.title}
+                  </ProductsDetails.Title>
+                  <ProductsDetails.Price price={productSelected.price} />
+                  <ProductsDetails.Button
+                    onClick={() => handleAddInCart(productSelected)}
+                  />
+                </ProductsDetails.Content>
+              </ProductsDetails.Root>
             </div>
           </>
         )}
