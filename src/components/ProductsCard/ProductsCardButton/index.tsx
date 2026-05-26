@@ -4,7 +4,7 @@ import type { IProductsCardButtonProps } from "./types";
 export function ProductsCardButton({
   children,
   variant = "secondary",
-  className = "w-full cursor-pointer",
+  className = "h-10 w-full cursor-pointer px-4 text-xs sm:h-11 sm:px-5 sm:text-sm",
   ...props
 }: IProductsCardButtonProps) {
   return (

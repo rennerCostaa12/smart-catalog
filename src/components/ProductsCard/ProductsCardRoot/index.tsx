@@ -10,7 +10,7 @@ export function ProductsCardRoot({
     <article
       onClick={onClick}
       className={cn(
-        "overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-sm",
+        "overflow-hidden rounded-2xl border border-border bg-surface shadow-sm sm:rounded-[1.75rem]",
         className,
       )}
     >

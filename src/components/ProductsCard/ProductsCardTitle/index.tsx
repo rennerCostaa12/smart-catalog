@@ -6,5 +6,11 @@ export function ProductsCardTitle({
   children,
   className,
 }: IProductsCardTitleProps) {
-  return <Typography className={cn("line-clamp-2", className)}>{children}</Typography>;
+  return (
+    <Typography
+      className={cn("line-clamp-2 text-sm leading-5 sm:text-base sm:leading-7", className)}
+    >
+      {children}
+    </Typography>
+  );
 }

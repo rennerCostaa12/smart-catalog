@@ -6,7 +6,7 @@ export function ProductsCardFooter({
   className,
 }: IProductsCardFooterProps) {
   return (
-    <div className={cn("flex items-center justify-between", className)}>
+    <div className={cn("flex items-center justify-between gap-2", className)}>
       {children}
     </div>
   );

@@ -1,9 +1,9 @@
 export type ProductFilter =
   | "Todos"
-  | "Eletronicos"
-  | "Acessorios"
+  | "Eletrônicos"
+  | "Acessórios"
   | "Casa"
-  | "Escritorio";
+  | "Escritório";
 
 export enum CategoryEnum {
   ALL = "todos",

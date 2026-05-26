@@ -5,5 +5,9 @@ export function ProductsCardContent({
   children,
   className,
 }: IProductsCardContentProps) {
-  return <div className={cn("flex flex-col gap-2 p-5", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col gap-2 p-3 sm:p-5", className)}>
+      {children}
+    </div>
+  );
 }

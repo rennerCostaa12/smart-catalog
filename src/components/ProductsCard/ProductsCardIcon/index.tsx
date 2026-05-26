@@ -6,5 +6,10 @@ export function ProductsCardIcon({
   className,
   size = 40,
 }: IProductsCardIconProps) {
-  return <ChevronRight size={size} className={cn("text-primary", className)} />;
+  return (
+    <ChevronRight
+      size={size}
+      className={cn("h-7 w-7 shrink-0 text-primary sm:h-10 sm:w-10", className)}
+    />
+  );
 }

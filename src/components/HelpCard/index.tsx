@@ -2,6 +2,7 @@ import { Bot, Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { Typography } from "../ui/typography";
 import { RedirectContact } from "../../utils/redirectContact";
+import { WhatsAppIcon } from "../WhatsAppIcon";
 
 export function HelpCard() {
   return (
@@ -22,11 +23,11 @@ export function HelpCard() {
       <Button
         variant="outline"
         fullWidth
-        leftIcon={<Phone />}
+        leftIcon={<WhatsAppIcon size={20} />}
         className="cursor-pointer"
         onClick={() => RedirectContact()}
       >
-        Conversar no WhatsApp
+        Chamar no WhatsApp
       </Button>
     </div>
   );

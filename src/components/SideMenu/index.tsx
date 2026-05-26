@@ -29,6 +29,7 @@ export function SideMenu({
 
                 return (
                   <MenuItem
+                    key={item.href}
                     {...item}
                     selected={location.pathname === resolvedPath.pathname}
                     onClick={onNavigate}

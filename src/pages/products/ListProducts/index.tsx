@@ -37,10 +37,10 @@ export function ListProductsPage() {
 
           <div className="mt-6 w-full max-w-full overflow-x-auto pb-2">
             <div className="flex min-w-max flex-nowrap gap-3">
-              {productFilters.map((filter) => (
+              {productFilters.map((filter, index) => (
                 <Button
                   className="shrink-0 cursor-pointer whitespace-nowrap"
-                  key={filter}
+                  key={index}
                   variant={
                     filter.toLocaleLowerCase() === nameCategory
                       ? "primary"
@@ -76,7 +76,7 @@ export function ListProductsPage() {
             )}
           </div>
 
-          <div className="mt-8 grid grid-cols-2 max-sm:grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 max-sm:grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
             {itemsFiltered.map((product) => (
               <ProductsCard.Root
                 className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
@@ -90,7 +90,7 @@ export function ListProductsPage() {
 
                   <ProductsCard.Footer>
                     <ProductsCard.Price price={product.price} />
-                    <ProductsCard.Icon />
+                    <ProductsCard.Icon className="max-sm:hidden" />
                   </ProductsCard.Footer>
                 </ProductsCard.Content>
               </ProductsCard.Root>

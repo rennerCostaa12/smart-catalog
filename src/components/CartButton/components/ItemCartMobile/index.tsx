@@ -22,13 +22,13 @@ export function ItemCartMobile({
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <Typography
+              {/* <Typography
                 variant="caption"
                 color="primary"
                 className="uppercase tracking-[0.18em]"
               >
                 {product.category}
-              </Typography>
+              </Typography> */}
 
               <Typography
                 variant="bodySmall"

@@ -22,13 +22,13 @@ export function ItemCart({
       />
 
       <div className="min-w-0 flex-1">
-        <Typography
+        {/* <Typography
           variant="bodySmall"
           color="primary"
           className="uppercase tracking-[0.18em]"
         >
           {product.category}
-        </Typography>
+        </Typography> */}
 
         <Typography className="mt-1 line-clamp-2" weight="medium">
           {product.title}
