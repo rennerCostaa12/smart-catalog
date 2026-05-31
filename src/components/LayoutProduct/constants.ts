@@ -1,4 +1,4 @@
-import { LayoutGrid, Phone } from "lucide-react";
+import { LayoutGrid, Phone, ShoppingCart } from "lucide-react";
 import type { IMenuItemProps } from "../SideMenu/components/MenuItem/types";
 
 const menuItemsProducts: IMenuItemProps[] = [
@@ -6,6 +6,11 @@ const menuItemsProducts: IMenuItemProps[] = [
     label: "Catalogo",
     href: "listar-produtos",
     icon: LayoutGrid,
+  },
+  {
+    label: "Carrinhos",
+    href: "carrinhos",
+    icon: ShoppingCart,
   },
   {
     label: "Contato",

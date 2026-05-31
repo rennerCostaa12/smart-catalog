@@ -1,12 +1,12 @@
 import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router";
+
 import { Button } from "../ui/button";
 import type { ICartButtonProps } from "./types";
 import { Typography } from "../ui/typography";
-import { ModalListItems } from "./components/ModalListItems";
-import { useState } from "react";
 
 export function CartButton({ itemsCart }: ICartButtonProps) {
-  const [showListCart, setShowListCart] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const hasExistItems = itemsCart.length > 0;
   const qntItemsCart = itemsCart.reduce(
@@ -14,12 +14,8 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
     0,
   );
 
-  const handleToggleListItems = () => {
-    setShowListCart(!showListCart);
-  };
-
-  const handleCloseListItems = () => {
-    setShowListCart(false);
+  const handleRedirectCart = () => {
+    navigate("/produtos/carrinhos");
   };
 
   return (
@@ -27,7 +23,7 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
       <Button
         variant="ghost"
         className="cursor-pointer"
-        onClick={handleToggleListItems}
+        onClick={handleRedirectCart}
       >
         {hasExistItems && (
           <div className="bg-primary rounded-full px-2 absolute top-0 right-2">
@@ -38,18 +34,6 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
         )}
         <ShoppingCart cursor={30} />
       </Button>
-
-      {showListCart && (
-        <>
-          <button
-            type="button"
-            aria-label="Fechar carrinho"
-            className="fixed inset-0 z-50 cursor-default bg-black/55"
-            onClick={handleCloseListItems}
-          />
-          <ModalListItems closeModal={handleCloseListItems} />
-        </>
-      )}
     </div>
   );
 }

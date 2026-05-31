@@ -23,10 +23,9 @@ export function MethodPayment({
       <div className="mb-4">
         <Typography weight="bold">Método de pagamento</Typography>
 
-        {/* TODO: Implementar futuramente */}
-        {/* <Typography variant="bodySmall" color="muted">
+        <Typography variant="bodySmall" color="muted">
           Escolha como deseja concluir o pagamento.
-        </Typography> */}
+        </Typography>
       </div>
 
       <Tab.Root
