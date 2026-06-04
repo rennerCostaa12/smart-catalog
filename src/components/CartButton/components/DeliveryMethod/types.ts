@@ -11,6 +11,9 @@ export interface IDeliveryMethodProps {
   onAddressChange: (value: string) => void;
   receiverNameValue: string;
   onReceiverNameChange: (value: string) => void;
+  documentValue: string;
+  onDocumentChange: (value: string) => void;
   addressError?: string;
   receiverNameError?: string;
+  documentError?: string;
 }

@@ -1,13 +1,31 @@
 export enum MethodPaymentEnum {
-  MONEY = "dinheiro",
-  CARD = "cartao"
+  PIX = "pix",
+  CARD = "cartao",
 }
+
+export interface ICardPaymentValues {
+  cardHolderName: string;
+  cardNumber: string;
+  expirationMonth: string;
+  expirationYear: string;
+  cvv: string;
+  holderName: string;
+  holderEmail: string;
+  holderDocument: string;
+  holderZipCode: string;
+  holderAddressNumber: string;
+  holderPhone: string;
+}
+
+export type ICardPaymentErrors = Partial<
+  Record<keyof ICardPaymentValues, string>
+>;
 
 export interface IMethodPaymentProps {
   className?: string;
   value: MethodPaymentEnum;
   onValueChange: (value: MethodPaymentEnum) => void;
-  cashChangeValue: string;
-  onCashChangeValue: (value: string) => void;
-  cashChangeError?: string;
+  cardValues: ICardPaymentValues;
+  cardErrors?: ICardPaymentErrors;
+  onCardValueChange: (field: keyof ICardPaymentValues, value: string) => void;
 }

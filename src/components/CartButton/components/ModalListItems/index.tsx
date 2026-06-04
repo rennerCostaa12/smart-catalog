@@ -17,13 +17,15 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
   const {
     control,
     errors,
-    cashChangeError,
+    cardValues,
+    cardErrors,
     handleDecreaseCart,
     handleIncreaseCart,
     handleRemoveProductCart,
     totalPrice,
     items,
     handleBuyWpp,
+    handleCardValueChange,
   } = useModalListItems();
 
   return (
@@ -93,16 +95,27 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
                       name="receiverNameValue"
                       control={control}
                       render={({ field: receiverNameField }) => (
-                        <DeliveryMethod
-                          value={deliveryMethodField.value}
-                          onValueChange={deliveryMethodField.onChange}
-                          addressValue={addressField.value ?? ""}
-                          onAddressChange={addressField.onChange}
-                          receiverNameValue={receiverNameField.value ?? ""}
-                          onReceiverNameChange={receiverNameField.onChange}
-                          addressError={errors.addressValue?.message}
-                          receiverNameError={errors.receiverNameValue?.message}
-                          className="mb-4"
+                        <Controller
+                          name="documentValue"
+                          control={control}
+                          render={({ field: documentField }) => (
+                            <DeliveryMethod
+                              value={deliveryMethodField.value}
+                              onValueChange={deliveryMethodField.onChange}
+                              addressValue={addressField.value ?? ""}
+                              onAddressChange={addressField.onChange}
+                              receiverNameValue={receiverNameField.value ?? ""}
+                              onReceiverNameChange={receiverNameField.onChange}
+                              documentValue={documentField.value ?? ""}
+                              onDocumentChange={documentField.onChange}
+                              addressError={errors.addressValue?.message}
+                              receiverNameError={
+                                errors.receiverNameValue?.message
+                              }
+                              documentError={errors.documentValue?.message}
+                              className="mb-4"
+                            />
+                          )}
                         />
                       )}
                     />
@@ -115,20 +128,12 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
               name="methodPayment"
               control={control}
               render={({ field: methodPaymentField }) => (
-                <Controller
-                  name="cashChangeValue"
-                  control={control}
-                  render={({ field: cashChangeField }) => (
-                    <MethodPayment
-                      value={methodPaymentField.value}
-                      onValueChange={methodPaymentField.onChange}
-                      cashChangeValue={cashChangeField.value ?? ""}
-                      onCashChangeValue={cashChangeField.onChange}
-                      cashChangeError={
-                        errors.cashChangeValue?.message ?? cashChangeError
-                      }
-                    />
-                  )}
+                <MethodPayment
+                  value={methodPaymentField.value}
+                  onValueChange={methodPaymentField.onChange}
+                  cardValues={cardValues}
+                  cardErrors={cardErrors}
+                  onCardValueChange={handleCardValueChange}
                 />
               )}
             />
@@ -150,9 +155,6 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             variant="whatsapp"
             leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
             onClick={handleBuyWpp}
-            disabled={Boolean(
-              errors.cashChangeValue?.message || cashChangeError,
-            )}
           >
             Finalizar no WhatsApp
           </Button>

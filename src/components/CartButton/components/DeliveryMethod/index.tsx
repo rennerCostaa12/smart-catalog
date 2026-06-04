@@ -1,4 +1,5 @@
 import { cn } from "../../../../utils/mergeClass";
+import { Mask } from "../../../../utils/mask";
 import { Tab } from "../../../Tab";
 import { Input } from "../../../ui/input";
 import { Typography } from "../../../ui/typography";
@@ -12,8 +13,11 @@ export function DeliveryMethod({
   onAddressChange,
   receiverNameValue,
   onReceiverNameChange,
+  documentValue,
+  onDocumentChange,
   addressError,
   receiverNameError,
+  documentError,
 }: IDeliveryMethodProps) {
   return (
     <section
@@ -45,10 +49,22 @@ export function DeliveryMethod({
       </Tab.Root>
 
       {value === DeliveryMethodEnum.PICKUP && (
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-4">
           <Typography variant="bodySmall" color="default">
             Endereço de retirada: <br /> Travessa Pompeia, 141 - Barra do Ceará
           </Typography>
+
+          <Input
+            inputSize="sm"
+            label="CPF/CNPJ"
+            placeholder="Digite o CPF ou CNPJ"
+            value={documentValue}
+            error={documentError}
+            inputMode="numeric"
+            onChange={(event) =>
+              onDocumentChange(Mask.document(event.target.value))
+            }
+          />
         </div>
       )}
 
@@ -70,6 +86,18 @@ export function DeliveryMethod({
             value={receiverNameValue}
             error={receiverNameError}
             onChange={(event) => onReceiverNameChange(event.target.value)}
+          />
+
+          <Input
+            inputSize="sm"
+            label="CPF/CNPJ"
+            placeholder="Digite o CPF ou CNPJ"
+            value={documentValue}
+            error={documentError}
+            inputMode="numeric"
+            onChange={(event) =>
+              onDocumentChange(Mask.document(event.target.value))
+            }
           />
         </div>
       )}

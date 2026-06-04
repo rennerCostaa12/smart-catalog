@@ -6,7 +6,11 @@ import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Mask } from "../../../../utils/mask";
 import { RedirectContact } from "../../../../utils/redirectContact";
 import { DeliveryMethodEnum } from "../DeliveryMethod/types";
-import { MethodPaymentEnum } from "../MethodPayment/types";
+import {
+  MethodPaymentEnum,
+  type ICardPaymentErrors,
+  type ICardPaymentValues,
+} from "../MethodPayment/types";
 import { getOrderWhatsAppMessage } from "./constants";
 import { modalListItemsSchema } from "./schema";
 import type { IModalListItemsFormData } from "./types";
@@ -22,6 +26,7 @@ export function useModalListItems() {
   const {
     control,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<IModalListItemsFormData>({
@@ -32,21 +37,60 @@ export function useModalListItems() {
       deliveryMethod: DeliveryMethodEnum.DELIVERY,
       addressValue: "",
       receiverNameValue: "",
+      documentValue: "",
       methodPayment: MethodPaymentEnum.CARD,
-      cashChangeValue: "",
+      cardHolderName: "",
+      cardNumber: "",
+      expirationMonth: "",
+      expirationYear: "",
+      cvv: "",
+      holderName: "",
+      holderEmail: "",
+      holderDocument: "",
+      holderZipCode: "",
+      holderAddressNumber: "",
+      holderPhone: "",
     },
     mode: "onChange",
   });
 
-  const watchedMethodPayment = watch("methodPayment");
-  const watchedCashChangeValue = watch("cashChangeValue");
+  const cardValues: ICardPaymentValues = {
+    cardHolderName: watch("cardHolderName") ?? "",
+    cardNumber: watch("cardNumber") ?? "",
+    expirationMonth: watch("expirationMonth") ?? "",
+    expirationYear: watch("expirationYear") ?? "",
+    cvv: watch("cvv") ?? "",
+    holderName: watch("holderName") ?? "",
+    holderEmail: watch("holderEmail") ?? "",
+    holderDocument: watch("holderDocument") ?? "",
+    holderZipCode: watch("holderZipCode") ?? "",
+    holderAddressNumber: watch("holderAddressNumber") ?? "",
+    holderPhone: watch("holderPhone") ?? "",
+  };
 
-  const cashChangeError =
-    watchedMethodPayment === MethodPaymentEnum.MONEY &&
-    watchedCashChangeValue &&
-    Mask.parseCurrencyBRL(watchedCashChangeValue) < totalPrice
-      ? "O troco nao pode ser menor que o valor total do pedido."
-      : undefined;
+  const cardErrors: ICardPaymentErrors = {
+    cardHolderName: errors.cardHolderName?.message,
+    cardNumber: errors.cardNumber?.message,
+    expirationMonth: errors.expirationMonth?.message,
+    expirationYear: errors.expirationYear?.message,
+    cvv: errors.cvv?.message,
+    holderName: errors.holderName?.message,
+    holderEmail: errors.holderEmail?.message,
+    holderDocument: errors.holderDocument?.message,
+    holderZipCode: errors.holderZipCode?.message,
+    holderAddressNumber: errors.holderAddressNumber?.message,
+    holderPhone: errors.holderPhone?.message,
+  };
+
+  const handleCardValueChange = (
+    field: keyof ICardPaymentValues,
+    value: string,
+  ) => {
+    setValue(field, value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
 
   const handleDecreaseCart = (productTitle: string) => {
     removeCart(productTitle);
@@ -61,14 +105,6 @@ export function useModalListItems() {
   };
 
   const handleBuyWpp = handleSubmit((values) => {
-    if (
-      values.methodPayment === MethodPaymentEnum.MONEY &&
-      values.cashChangeValue &&
-      Mask.parseCurrencyBRL(values.cashChangeValue) < totalPrice
-    ) {
-      return;
-    }
-
     const deliveryMethodLabel =
       values.deliveryMethod === DeliveryMethodEnum.DELIVERY
         ? "Entrega"
@@ -78,6 +114,23 @@ export function useModalListItems() {
       values.deliveryMethod === DeliveryMethodEnum.DELIVERY
         ? `Endereco: ${values.addressValue}\nRecebedor: ${values.receiverNameValue}`
         : "Retirada no local";
+    const cardLastDigits = Mask.parseDocument(values.cardNumber ?? "").slice(
+      -4,
+    );
+    const paymentDetails =
+      values.methodPayment === MethodPaymentEnum.CARD
+        ? [
+            "Dados do pagamento:",
+            `Cartão final: **** ${cardLastDigits}`,
+            `Nome impresso no cartão: ${values.cardHolderName ?? ""}`,
+            `Titular: ${values.holderName ?? ""}`,
+            `Email: ${values.holderEmail ?? ""}`,
+            `Documento do titular: ${values.holderDocument ?? ""}`,
+            `CEP: ${values.holderZipCode ?? ""}`,
+            `Número de endereço: ${values.holderAddressNumber ?? ""}`,
+            `Telefone: ${values.holderPhone ?? ""}`,
+          ].join("\n")
+        : "";
 
     RedirectContact(
       "5585989734951",
@@ -86,10 +139,9 @@ export function useModalListItems() {
         brlFormatter.format(totalPrice),
         deliveryMethodLabel,
         deliveryDetails,
-        values.methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Dinheiro",
-        values.methodPayment === MethodPaymentEnum.MONEY
-          ? values.cashChangeValue
-          : undefined,
+        values.documentValue,
+        values.methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Pix",
+        paymentDetails,
       ),
     );
   });
@@ -97,8 +149,10 @@ export function useModalListItems() {
   return {
     control,
     errors,
-    cashChangeError,
+    cardValues,
+    cardErrors,
     totalPrice,
+    handleCardValueChange,
     handleDecreaseCart,
     handleIncreaseCart,
     handleRemoveProductCart,

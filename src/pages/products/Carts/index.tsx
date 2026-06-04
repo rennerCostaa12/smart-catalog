@@ -21,13 +21,16 @@ export function CartsPage() {
     setAddressValue,
     receiverNameValue,
     setReceiverNameValue,
+    documentValue,
+    setDocumentValue,
     addressError,
     receiverNameError,
+    documentError,
     methodPayment,
     setMethodPayment,
-    cashChangeValue,
-    setCashChangeValue,
-    cashChangeError,
+    cardValues,
+    cardErrors,
+    handleCardValueChange,
     hasFormError,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
@@ -64,75 +67,79 @@ export function CartsPage() {
         </div>
       ) : (
         <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-          <div className="space-y-3">
-            {cart.map((product) => (
-              <div
-                key={product.title}
-                className="flex flex-col gap-4 rounded-2xl border border-border bg-surface-soft p-3 sm:flex-row sm:items-center"
-              >
-                <img
-                  src={product.url_img}
-                  alt={product.title}
-                  className="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-24"
-                />
+          <div className="flex flex-col gap-4">
+            <div className="space-y-3">
+              {cart.map((product) => (
+                <div
+                  key={product.title}
+                  className="flex flex-col gap-4 rounded-2xl border border-border bg-surface-soft p-3 sm:flex-row sm:items-center"
+                >
+                  <img
+                    src={product.url_img}
+                    alt={product.title}
+                    className="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-24"
+                  />
 
-                <div className="min-w-0 flex-1">
-                  <Typography className="line-clamp-2" weight="medium">
-                    {product.title}
-                  </Typography>
-
-                  <Typography variant="bodySmall" color="muted">
-                    Unitario: {brlFormatter.format(product.price)}
-                  </Typography>
-
-                  <Typography variant="bodySmall" weight="bold" color="primary">
-                    {brlFormatter.format(product.price * product.quantity)}
-                  </Typography>
-                </div>
-
-                <div className="flex items-center justify-between gap-3 sm:justify-end">
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() =>
-                        handleDecreaseProductQuantity(product.title)
-                      }
-                      title="Diminuir quantidade"
-                    >
-                      <Minus size={16} />
-                    </Button>
-
-                    <Typography weight="bold" variant="caption">
-                      {product.quantity}
+                  <div className="min-w-0 flex-1">
+                    <Typography className="line-clamp-2" weight="medium">
+                      {product.title}
                     </Typography>
 
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() => handleIncreaseProductQuantity(product)}
-                      title="Aumentar quantidade"
+                    <Typography variant="bodySmall" color="muted">
+                      Unitario: {brlFormatter.format(product.price)}
+                    </Typography>
+
+                    <Typography
+                      variant="bodySmall"
+                      weight="bold"
+                      color="primary"
                     >
-                      <Plus size={16} />
-                    </Button>
+                      {brlFormatter.format(product.price * product.quantity)}
+                    </Typography>
                   </div>
 
-                  <Button
-                    title="Remover produto"
-                    variant="outline"
-                    className="cursor-pointer text-danger hover:border-red-200 hover:bg-red-50 hover:text-danger"
-                    onClick={() => handleRemoveProduct(product.title)}
-                  >
-                    <Trash2 size={16} />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <div className="flex items-center justify-between gap-3 sm:justify-end">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDecreaseProductQuantity(product.title)
+                        }
+                        title="Diminuir quantidade"
+                      >
+                        <Minus size={16} />
+                      </Button>
 
-          <aside className="flex h-fit flex-col gap-4">
+                      <Typography weight="bold" variant="caption">
+                        {product.quantity}
+                      </Typography>
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="cursor-pointer"
+                        onClick={() => handleIncreaseProductQuantity(product)}
+                        title="Aumentar quantidade"
+                      >
+                        <Plus size={16} />
+                      </Button>
+                    </div>
+
+                    <Button
+                      title="Remover produto"
+                      variant="outline"
+                      className="cursor-pointer text-danger hover:border-red-200 hover:bg-red-50 hover:text-danger"
+                      onClick={() => handleRemoveProduct(product.title)}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <DeliveryMethod
               value={deliveryMethod}
               onValueChange={setDeliveryMethod}
@@ -140,18 +147,23 @@ export function CartsPage() {
               onAddressChange={setAddressValue}
               receiverNameValue={receiverNameValue}
               onReceiverNameChange={setReceiverNameValue}
+              documentValue={documentValue}
+              onDocumentChange={setDocumentValue}
               addressError={addressError}
               receiverNameError={receiverNameError}
+              documentError={documentError}
             />
 
             <MethodPayment
               value={methodPayment}
               onValueChange={setMethodPayment}
-              cashChangeValue={cashChangeValue}
-              onCashChangeValue={setCashChangeValue}
-              cashChangeError={cashChangeError}
+              cardValues={cardValues}
+              cardErrors={cardErrors}
+              onCardValueChange={handleCardValueChange}
             />
+          </div>
 
+          <aside className="flex h-fit flex-col gap-4">
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-sm">
               <Typography weight="bold">Resumo do carrinho</Typography>
 
