@@ -4,9 +4,11 @@ import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import type { ICartButtonProps } from "./types";
 import { Typography } from "../ui/typography";
+import { useAuth } from "../../context/auth/useAuth";
 
 export function CartButton({ itemsCart }: ICartButtonProps) {
   const navigate = useNavigate();
+  const { isAuthenticated, requestAuthentication } = useAuth();
 
   const hasExistItems = itemsCart.length > 0;
   const qntItemsCart = itemsCart.reduce(
@@ -15,6 +17,11 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
   );
 
   const handleRedirectCart = () => {
+    if (hasExistItems && !isAuthenticated) {
+      requestAuthentication(() => navigate("/produtos/carrinhos"));
+      return;
+    }
+
     navigate("/produtos/carrinhos");
   };
 

@@ -1,9 +1,13 @@
-import { useLocation, useResolvedPath } from "react-router";
+import { useLocation, useNavigate, useResolvedPath } from "react-router";
+import type { MouseEvent } from "react";
 import { HelpCard } from "../HelpCard";
 import { LogoApp } from "../LogoApp";
 import { Typography } from "../ui/typography";
 import { MenuItem } from "./components/MenuItem";
 import type { ISideMenuProps } from "./types";
+import { useCart } from "../../context/cart/useCart";
+import { useAuth } from "../../context/auth/useAuth";
+import type { IMenuItemProps } from "./components/MenuItem/types";
 
 export function SideMenu({
   className,
@@ -11,6 +15,24 @@ export function SideMenu({
   menuItems = [],
 }: ISideMenuProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { cart } = useCart();
+  const { isAuthenticated, requestAuthentication } = useAuth();
+  const hasCartItems = cart.length > 0;
+
+  const handleNavigate = (
+    event: MouseEvent<HTMLAnchorElement>,
+    item: IMenuItemProps,
+  ) => {
+    if (item.href !== "carrinhos" || !hasCartItems || isAuthenticated) {
+      onNavigate?.();
+      return;
+    }
+
+    event.preventDefault();
+    onNavigate?.();
+    requestAuthentication(() => navigate("/produtos/carrinhos"));
+  };
 
   return (
     <aside
@@ -32,7 +54,7 @@ export function SideMenu({
                     key={item.href}
                     {...item}
                     selected={location.pathname === resolvedPath.pathname}
-                    onClick={onNavigate}
+                    onClick={(event) => handleNavigate(event, item)}
                   />
                 );
               })}
