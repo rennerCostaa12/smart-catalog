@@ -11,10 +11,13 @@ import { useAuth } from "../../context/auth/useAuth";
 import { LogoApp } from "../LogoApp";
 import type { IHeaderProps } from "./types";
 import { Typography } from "../ui/typography";
+import { MenuUserDesktop } from "./components/MenuUserDesktop";
 
 export function Header({ onOpenMenu }: IHeaderProps) {
   const { cart } = useCart();
   const { user, logout } = useAuth();
+
+  const username = user?.name || user?.email;
 
   return (
     <header className="w-full border-b border-border bg-surface">
@@ -35,35 +38,13 @@ export function Header({ onOpenMenu }: IHeaderProps) {
         </div>
 
         <div className="flex items-center gap-3 max-sm:gap-1 max-md:w-full max-md:justify-end">
-          {user && (
-            <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-surface-soft px-3 py-2 max-sm:max-w-36">
-              <UserCircle className="shrink-0 text-primary" size={18} />
-
-              <Typography
-                className="truncate max-sm:text-xs"
-                variant="bodySmall"
-                weight="medium"
-              >
-                {user.name || user.email}
-              </Typography>
-
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-7 w-7 shrink-0 cursor-pointer"
-                title="Sair"
-                onClick={logout}
-              >
-                <LogOut size={16} />
-              </Button>
-            </div>
-          )}
-
           <div className="relative">
             <CartButton itemsCart={cart ?? []} />
           </div>
 
-          <div>
+          {user && <MenuUserDesktop logout={logout} username={username} />}
+
+          {/* <div>
             <div className="hidden max-lg:block">
               <Button
                 className="cursor-pointer"
@@ -81,7 +62,7 @@ export function Header({ onOpenMenu }: IHeaderProps) {
             >
               Fale conosco
             </Button>
-          </div>
+          </div> */}
         </div>
       </Container>
     </header>

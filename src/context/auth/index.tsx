@@ -1,14 +1,15 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 import { AuthModal } from "./components/AuthModal";
 import { RegisterUserModal } from "./components/RegisterUserModal";
-import type {
-  AuthContextData,
-  AuthLoginData,
-  AuthProviderProps,
-  AuthRegisterData,
-  AuthUser,
-} from "./types";
+import {
+  clearAuthSessionCookie,
+  getAuthSessionExpiration,
+  isAuthSessionValid,
+  readAuthSessionCookie,
+  writeAuthSessionCookie,
+} from "./sessionCookie";
+import type { AuthContextData, AuthProviderProps, AuthUser } from "./types";
 
 export const AuthContext = createContext({} as AuthContextData);
 
@@ -27,12 +28,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const completeAuthentication = (authenticatedUser: AuthUser) => {
-    setUser({
-      ...authenticatedUser,
+    const sessionUser = {
+      id: authenticatedUser.id,
       email: authenticatedUser.email.trim(),
-      name: authenticatedUser.name?.trim(),
-      phone: authenticatedUser.phone?.trim(),
-    });
+      name: authenticatedUser.name.trim(),
+      token: authenticatedUser.token,
+    };
+
+    if (!writeAuthSessionCookie(sessionUser)) {
+      setUser(null);
+      return;
+    }
+
+    setUser(sessionUser);
 
     setIsAuthModalOpen(false);
     setIsRegisterUserModalOpen(false);
@@ -40,19 +48,56 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setPendingAction(undefined);
   };
 
-  const authenticate = (data: AuthLoginData | AuthRegisterData) => {
-    completeAuthentication(data);
-  };
-
-  const logout = () => {
+  const logout = useCallback(() => {
+    clearAuthSessionCookie();
     setUser(null);
     setPendingAction(undefined);
-  };
+  }, []);
+
+  useEffect(() => {
+    setUser(readAuthSessionCookie());
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const expiresAt = getAuthSessionExpiration(user);
+
+    if (!expiresAt || !isAuthSessionValid(user)) {
+      logout();
+      return;
+    }
+
+    let timeout: number;
+    const scheduleExpirationCheck = () => {
+      const remainingTime = expiresAt - Date.now();
+
+      if (remainingTime <= 0) {
+        logout();
+        return;
+      }
+
+      timeout = window.setTimeout(
+        scheduleExpirationCheck,
+        Math.min(remainingTime, 2_147_483_647),
+      );
+    };
+
+    scheduleExpirationCheck();
+
+    return () => window.clearTimeout(timeout);
+  }, [logout, user]);
 
   const requestAuthentication = (onAuthenticated?: () => void) => {
-    if (user) {
+    if (user && isAuthSessionValid(user)) {
       onAuthenticated?.();
       return;
+    }
+
+    if (user) {
+      logout();
     }
 
     setPendingAction(() => onAuthenticated);
@@ -70,7 +115,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user,
         isAuthenticated: Boolean(user),
         isAuthModalOpen,
-        authenticate,
+        authenticate: completeAuthentication,
         logout,
         requestAuthentication,
         closeAuthModal,
@@ -81,14 +126,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       <AuthModal
         open={isAuthModalOpen}
         onClose={closeAuthModal}
-        onAuthenticate={authenticate}
+        onAuthenticate={completeAuthentication}
         onOpenRegister={openRegisterUserModal}
       />
 
       <RegisterUserModal
         open={isRegisterUserModalOpen}
         onClose={closeAuthModal}
-        onRegister={authenticate}
+        onRegister={completeAuthentication}
       />
     </AuthContext.Provider>
   );

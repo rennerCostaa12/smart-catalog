@@ -5,6 +5,7 @@ import { Modal } from "../../../../components/Modal";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Typography } from "../../../../components/ui/typography";
+import { authService } from "../../../../services";
 import type { AuthLoginData, AuthModalProps } from "../../types";
 import { initialAuthValues } from "../../constants";
 import { authModalSchema } from "./schema";
@@ -19,20 +20,30 @@ export function AuthModal({
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<AuthLoginData>({
     resolver: yupResolver(authModalSchema),
     defaultValues: initialAuthValues,
     mode: "onChange",
   });
 
-  const handleAuthenticate = handleSubmit((values) => {
-    // TODO: realizar integração com endpoint de login
-    onAuthenticate({
-      email: values.email.trim(),
-    });
+  const handleAuthenticate = handleSubmit(async (values) => {
+    try {
+      const response = await authService.signInUser({
+        email: values?.email?.trim(),
+      });
 
-    reset(initialAuthValues);
+      onAuthenticate({
+        ...response.data?.user,
+        token: response.data?.token,
+      });
+      reset(initialAuthValues);
+    } catch {
+      setError("root", {
+        message: "Não foi possível entrar. Verifique o email informado.",
+      });
+    }
   });
 
   const handleClose = () => {
@@ -77,7 +88,18 @@ export function AuthModal({
             />
           </div>
 
-          <Button className="mt-5 cursor-pointer" type="submit" fullWidth>
+          {errors.root?.message && (
+            <Typography className="mt-4" variant="bodySmall" color="danger">
+              {errors.root.message}
+            </Typography>
+          )}
+
+          <Button
+            className="mt-5 cursor-pointer"
+            type="submit"
+            fullWidth
+            isLoading={isSubmitting}
+          >
             Entrar
           </Button>
 
@@ -90,6 +112,7 @@ export function AuthModal({
               variant="outline"
               type="button"
               fullWidth
+              disabled={isSubmitting}
               onClick={onOpenRegister}
             >
               Criar Conta

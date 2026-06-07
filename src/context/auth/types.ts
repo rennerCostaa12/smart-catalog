@@ -3,20 +3,21 @@ import type { ReactNode } from "react";
 export type AuthModalProps = {
   open: boolean;
   onClose: () => void;
-  onAuthenticate: (data: AuthLoginData) => void;
+  onAuthenticate: (user: AuthUser) => void;
   onOpenRegister: () => void;
 };
 
 export type RegisterUserModalProps = {
   open: boolean;
   onClose: () => void;
-  onRegister: (user: AuthRegisterData) => void;
+  onRegister: (user: AuthUser) => void;
 };
 
 export type AuthUser = {
-  name?: string;
+  id: number;
+  name: string;
   email: string;
-  phone?: string;
+  token: string;
 };
 
 export type AuthLoginData = {
@@ -33,7 +34,7 @@ export type AuthContextData = {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isAuthModalOpen: boolean;
-  authenticate: (data: AuthLoginData | AuthRegisterData) => void;
+  authenticate: (user: AuthUser) => void;
   logout: () => void;
   requestAuthentication: (onAuthenticated?: () => void) => void;
   closeAuthModal: () => void;

@@ -5,6 +5,7 @@ import { Modal } from "../../../../components/Modal";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Typography } from "../../../../components/ui/typography";
+import { authService, usersService } from "../../../../services";
 import { Mask } from "../../../../utils/mask";
 import { initialRegisterUserValues } from "../../constants";
 import type { AuthRegisterData, RegisterUserModalProps } from "../../types";
@@ -19,22 +20,37 @@ export function RegisterUserModal({
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<AuthRegisterData>({
     resolver: yupResolver(registerUserModalSchema),
     defaultValues: initialRegisterUserValues,
     mode: "onChange",
   });
 
-  const handleRegister = handleSubmit((values) => {
-    // TODO: realizar integração com endpoint de cadastro de usuário
-    onRegister({
-      name: values.name.trim(),
-      email: values.email.trim(),
-      phone: values.phone.trim(),
-    });
+  const handleRegister = handleSubmit(async (values) => {
+    try {
+      const email = values.email.trim();
 
-    reset(initialRegisterUserValues);
+      await usersService.createUser({
+        name: values.name.trim(),
+        email,
+        phone: values.phone.trim(),
+      });
+
+      const response = await authService.signInUser({ email });
+
+      onRegister({
+        ...response.data.user,
+        token: response.data.token,
+      });
+      reset(initialRegisterUserValues);
+    } catch {
+      setError("root", {
+        message:
+          "Não foi possível criar a conta. Verifique os dados informados.",
+      });
+    }
   });
 
   const handleClose = () => {
@@ -112,7 +128,18 @@ export function RegisterUserModal({
             />
           </div>
 
-          <Button className="mt-5 cursor-pointer" type="submit" fullWidth>
+          {errors.root?.message && (
+            <Typography className="mt-4" variant="bodySmall" color="danger">
+              {errors.root.message}
+            </Typography>
+          )}
+
+          <Button
+            className="mt-5 cursor-pointer"
+            type="submit"
+            fullWidth
+            isLoading={isSubmitting}
+          >
             Criar conta
           </Button>
         </form>
