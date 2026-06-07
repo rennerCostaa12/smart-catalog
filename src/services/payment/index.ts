@@ -42,16 +42,12 @@ export class PaymentService {
   }
 
   async getPixQrCode(paymentId: string) {
-    try {
-      const response = await this.client.request<GetPixQrCodeResponse>({
-        url: `/payments/pix/${paymentId}/qrcode`,
-        method: HttpMethod.Get,
-      });
+    const response = await this.client.request<GetPixQrCodeResponse>({
+      url: `/payments/pix/${paymentId}/qrcode`,
+      method: HttpMethod.Get,
+    });
 
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data;
   }
 }
 

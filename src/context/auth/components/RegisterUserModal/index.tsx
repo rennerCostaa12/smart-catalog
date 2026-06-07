@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { Modal } from "../../../../components/Modal";
 import { Button } from "../../../../components/ui/button";
@@ -20,7 +21,6 @@ export function RegisterUserModal({
     control,
     handleSubmit,
     reset,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<AuthRegisterData>({
     resolver: yupResolver(registerUserModalSchema),
@@ -45,11 +45,12 @@ export function RegisterUserModal({
         token: response.data.token,
       });
       reset(initialRegisterUserValues);
-    } catch {
-      setError("root", {
-        message:
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.message ??
           "Não foi possível criar a conta. Verifique os dados informados.",
-      });
+      );
     }
   });
 
@@ -127,12 +128,6 @@ export function RegisterUserModal({
               )}
             />
           </div>
-
-          {errors.root?.message && (
-            <Typography className="mt-4" variant="bodySmall" color="danger">
-              {errors.root.message}
-            </Typography>
-          )}
 
           <Button
             className="mt-5 cursor-pointer"

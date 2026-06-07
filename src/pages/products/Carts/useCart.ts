@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { DeliveryMethodEnum } from "../../../components/CartButton/components/DeliveryMethod/types";
 import { getOrderWhatsAppMessage } from "../../../components/CartButton/components/ModalListItems/constants";
@@ -37,6 +38,7 @@ async function createPayment(
 
   const commonPaymentData = {
     userId,
+    // TODO: DEPOIS IMPLEMENTAR VARIAVEL TOTALPRICE E RETIRAR O VALOR MOCKADO
     value: 200,
     dueDate: getCurrentDate(),
     description,
@@ -132,8 +134,7 @@ export function useCart() {
   const {
     control,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitted, isSubmitting, isValid },
+    formState: { isSubmitted, isSubmitting, isValid },
   } = useForm<CartFormData>({
     resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
     defaultValues: {
@@ -169,9 +170,7 @@ export function useCart() {
     }
 
     if (!user) {
-      setError("root", {
-        message: "Entre na sua conta antes de finalizar o pagamento.",
-      });
+      toast.error("Entre na sua conta antes de finalizar o pagamento.");
       return;
     }
 
@@ -204,11 +203,12 @@ export function useCart() {
           paymentDetails,
         ),
       );
-    } catch {
-      setError("root", {
-        message:
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.message ??
           "Não foi possível criar o pagamento. Verifique os dados e tente novamente.",
-      });
+      );
     }
   });
 
@@ -218,7 +218,6 @@ export function useCart() {
     totalPrice,
     control,
     hasFormError,
-    paymentError: errors.root?.message,
     isSubmitting,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,

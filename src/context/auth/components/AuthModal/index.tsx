@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { Modal } from "../../../../components/Modal";
 import { Button } from "../../../../components/ui/button";
@@ -20,7 +21,6 @@ export function AuthModal({
     control,
     handleSubmit,
     reset,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<AuthLoginData>({
     resolver: yupResolver(authModalSchema),
@@ -39,10 +39,12 @@ export function AuthModal({
         token: response.data?.token,
       });
       reset(initialAuthValues);
-    } catch {
-      setError("root", {
-        message: "Não foi possível entrar. Verifique o email informado.",
-      });
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.message ??
+          "Não foi possível entrar. Verifique o email informado.",
+      );
     }
   });
 
@@ -87,12 +89,6 @@ export function AuthModal({
               )}
             />
           </div>
-
-          {errors.root?.message && (
-            <Typography className="mt-4" variant="bodySmall" color="danger">
-              {errors.root.message}
-            </Typography>
-          )}
 
           <Button
             className="mt-5 cursor-pointer"

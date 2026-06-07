@@ -17,7 +17,6 @@ export function CartsPage() {
     totalPrice,
     control,
     hasFormError,
-    paymentError,
     isSubmitting,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
@@ -170,11 +169,6 @@ export function CartsPage() {
                 Finalizar Pedido
               </Button>
 
-              {paymentError && (
-                <Typography className="mt-3" variant="bodySmall" color="danger">
-                  {paymentError}
-                </Typography>
-              )}
             </div>
           </aside>
         </div>

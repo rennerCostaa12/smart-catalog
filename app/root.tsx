@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
 } from "react-router";
 import type { CSSProperties } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -41,6 +43,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="min-h-screen bg-background text-text antialiased">
         {children}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          closeOnClick
+          pauseOnHover
+        />
         <ScrollRestoration />
         <Scripts />
       </body>
