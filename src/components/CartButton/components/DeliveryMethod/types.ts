@@ -1,19 +1,27 @@
+import type { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
+import type { CartFormData } from "../../../../pages/products/Carts/types";
+
 export enum DeliveryMethodEnum {
   DELIVERY = "entrega",
   PICKUP = "retirar",
 }
 
+type DeliveryMethodBaseProps = {
+  className?: string;
+};
+
+type DeliveryMethodControlledProps<TFieldValues extends FieldValues> =
+  DeliveryMethodBaseProps & {
+    control: Control<TFieldValues>;
+    errors?: FieldErrors<TFieldValues>;
+    fieldNames?: {
+      deliveryMethod: Path<TFieldValues>;
+      addressValue: Path<TFieldValues>;
+      receiverNameValue: Path<TFieldValues>;
+      documentValue: Path<TFieldValues>;
+    };
+  };
 export interface IDeliveryMethodProps {
   className?: string;
-  value: DeliveryMethodEnum;
-  onValueChange: (value: DeliveryMethodEnum) => void;
-  addressValue: string;
-  onAddressChange: (value: string) => void;
-  receiverNameValue: string;
-  onReceiverNameChange: (value: string) => void;
-  documentValue: string;
-  onDocumentChange: (value: string) => void;
-  addressError?: string;
-  receiverNameError?: string;
-  documentError?: string;
+  control: Control<CartFormData, any, CartFormData>;
 }

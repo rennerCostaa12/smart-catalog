@@ -1,4 +1,5 @@
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Controller } from "react-hook-form";
 import { Link } from "react-router";
 
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
@@ -15,19 +16,7 @@ export function CartsPage() {
     cart,
     totalItems,
     totalPrice,
-    deliveryMethod,
-    setDeliveryMethod,
-    addressValue,
-    setAddressValue,
-    receiverNameValue,
-    setReceiverNameValue,
-    documentValue,
-    setDocumentValue,
-    addressError,
-    receiverNameError,
-    documentError,
-    methodPayment,
-    setMethodPayment,
+    control,
     cardValues,
     cardErrors,
     handleCardValueChange,
@@ -57,7 +46,11 @@ export function CartsPage() {
             Seu carrinho esta vazio
           </Typography>
 
-          <Typography className="mt-2 max-w-md" variant="bodySmall" color="muted">
+          <Typography
+            className="mt-2 max-w-md"
+            variant="bodySmall"
+            color="muted"
+          >
             Adicione produtos do catalogo para visualizar os itens aqui.
           </Typography>
 
@@ -140,26 +133,20 @@ export function CartsPage() {
               ))}
             </div>
 
-            <DeliveryMethod
-              value={deliveryMethod}
-              onValueChange={setDeliveryMethod}
-              addressValue={addressValue}
-              onAddressChange={setAddressValue}
-              receiverNameValue={receiverNameValue}
-              onReceiverNameChange={setReceiverNameValue}
-              documentValue={documentValue}
-              onDocumentChange={setDocumentValue}
-              addressError={addressError}
-              receiverNameError={receiverNameError}
-              documentError={documentError}
-            />
+            <DeliveryMethod control={control} />
 
-            <MethodPayment
-              value={methodPayment}
-              onValueChange={setMethodPayment}
-              cardValues={cardValues}
-              cardErrors={cardErrors}
-              onCardValueChange={handleCardValueChange}
+            <Controller
+              name="methodPayment"
+              control={control}
+              render={({ field }) => (
+                <MethodPayment
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  cardValues={cardValues}
+                  cardErrors={cardErrors}
+                  onCardValueChange={handleCardValueChange}
+                />
+              )}
             />
           </div>
 

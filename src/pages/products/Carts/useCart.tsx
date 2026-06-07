@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import type { Resolver } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { DeliveryMethodEnum } from "../../../components/CartButton/components/DeliveryMethod/types";
 import { getOrderWhatsAppMessage } from "../../../components/CartButton/components/ModalListItems/constants";
@@ -12,113 +14,56 @@ import type { ICartItem } from "../../../context/cart/types";
 import { brlFormatter } from "../../../utils/brlFormatter";
 import { Mask } from "../../../utils/mask";
 import { RedirectContact } from "../../../utils/redirectContact";
-
-const initialCardValues: ICardPaymentValues = {
-  cardHolderName: "",
-  cardNumber: "",
-  expirationMonth: "",
-  expirationYear: "",
-  cvv: "",
-  holderName: "",
-  holderEmail: "",
-  holderDocument: "",
-  holderZipCode: "",
-  holderAddressNumber: "",
-  holderPhone: "",
-};
-
-function getCardPaymentErrors(cardValues: ICardPaymentValues) {
-  const cardNumberDigits = Mask.parseDocument(cardValues.cardNumber);
-  const holderDocumentDigits = Mask.parseDocument(cardValues.holderDocument);
-  const holderZipCodeDigits = Mask.parseDocument(cardValues.holderZipCode);
-  const holderPhoneDigits = Mask.parseDocument(cardValues.holderPhone);
-  const expirationMonthNumber = Number(cardValues.expirationMonth);
-
-  return {
-    cardHolderName: !cardValues.cardHolderName.trim()
-      ? "Informe o nome do titular"
-      : undefined,
-    cardNumber:
-      cardNumberDigits.length < 13 ? "Informe o numero do cartao" : undefined,
-    expirationMonth:
-      !cardValues.expirationMonth ||
-      expirationMonthNumber < 1 ||
-      expirationMonthNumber > 12
-        ? "Informe o mes de expiracao"
-        : undefined,
-    expirationYear:
-      cardValues.expirationYear.length !== 4
-        ? "Informe o ano de expiracao"
-        : undefined,
-    cvv: cardValues.cvv.length < 3 ? "Informe o CVV" : undefined,
-    holderName: !cardValues.holderName.trim()
-      ? "Informe o nome do titular"
-      : undefined,
-    holderEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cardValues.holderEmail)
-      ? undefined
-      : "Informe um email valido",
-    holderDocument:
-      holderDocumentDigits.length !== 11 && holderDocumentDigits.length !== 14
-        ? "Informe um documento valido"
-        : undefined,
-    holderZipCode:
-      holderZipCodeDigits.length !== 8 ? "Informe o CEP" : undefined,
-    holderAddressNumber: !cardValues.holderAddressNumber.trim()
-      ? "Informe o numero"
-      : undefined,
-    holderPhone:
-      holderPhoneDigits.length < 10 ? "Informe o telefone" : undefined,
-  } satisfies ICardPaymentErrors;
-}
+import { initialCartFormValues } from "./constants";
+import { cartSchema } from "./schema";
+import type { CartFormData } from "./types";
 
 export function useCart() {
   const { cart, addCart, removeCart, removeProductCart } = useCartContext();
-  const [deliveryMethod, setDeliveryMethod] = useState(
-    DeliveryMethodEnum.DELIVERY,
-  );
-  const [addressValue, setAddressValue] = useState("");
-  const [receiverNameValue, setReceiverNameValue] = useState("");
-  const [documentValue, setDocumentValue] = useState("");
-  const [methodPayment, setMethodPayment] = useState(MethodPaymentEnum.CARD);
-  const [cardValues, setCardValues] =
-    useState<ICardPaymentValues>(initialCardValues);
-  const [showErrors, setShowErrors] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm<CartFormData>({
+    resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
+    defaultValues: initialCartFormValues,
+    mode: "onChange",
+  });
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
   );
-  const addressError =
-    showErrors &&
-    deliveryMethod === DeliveryMethodEnum.DELIVERY &&
-    !addressValue.trim()
-      ? "Informe o endereco de entrega"
-      : undefined;
-  const receiverNameError =
-    showErrors &&
-    deliveryMethod === DeliveryMethodEnum.DELIVERY &&
-    !receiverNameValue.trim()
-      ? "Informe o nome do recebedor"
-      : undefined;
-  const documentDigits = Mask.parseDocument(documentValue);
-  const documentError =
-    showErrors && !documentDigits
-      ? "Informe o CPF/CNPJ"
-      : showErrors &&
-          documentDigits.length !== 11 &&
-          documentDigits.length !== 14
-        ? "Informe um CPF/CNPJ valido"
-        : undefined;
-  const shouldValidateCard =
-    showErrors && methodPayment === MethodPaymentEnum.CARD;
-  const cardErrors: ICardPaymentErrors = shouldValidateCard
-    ? getCardPaymentErrors(cardValues)
-    : {};
-  const hasCardError = Object.values(cardErrors).some(Boolean);
-  const hasFormError = Boolean(
-    addressError || receiverNameError || documentError || hasCardError,
-  );
+  const cardValues: ICardPaymentValues = {
+    cardHolderName: watch("cardHolderName") ?? "",
+    cardNumber: watch("cardNumber") ?? "",
+    expirationMonth: watch("expirationMonth") ?? "",
+    expirationYear: watch("expirationYear") ?? "",
+    cvv: watch("cvv") ?? "",
+    holderName: watch("holderName") ?? "",
+    holderEmail: watch("holderEmail") ?? "",
+    holderDocument: watch("holderDocument") ?? "",
+    holderZipCode: watch("holderZipCode") ?? "",
+    holderAddressNumber: watch("holderAddressNumber") ?? "",
+    holderPhone: watch("holderPhone") ?? "",
+  };
+  const cardErrors: ICardPaymentErrors = {
+    cardHolderName: errors.cardHolderName?.message,
+    cardNumber: errors.cardNumber?.message,
+    expirationMonth: errors.expirationMonth?.message,
+    expirationYear: errors.expirationYear?.message,
+    cvv: errors.cvv?.message,
+    holderName: errors.holderName?.message,
+    holderEmail: errors.holderEmail?.message,
+    holderDocument: errors.holderDocument?.message,
+    holderZipCode: errors.holderZipCode?.message,
+    holderAddressNumber: errors.holderAddressNumber?.message,
+    holderPhone: errors.holderPhone?.message,
+  };
+  const hasFormError = isSubmitted && !isValid;
 
   const handleDecreaseProductQuantity = (productTitle: string) => {
     removeCart(productTitle);
@@ -136,58 +81,41 @@ export function useCart() {
     field: keyof ICardPaymentValues,
     value: string,
   ) => {
-    setCardValues((currentValues) => ({
-      ...currentValues,
-      [field]: value,
-    }));
+    setValue(field, value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   };
 
-  const handleBuyWpp = () => {
-    setShowErrors(true);
-
-    const hasDeliveryError =
-      deliveryMethod === DeliveryMethodEnum.DELIVERY &&
-      (!addressValue.trim() || !receiverNameValue.trim());
-    const hasDocumentError =
-      !documentDigits ||
-      (documentDigits.length !== 11 && documentDigits.length !== 14);
-    const currentCardErrors =
-      methodPayment === MethodPaymentEnum.CARD
-        ? getCardPaymentErrors(cardValues)
-        : {};
-    const hasCurrentCardError = Object.values(currentCardErrors).some(Boolean);
-
-    if (
-      cart.length === 0 ||
-      hasDeliveryError ||
-      hasDocumentError ||
-      hasCurrentCardError
-    ) {
+  const handleBuyWpp = handleSubmit((values) => {
+    if (cart.length === 0) {
       return;
     }
 
     const deliveryMethodLabel =
-      deliveryMethod === DeliveryMethodEnum.DELIVERY ? "Entrega" : "Retirar";
+      values.deliveryMethod === DeliveryMethodEnum.DELIVERY
+        ? "Entrega"
+        : "Retirar";
     const deliveryDetails =
-      deliveryMethod === DeliveryMethodEnum.DELIVERY
-        ? `Endereco: ${addressValue}\nRecebedor: ${receiverNameValue}`
+      values.deliveryMethod === DeliveryMethodEnum.DELIVERY
+        ? `Endereco: ${values.addressValue}\nRecebedor: ${values.receiverNameValue}`
         : "Retirada no local";
     const methodPaymentLabel =
-      methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Pix";
-    const cardNumberDigits = Mask.parseDocument(cardValues.cardNumber);
+      values.methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Pix";
+    const cardNumberDigits = Mask.parseDocument(values.cardNumber);
     const cardLastDigits = cardNumberDigits.slice(-4);
     const paymentDetails =
-      methodPayment === MethodPaymentEnum.CARD
+      values.methodPayment === MethodPaymentEnum.CARD
         ? [
             "Dados do pagamento:",
             `Cartão final: **** ${cardLastDigits}`,
-            `Nome impresso no cartão: ${cardValues.cardHolderName}`,
-            `Titular: ${cardValues.holderName}`,
-            `Email: ${cardValues.holderEmail}`,
-            `Documento do titular: ${cardValues.holderDocument}`,
-            `CEP: ${cardValues.holderZipCode}`,
-            `Número de endereço: ${cardValues.holderAddressNumber}`,
-            `Telefone: ${cardValues.holderPhone}`,
+            `Nome impresso no cartão: ${values.cardHolderName}`,
+            `Titular: ${values.holderName}`,
+            `Email: ${values.holderEmail}`,
+            `Documento do titular: ${values.holderDocument}`,
+            `CEP: ${values.holderZipCode}`,
+            `Número de endereço: ${values.holderAddressNumber}`,
+            `Telefone: ${values.holderPhone}`,
           ].join("\n")
         : "";
 
@@ -198,30 +126,19 @@ export function useCart() {
         brlFormatter.format(totalPrice),
         deliveryMethodLabel,
         deliveryDetails,
-        documentValue,
+        values.documentValue,
         methodPaymentLabel,
         paymentDetails,
       ),
     );
-  };
+  });
 
   return {
     cart,
     totalItems,
     totalPrice,
-    deliveryMethod,
-    setDeliveryMethod,
-    addressValue,
-    setAddressValue,
-    receiverNameValue,
-    setReceiverNameValue,
-    documentValue,
-    setDocumentValue,
-    addressError,
-    receiverNameError,
-    documentError,
-    methodPayment,
-    setMethodPayment,
+    control,
+    errors,
     cardValues,
     cardErrors,
     handleCardValueChange,
