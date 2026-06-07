@@ -1,3 +1,5 @@
+import { Controller, useController } from "react-hook-form";
+
 import { cn } from "../../../../utils/mergeClass";
 import { Mask } from "../../../../utils/mask";
 import { Tab } from "../../../Tab";
@@ -5,14 +7,14 @@ import { Input } from "../../../ui/input";
 import { Typography } from "../../../ui/typography";
 import { MethodPaymentEnum, type IMethodPaymentProps } from "./types";
 
-export function MethodPayment({
-  className,
-  value,
-  onValueChange,
-  cardValues,
-  cardErrors,
-  onCardValueChange,
-}: IMethodPaymentProps) {
+export function MethodPayment({ className, control }: IMethodPaymentProps) {
+  const {
+    field: { value, onChange },
+  } = useController({
+    control,
+    name: "methodPayment",
+  });
+
   return (
     <section
       className={cn(
@@ -29,11 +31,9 @@ export function MethodPayment({
       </div>
 
       <Tab.Root
-        defaultValue="cartao"
+        defaultValue={MethodPaymentEnum.CARD}
         value={value}
-        onValueChange={(nextValue) =>
-          onValueChange(nextValue as MethodPaymentEnum)
-        }
+        onValueChange={(nextValue) => onChange(nextValue as MethodPaymentEnum)}
       >
         <Tab.List className="w-full">
           <Tab.Trigger className="flex-1" value={MethodPaymentEnum.CARD}>
@@ -54,73 +54,92 @@ export function MethodPayment({
             </Typography>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <Input
-                inputSize="sm"
-                label="Nome do titular"
-                placeholder="Nome impresso no cartão"
-                value={cardValues.cardHolderName}
-                error={cardErrors?.cardHolderName}
-                onChange={(event) =>
-                  onCardValueChange("cardHolderName", event.target.value)
-                }
+              <Controller
+                control={control}
+                name="cardHolderName"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Nome do titular"
+                    placeholder="Nome impresso no cartão"
+                    value={field.value}
+                    error={error?.message}
+                    onChange={field.onChange}
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Número"
-                placeholder="0000 0000 0000 0000"
-                value={cardValues.cardNumber}
-                error={cardErrors?.cardNumber}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "cardNumber",
-                    Mask.cardNumber(event.target.value),
-                  )
-                }
+              <Controller
+                control={control}
+                name="cardNumber"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Número"
+                    placeholder="0000 0000 0000 0000"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.cardNumber(event.target.value))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Mês de expiração"
-                placeholder="MM"
-                value={cardValues.expirationMonth}
-                error={cardErrors?.expirationMonth}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "expirationMonth",
-                    Mask.numeric(event.target.value, 2),
-                  )
-                }
+              <Controller
+                control={control}
+                name="expirationMonth"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Mês de expiração"
+                    placeholder="MM"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.numeric(event.target.value, 2))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Ano de expiração"
-                placeholder="AAAA"
-                value={cardValues.expirationYear}
-                error={cardErrors?.expirationYear}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "expirationYear",
-                    Mask.numeric(event.target.value, 4),
-                  )
-                }
+              <Controller
+                control={control}
+                name="expirationYear"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Ano de expiração"
+                    placeholder="AAAA"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.numeric(event.target.value, 4))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="CVV"
-                placeholder="000"
-                value={cardValues.cvv}
-                error={cardErrors?.cvv}
-                inputMode="numeric"
-                type="password"
-                onChange={(event) =>
-                  onCardValueChange("cvv", Mask.numeric(event.target.value, 4))
-                }
+              <Controller
+                control={control}
+                name="cvv"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="CVV"
+                    placeholder="000"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    type="password"
+                    onChange={(event) =>
+                      field.onChange(Mask.numeric(event.target.value, 4))
+                    }
+                  />
+                )}
               />
             </div>
           </div>
@@ -129,87 +148,107 @@ export function MethodPayment({
             <Typography weight="bold">Informações do titular</Typography>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <Input
-                inputSize="sm"
-                label="Nome"
-                placeholder="Nome completo"
-                value={cardValues.holderName}
-                error={cardErrors?.holderName}
-                onChange={(event) =>
-                  onCardValueChange("holderName", event.target.value)
-                }
+              <Controller
+                control={control}
+                name="holderName"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Nome"
+                    placeholder="Nome completo"
+                    value={field.value}
+                    error={error?.message}
+                    onChange={field.onChange}
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Email"
-                placeholder="email@exemplo.com"
-                value={cardValues.holderEmail}
-                error={cardErrors?.holderEmail}
-                type="email"
-                onChange={(event) =>
-                  onCardValueChange("holderEmail", event.target.value)
-                }
+              <Controller
+                control={control}
+                name="holderEmail"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Email"
+                    placeholder="email@exemplo.com"
+                    value={field.value}
+                    error={error?.message}
+                    type="email"
+                    onChange={field.onChange}
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Documento"
-                placeholder="CPF ou CNPJ"
-                value={cardValues.holderDocument}
-                error={cardErrors?.holderDocument}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "holderDocument",
-                    Mask.document(event.target.value),
-                  )
-                }
+              <Controller
+                control={control}
+                name="holderDocument"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Documento"
+                    placeholder="CPF ou CNPJ"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.document(event.target.value))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="CEP"
-                placeholder="00000-000"
-                value={cardValues.holderZipCode}
-                error={cardErrors?.holderZipCode}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "holderZipCode",
-                    Mask.zipCode(event.target.value),
-                  )
-                }
+              <Controller
+                control={control}
+                name="holderZipCode"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="CEP"
+                    placeholder="00000-000"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.zipCode(event.target.value))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Número de endereço"
-                placeholder="Número"
-                value={cardValues.holderAddressNumber}
-                error={cardErrors?.holderAddressNumber}
-                inputMode="numeric"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "holderAddressNumber",
-                    Mask.numeric(event.target.value, 8),
-                  )
-                }
+              <Controller
+                control={control}
+                name="holderAddressNumber"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Número de endereço"
+                    placeholder="Número"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      field.onChange(Mask.numeric(event.target.value, 8))
+                    }
+                  />
+                )}
               />
 
-              <Input
-                inputSize="sm"
-                label="Telefone"
-                placeholder="(00) 00000-0000"
-                value={cardValues.holderPhone}
-                error={cardErrors?.holderPhone}
-                inputMode="tel"
-                onChange={(event) =>
-                  onCardValueChange(
-                    "holderPhone",
-                    Mask.phone(event.target.value),
-                  )
-                }
+              <Controller
+                control={control}
+                name="holderPhone"
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    inputSize="sm"
+                    label="Telefone"
+                    placeholder="(00) 00000-0000"
+                    value={field.value}
+                    error={error?.message}
+                    inputMode="tel"
+                    onChange={(event) =>
+                      field.onChange(Mask.phone(event.target.value))
+                    }
+                  />
+                )}
               />
             </div>
           </div>

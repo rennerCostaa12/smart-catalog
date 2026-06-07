@@ -1,5 +1,4 @@
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { Controller } from "react-hook-form";
 import { Link } from "react-router";
 
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
@@ -17,9 +16,6 @@ export function CartsPage() {
     totalItems,
     totalPrice,
     control,
-    cardValues,
-    cardErrors,
-    handleCardValueChange,
     hasFormError,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
@@ -134,20 +130,7 @@ export function CartsPage() {
             </div>
 
             <DeliveryMethod control={control} />
-
-            <Controller
-              name="methodPayment"
-              control={control}
-              render={({ field }) => (
-                <MethodPayment
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  cardValues={cardValues}
-                  cardErrors={cardErrors}
-                  onCardValueChange={handleCardValueChange}
-                />
-              )}
-            />
+            <MethodPayment control={control} />
           </div>
 
           <aside className="flex h-fit flex-col gap-4">

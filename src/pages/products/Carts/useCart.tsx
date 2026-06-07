@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { DeliveryMethodEnum } from "../../../components/CartButton/components/DeliveryMethod/types";
 import { getOrderWhatsAppMessage } from "../../../components/CartButton/components/ModalListItems/constants";
-import {
-  MethodPaymentEnum,
-  type ICardPaymentErrors,
-  type ICardPaymentValues,
-} from "../../../components/CartButton/components/MethodPayment/types";
+import { MethodPaymentEnum } from "../../../components/CartButton/components/MethodPayment/types";
 import { useCart as useCartContext } from "../../../context/cart/useCart";
 import type { ICartItem } from "../../../context/cart/types";
 import { brlFormatter } from "../../../utils/brlFormatter";
@@ -23,9 +19,7 @@ export function useCart() {
   const {
     control,
     handleSubmit,
-    setValue,
-    watch,
-    formState: { errors, isSubmitted, isValid },
+    formState: { isSubmitted, isValid },
   } = useForm<CartFormData>({
     resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
     defaultValues: initialCartFormValues,
@@ -37,32 +31,6 @@ export function useCart() {
     (total, item) => total + item.price * item.quantity,
     0,
   );
-  const cardValues: ICardPaymentValues = {
-    cardHolderName: watch("cardHolderName") ?? "",
-    cardNumber: watch("cardNumber") ?? "",
-    expirationMonth: watch("expirationMonth") ?? "",
-    expirationYear: watch("expirationYear") ?? "",
-    cvv: watch("cvv") ?? "",
-    holderName: watch("holderName") ?? "",
-    holderEmail: watch("holderEmail") ?? "",
-    holderDocument: watch("holderDocument") ?? "",
-    holderZipCode: watch("holderZipCode") ?? "",
-    holderAddressNumber: watch("holderAddressNumber") ?? "",
-    holderPhone: watch("holderPhone") ?? "",
-  };
-  const cardErrors: ICardPaymentErrors = {
-    cardHolderName: errors.cardHolderName?.message,
-    cardNumber: errors.cardNumber?.message,
-    expirationMonth: errors.expirationMonth?.message,
-    expirationYear: errors.expirationYear?.message,
-    cvv: errors.cvv?.message,
-    holderName: errors.holderName?.message,
-    holderEmail: errors.holderEmail?.message,
-    holderDocument: errors.holderDocument?.message,
-    holderZipCode: errors.holderZipCode?.message,
-    holderAddressNumber: errors.holderAddressNumber?.message,
-    holderPhone: errors.holderPhone?.message,
-  };
   const hasFormError = isSubmitted && !isValid;
 
   const handleDecreaseProductQuantity = (productTitle: string) => {
@@ -75,16 +43,6 @@ export function useCart() {
 
   const handleRemoveProduct = (productTitle: string) => {
     removeProductCart(productTitle);
-  };
-
-  const handleCardValueChange = (
-    field: keyof ICardPaymentValues,
-    value: string,
-  ) => {
-    setValue(field, value, {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
   };
 
   const handleBuyWpp = handleSubmit((values) => {
@@ -138,10 +96,6 @@ export function useCart() {
     totalItems,
     totalPrice,
     control,
-    errors,
-    cardValues,
-    cardErrors,
-    handleCardValueChange,
     hasFormError,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,

@@ -1,3 +1,6 @@
+import type { Control } from "react-hook-form";
+import type { CartFormData } from "../../../../pages/products/Carts/types";
+
 export enum MethodPaymentEnum {
   PIX = "pix",
   CARD = "cartao",
@@ -23,9 +26,5 @@ export type ICardPaymentErrors = Partial<
 
 export interface IMethodPaymentProps {
   className?: string;
-  value: MethodPaymentEnum;
-  onValueChange: (value: MethodPaymentEnum) => void;
-  cardValues: ICardPaymentValues;
-  cardErrors?: ICardPaymentErrors;
-  onCardValueChange: (field: keyof ICardPaymentValues, value: string) => void;
+  control: Control<CartFormData, any, CartFormData>;
 }
