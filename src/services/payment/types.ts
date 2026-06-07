@@ -56,6 +56,12 @@ export interface AsaasCustomerRequest {
   };
 }
 
+export type CustomerDataPix = {
+  name: string;
+  cpfCnpj: string;
+  externalReference?: string;
+}
+
 export interface CreatePixPaymentRequest {
   customer?: string;
   userId: string | number;
@@ -63,7 +69,7 @@ export interface CreatePixPaymentRequest {
   dueDate: string;
   description?: string;
   externalReference?: string;
-  customerData?: AsaasCustomerRequest;
+  customerData?: CustomerDataPix;
 }
 
 export type CreditCardDTO = {

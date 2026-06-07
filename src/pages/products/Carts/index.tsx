@@ -167,15 +167,11 @@ export function CartsPage() {
                 disabled={hasFormError || isSubmitting}
                 isLoading={isSubmitting}
               >
-                Finalizar no WhatsApp
+                Finalizar Pedido
               </Button>
 
               {paymentError && (
-                <Typography
-                  className="mt-3"
-                  variant="bodySmall"
-                  color="danger"
-                >
+                <Typography className="mt-3" variant="bodySmall" color="danger">
                   {paymentError}
                 </Typography>
               )}

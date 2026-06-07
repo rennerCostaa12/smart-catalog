@@ -28,6 +28,7 @@ async function createPayment(
   userId: string | number,
   userToken: string,
   totalPrice: number,
+  userName: string,
 ): Promise<AsaasPaymentResponse> {
   const description = cart
     .map((item) => `${item.quantity}x ${item.title}`)
@@ -69,7 +70,16 @@ async function createPayment(
     return responseMethodPaymentCard;
   }
 
-  return paymentService.createPixPayment(commonPaymentData, userToken);
+  const payloadPix = {
+    ...commonPaymentData,
+    customerData: {
+      name: userName,
+      cpfCnpj: values?.documentValue,
+      externalReference: userId as string,
+    },
+  };
+
+  return paymentService.createPixPayment(payloadPix, userToken);
 }
 
 function formatTemplateMessage(
@@ -172,6 +182,7 @@ export function useCart() {
         user.id,
         user.token,
         totalPrice,
+        user.name,
       );
 
       const {
