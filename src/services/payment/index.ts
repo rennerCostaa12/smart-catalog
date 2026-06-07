@@ -10,44 +10,41 @@ import type {
 export class PaymentService {
   constructor(private readonly client: HttpClient = httpClient) {}
 
-  async createPixPayment(data: CreatePixPaymentRequest) {
-    try {
-      const response = await this.client.request<
-        CreatePixPaymentResponse,
-        CreatePixPaymentRequest
-      >({
-        url: "/pix",
-        method: HttpMethod.Post,
-        data,
-      });
+  async createPixPayment(data: CreatePixPaymentRequest, token?: string) {
+    const response = await this.client.request<
+      CreatePixPaymentResponse,
+      CreatePixPaymentRequest
+    >({
+      url: "/payments/pix",
+      method: HttpMethod.Post,
+      data,
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
 
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data;
   }
 
-  async createCreditCardPayment(data: CreateCreditCardPaymentRequest) {
-    try {
-      const response = await this.client.request<
-        CreateCreditCardPaymentResponse,
-        CreateCreditCardPaymentRequest
-      >({
-        url: "/credit-card",
-        method: HttpMethod.Post,
-        data,
-      });
+  async createCreditCardPayment(
+    data: CreateCreditCardPaymentRequest,
+    token?: string,
+  ) {
+    const response = await this.client.request<
+      CreateCreditCardPaymentResponse,
+      CreateCreditCardPaymentRequest
+    >({
+      url: "/payments/credit-card",
+      method: HttpMethod.Post,
+      data,
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
 
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data;
   }
 
   async getPixQrCode(paymentId: string) {
     try {
       const response = await this.client.request<GetPixQrCodeResponse>({
-        url: `/pix/${paymentId}/qrcode`,
+        url: `/payments/pix/${paymentId}/qrcode`,
         method: HttpMethod.Get,
       });
 

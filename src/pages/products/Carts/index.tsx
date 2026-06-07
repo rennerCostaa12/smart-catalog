@@ -17,6 +17,8 @@ export function CartsPage() {
     totalPrice,
     control,
     hasFormError,
+    paymentError,
+    isSubmitting,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
     handleRemoveProduct,
@@ -162,10 +164,21 @@ export function CartsPage() {
                 variant="whatsapp"
                 leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
                 onClick={handleBuyWpp}
-                disabled={hasFormError}
+                disabled={hasFormError || isSubmitting}
+                isLoading={isSubmitting}
               >
                 Finalizar no WhatsApp
               </Button>
+
+              {paymentError && (
+                <Typography
+                  className="mt-3"
+                  variant="bodySmall"
+                  color="danger"
+                >
+                  {paymentError}
+                </Typography>
+              )}
             </div>
           </aside>
         </div>

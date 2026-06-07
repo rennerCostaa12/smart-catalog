@@ -58,6 +58,7 @@ export function readAuthSessionCookie(): AuthUser | null {
       typeof user.id !== "number" ||
       typeof user.name !== "string" ||
       typeof user.email !== "string" ||
+      typeof user.phone !== "string" ||
       typeof user.token !== "string" ||
       !isAuthSessionValid(user)
     ) {
@@ -69,6 +70,7 @@ export function readAuthSessionCookie(): AuthUser | null {
       id: user.id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
       token: user.token,
     };
   } catch {
