@@ -23,9 +23,9 @@ const modalListItemsSchema = yup
     }),
     documentValue: yup
       .string()
-      .required("Informe o CPF/CNPJ")
+      .required("Informe o CPF")
       .defined()
-      .test("document-length", "Informe um CPF/CNPJ valido", (value) => {
+      .test("document-length", "Informe um CPF valido", (value) => {
         const documentDigits = Mask.parseDocument(value ?? "");
 
         return documentDigits.length === 11 || documentDigits.length === 14;

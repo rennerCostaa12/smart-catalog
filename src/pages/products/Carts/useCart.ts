@@ -13,16 +13,23 @@ import { RedirectContact } from "../../../utils/redirectContact";
 import { initialCartFormValues } from "./constants";
 import { cartSchema } from "./schema";
 import type { CartFormData } from "./types";
+import { useAuth } from "../../../context/auth/useAuth";
 
 export function useCart() {
   const { cart, addCart, removeCart, removeProductCart } = useCartContext();
+  const { user } = useAuth();
+
   const {
     control,
     handleSubmit,
     formState: { isSubmitted, isValid },
   } = useForm<CartFormData>({
     resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
-    defaultValues: initialCartFormValues,
+    defaultValues: {
+      ...initialCartFormValues,
+      holderEmail: user?.email ?? "",
+      holderPhone: user?.phone ?? "",
+    },
     mode: "onChange",
   });
 

@@ -186,7 +186,8 @@ export function MethodPayment({ className, control }: IMethodPaymentProps) {
                   <Input
                     inputSize="sm"
                     label="Documento"
-                    placeholder="CPF ou CNPJ"
+                    placeholder="000.000.000-00"
+                    maxLength={14}
                     value={field.value}
                     error={error?.message}
                     inputMode="numeric"

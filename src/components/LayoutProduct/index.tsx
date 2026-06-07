@@ -18,7 +18,10 @@ export function LayoutProduct({ children }: ILayoutProps) {
   return (
     <AuthProvider>
       <main className="flex min-h-screen flex-col bg-background">
-        <Header onOpenMenu={handleOpenMenu} />
+        <Header
+          onOpenMenu={handleOpenMenu}
+          onSettings={() => console.log("REDIRECT SETTINGS USER")}
+        />
 
         <MenuMobile
           isMobileMenuOpen={isMobileMenuOpen}

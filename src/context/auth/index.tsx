@@ -10,6 +10,7 @@ import {
   writeAuthSessionCookie,
 } from "./sessionCookie";
 import type { AuthContextData, AuthProviderProps, AuthUser } from "./types";
+import { Mask } from "../../utils/mask";
 
 export const AuthContext = createContext({} as AuthContextData);
 
@@ -33,6 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       email: authenticatedUser.email.trim(),
       name: authenticatedUser.name.trim(),
       token: authenticatedUser.token,
+      phone: Mask.phone(authenticatedUser?.phone.trim()),
     };
 
     if (!writeAuthSessionCookie(sessionUser)) {

@@ -1,19 +1,16 @@
-import { LogOut, Menu, UserCircle } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Container } from "../Container";
 import { Button } from "../ui/button";
-
-import { RedirectContact } from "../../utils/redirectContact";
-import { WhatsAppIcon } from "../WhatsAppIcon";
 
 import { CartButton } from "../CartButton";
 import { useCart } from "../../context/cart/useCart";
 import { useAuth } from "../../context/auth/useAuth";
 import { LogoApp } from "../LogoApp";
 import type { IHeaderProps } from "./types";
-import { Typography } from "../ui/typography";
 import { MenuUserDesktop } from "./components/MenuUserDesktop";
+import { MenuUserMobile } from "./components/MenuUserMobile";
 
-export function Header({ onOpenMenu }: IHeaderProps) {
+export function Header({ onOpenMenu, onSettings }: IHeaderProps) {
   const { cart } = useCart();
   const { user, logout } = useAuth();
 
@@ -34,7 +31,7 @@ export function Header({ onOpenMenu }: IHeaderProps) {
         </div>
 
         <div className="flex w-full flex-row items-center max-md:justify-between">
-          <LogoApp width={200} className="max-lg:hidden" />
+          <LogoApp className="w-[200px] max-lg:hidden" />
         </div>
 
         <div className="flex items-center gap-3 max-sm:gap-1 max-md:w-full max-md:justify-end">
@@ -42,27 +39,20 @@ export function Header({ onOpenMenu }: IHeaderProps) {
             <CartButton itemsCart={cart ?? []} />
           </div>
 
-          {user && <MenuUserDesktop logout={logout} username={username} />}
-
-          {/* <div>
-            <div className="hidden max-lg:block">
-              <Button
-                className="cursor-pointer"
-                variant="outline"
-                onClick={() => RedirectContact()}
-              >
-                <WhatsAppIcon />
-              </Button>
-            </div>
-            <Button
-              leftIcon={<WhatsAppIcon />}
-              className="w-[200px] cursor-pointer max-lg:hidden"
-              variant="outline"
-              onClick={() => RedirectContact()}
-            >
-              Fale conosco
-            </Button>
-          </div> */}
+          {user && (
+            <>
+              <MenuUserDesktop
+                logout={logout}
+                onSettings={onSettings}
+                username={username}
+              />
+              <MenuUserMobile
+                logout={logout}
+                onSettings={onSettings}
+                username={username}
+              />
+            </>
+          )}
         </div>
       </Container>
     </header>

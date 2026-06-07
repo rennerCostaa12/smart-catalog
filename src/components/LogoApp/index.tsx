@@ -1,11 +1,11 @@
 import pathLogo from "../../assets/images/logo-smart-catalog.png";
 import type { ILogoAppProps } from "./types";
 
-export function LogoApp({ width, className }: ILogoAppProps) {
+export function LogoApp({ className }: ILogoAppProps) {
   return (
     <img
       src={pathLogo}
-    className={`w-[${width}px] max-md:w-[70%] min-w-[150px] ${className ?? ""}`}
+      className={`!max-lg:w-[70%] min-w-[150px] ${className ?? ""}`}
     />
   );
 }

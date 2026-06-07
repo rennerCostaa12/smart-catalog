@@ -55,8 +55,9 @@ export function DeliveryMethod({ control, className }: IDeliveryMethodProps) {
               return (
                 <Input
                   inputSize="sm"
-                  label="CPF/CNPJ"
-                  placeholder="Digite o CPF ou CNPJ"
+                  label="Documento"
+                  placeholder="000.000.000-00"
+                  maxLength={14}
                   value={value}
                   error={error?.message}
                   inputMode="numeric"
@@ -113,8 +114,9 @@ export function DeliveryMethod({ control, className }: IDeliveryMethodProps) {
               return (
                 <Input
                   inputSize="sm"
-                  label="CPF/CNPJ"
-                  placeholder="Digite o CPF ou CNPJ"
+                  label="Documento"
+                  placeholder="000.000.000-00"
+                  maxLength={14}
                   value={value}
                   error={error?.message}
                   inputMode="numeric"
