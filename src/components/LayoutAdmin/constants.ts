@@ -1,20 +1,21 @@
 import { LayoutGrid, Box, Settings } from "lucide-react";
+import { ROUTE_SEGMENTS } from "../../../app/constants";
 import type { IMenuItemProps } from "../SideMenu/components/MenuItem/types";
 
 const menuItemsAdmin: IMenuItemProps[] = [
   {
     label: "Lista de produtos",
-    href: "lista-produtos",
+    href: ROUTE_SEGMENTS.admin.listProducts,
     icon: LayoutGrid,
   },
   {
     label: "Produtos",
-    href: "produtos",
+    href: ROUTE_SEGMENTS.admin.products,
     icon: Box,
   },
   {
     label: "Configurações",
-    href: "configuracoes",
+    href: ROUTE_SEGMENTS.admin.settings,
     icon: Settings,
   },
 ];

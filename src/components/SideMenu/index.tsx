@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useResolvedPath } from "react-router";
 import type { MouseEvent } from "react";
+import { ROUTES, ROUTE_SEGMENTS } from "../../../app/constants";
 import { HelpCard } from "../HelpCard";
 import { LogoApp } from "../LogoApp";
 import { Typography } from "../ui/typography";
@@ -24,14 +25,18 @@ export function SideMenu({
     event: MouseEvent<HTMLAnchorElement>,
     item: IMenuItemProps,
   ) => {
-    if (item.href !== "carrinhos" || !hasCartItems || isAuthenticated) {
+    if (
+      item.href !== ROUTE_SEGMENTS.products.carts ||
+      !hasCartItems ||
+      isAuthenticated
+    ) {
       onNavigate?.();
       return;
     }
 
     event.preventDefault();
     onNavigate?.();
-    requestAuthentication(() => navigate("/produtos/carrinhos"));
+    requestAuthentication(() => navigate(ROUTES.products.carts));
   };
 
   return (

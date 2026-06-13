@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
+import { ROUTES } from "../../../../app/constants";
 import { readAuthSessionCookie } from "../../../context/auth/sessionCookie";
 import { useAuth } from "../../../context/auth/useAuth";
 
@@ -10,7 +11,9 @@ export function useMyOrders() {
 
   useEffect(() => {
     if (!user && !readAuthSessionCookie()) {
-      navigate("/produtos/listar-produtos?categoria=todos", { replace: true });
+      navigate(`${ROUTES.products.listProducts}?categoria=todos`, {
+        replace: true,
+      });
     }
   }, [navigate, user]);
 

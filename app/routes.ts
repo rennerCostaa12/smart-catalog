@@ -1,20 +1,25 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
+import { ROUTES, ROUTE_SEGMENTS } from "./constants";
+
 export const routesApplication = [
   index("routes/home.tsx"),
-  route("/produtos", "routes/products.tsx", [
+  route(ROUTES.products.root, "routes/products.tsx", [
     index("routes/products/index.tsx"),
-    route("listar-produtos", "routes/products/listproducts.tsx"),
-    route("carrinhos", "routes/products/carts.tsx"),
-    route("meus-pedidos", "routes/products/myorders.tsx"),
-    route("sobre-nos", "routes/products/aboutus.tsx"),
-    route("contato", "routes/products/contact.tsx"),
+    route(
+      ROUTE_SEGMENTS.products.listProducts,
+      "routes/products/listproducts.tsx",
+    ),
+    route(ROUTE_SEGMENTS.products.carts, "routes/products/carts.tsx"),
+    route(ROUTE_SEGMENTS.products.myOrders, "routes/products/myorders.tsx"),
+    route(ROUTE_SEGMENTS.products.aboutUs, "routes/products/aboutus.tsx"),
+    route(ROUTE_SEGMENTS.products.contact, "routes/products/contact.tsx"),
   ]),
-  route("/admin", "routes/admin.tsx", [
+  route(ROUTES.admin.root, "routes/admin.tsx", [
     index("routes/admin/index.tsx"),
-    route("lista-produtos", "routes/admin/listproducts.tsx"),
-    route("produtos", "routes/admin/products.tsx"),
-    route("configuracoes", "routes/admin/settings.tsx"),
+    route(ROUTE_SEGMENTS.admin.listProducts, "routes/admin/listproducts.tsx"),
+    route(ROUTE_SEGMENTS.admin.products, "routes/admin/products.tsx"),
+    route(ROUTE_SEGMENTS.admin.settings, "routes/admin/settings.tsx"),
   ]),
 ];
 

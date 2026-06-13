@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router";
 import { useState, useMemo, useEffect } from "react";
+import { ROUTES } from "../../../../app/constants";
 import {
   CategoryEnum,
   type IProductsMockProps,
@@ -79,7 +80,7 @@ export function useListProducts() {
 
   useEffect(() => {
     if (!nameCategory) {
-      navigate("/produtos/listar-produtos?categoria=todos");
+      navigate(`${ROUTES.products.listProducts}?categoria=todos`);
     }
   }, [nameCategory]);
 

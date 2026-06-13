@@ -1,20 +1,21 @@
 import { LayoutGrid, Phone, ShoppingCart } from "lucide-react";
+import { ROUTE_SEGMENTS } from "../../../app/constants";
 import type { IMenuItemProps } from "../SideMenu/components/MenuItem/types";
 
 const menuItemsProducts: IMenuItemProps[] = [
   {
     label: "Catalogo",
-    href: "listar-produtos",
+    href: ROUTE_SEGMENTS.products.listProducts,
     icon: LayoutGrid,
   },
   {
     label: "Carrinhos",
-    href: "carrinhos",
+    href: ROUTE_SEGMENTS.products.carts,
     icon: ShoppingCart,
   },
   {
     label: "Contato",
-    href: "contato",
+    href: ROUTE_SEGMENTS.products.contact,
     icon: Phone,
   },
 ];

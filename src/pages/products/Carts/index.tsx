@@ -1,6 +1,7 @@
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Link } from "react-router";
 
+import { ROUTES } from "../../../../app/constants";
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
 import { MethodPayment } from "../../../components/CartButton/components/MethodPayment";
 import { Button } from "../../../components/ui/button";
@@ -52,7 +53,7 @@ export function CartsPage() {
           </Typography>
 
           <Button className="mt-6" type="button">
-            <Link to="/produtos/listar-produtos">Ver catalogo</Link>
+            <Link to={ROUTES.products.listProducts}>Ver catalogo</Link>
           </Button>
         </div>
       ) : (

@@ -1,4 +1,6 @@
 import { Navigate } from "react-router";
+
+import { ROUTES } from "../../constants";
 import type { Route } from "./+types/index";
 
 export function meta({}: Route.MetaArgs) {
@@ -9,5 +11,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AdminIndex() {
-  return <Navigate to="/admin/lista-produtos" replace />;
+  return <Navigate to={ROUTES.admin.listProducts} replace />;
 }
