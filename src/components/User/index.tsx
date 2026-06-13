@@ -7,18 +7,8 @@ import type { IUserProps } from "./types";
 
 import { useUser } from "./useUser";
 
-export function User({
-  name,
-  avatarSrc,
-  onSettings,
-  onLogout,
-  className,
-}: IUserProps) {
-  const { containerRef, handleLogout, handleSettings, isOpen, setIsOpen } =
-    useUser({
-      onLogout,
-      onSettings,
-    });
+export function User({ name, avatarSrc, options = [], className }: IUserProps) {
+  const { containerRef, isOpen, menuOptions, setIsOpen } = useUser({ options });
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
@@ -49,8 +39,7 @@ export function User({
       {isOpen ? (
         <UserMenu
           className="absolute right-0 top-[calc(100%+0.5rem)] z-50"
-          onSettings={handleSettings}
-          onLogout={handleLogout}
+          options={menuOptions}
         />
       ) : null}
     </div>

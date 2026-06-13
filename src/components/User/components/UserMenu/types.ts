@@ -1,5 +1,9 @@
+export interface IUserMenuOption {
+  name: string;
+  url: string;
+}
+
 export interface IUserMenuProps {
-  onSettings?: () => void;
-  onLogout?: () => void;
+  options: IUserMenuOption[];
   className?: string;
 }

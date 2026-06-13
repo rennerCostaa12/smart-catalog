@@ -6,6 +6,7 @@ export const routesApplication = [
     index("routes/products/index.tsx"),
     route("listar-produtos", "routes/products/listproducts.tsx"),
     route("carrinhos", "routes/products/carts.tsx"),
+    route("meus-pedidos", "routes/products/myorders.tsx"),
     route("sobre-nos", "routes/products/aboutus.tsx"),
     route("contato", "routes/products/contact.tsx"),
   ]),

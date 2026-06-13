@@ -48,7 +48,7 @@ export function RegisterUserModal({
     } catch (error) {
       console.error(error);
       toast.error(
-        error?.message ??
+        (error instanceof Error ? error.message : undefined) ??
           "Não foi possível criar a conta. Verifique os dados informados.",
       );
     }

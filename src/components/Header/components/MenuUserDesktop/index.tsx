@@ -5,16 +5,8 @@ import { useUser } from "../../../User/useUser";
 import { cn } from "../../../../utils/mergeClass";
 import type { IMenuUserProps } from "../../types";
 
-export function MenuUserDesktop({
-  logout,
-  onSettings,
-  username,
-}: IMenuUserProps) {
-  const { containerRef, handleLogout, handleSettings, isOpen, setIsOpen } =
-    useUser({
-      onLogout: logout,
-      onSettings,
-    });
+export function MenuUserDesktop({ options, username }: IMenuUserProps) {
+  const { containerRef, isOpen, menuOptions, setIsOpen } = useUser({ options });
 
   return (
     <div ref={containerRef} className="relative hidden lg:block">
@@ -43,8 +35,7 @@ export function MenuUserDesktop({
       {isOpen && (
         <UserMenu
           className="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-44"
-          onSettings={handleSettings}
-          onLogout={handleLogout}
+          options={menuOptions}
         />
       )}
     </div>

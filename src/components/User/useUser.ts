@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { IUseUserProps } from "./types";
 
-export function useUser({ onLogout, onSettings }: IUseUserProps) {
+export function useUser({ options }: IUseUserProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -27,21 +27,10 @@ export function useUser({ onLogout, onSettings }: IUseUserProps) {
     };
   }, []);
 
-  function handleSettings() {
-    setIsOpen(false);
-    onSettings?.();
-  }
-
-  function handleLogout() {
-    setIsOpen(false);
-    onLogout?.();
-  }
-
   return {
     isOpen,
     setIsOpen,
     containerRef,
-    handleSettings,
-    handleLogout,
+    menuOptions: options,
   };
 }

@@ -4,12 +4,10 @@ import { UserMenu } from "../../../User/components/UserMenu";
 import { useUser } from "../../../User/useUser";
 import type { IMenuUserProps } from "../../types";
 
-export function MenuUserMobile({ logout, onSettings }: IMenuUserProps) {
-  const { containerRef, handleLogout, handleSettings, isOpen, setIsOpen } =
-    useUser({
-      onLogout: logout,
-      onSettings,
-    });
+export function MenuUserMobile({
+  options,
+}: IMenuUserProps) {
+  const { containerRef, isOpen, menuOptions, setIsOpen } = useUser({ options });
 
   return (
     <div ref={containerRef} className="relative lg:hidden">
@@ -28,8 +26,7 @@ export function MenuUserMobile({ logout, onSettings }: IMenuUserProps) {
       {isOpen && (
         <UserMenu
           className="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-44"
-          onSettings={handleSettings}
-          onLogout={handleLogout}
+          options={menuOptions}
         />
       )}
     </div>

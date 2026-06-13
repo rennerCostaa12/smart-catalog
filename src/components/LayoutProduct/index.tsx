@@ -20,7 +20,6 @@ export function LayoutProduct({ children }: ILayoutProps) {
       <main className="flex min-h-screen flex-col bg-background">
         <Header
           onOpenMenu={handleOpenMenu}
-          onSettings={() => console.log("REDIRECT SETTINGS USER")}
         />
 
         <MenuMobile

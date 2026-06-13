@@ -42,7 +42,7 @@ export function AuthModal({
     } catch (error) {
       console.error(error);
       toast.error(
-        error?.message ??
+        (error instanceof Error ? error.message : undefined) ??
           "Não foi possível entrar. Verifique o email informado.",
       );
     }

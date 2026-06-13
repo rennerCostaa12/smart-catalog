@@ -1,3 +1,5 @@
+import type { IUserMenuOption } from "../User/components/UserMenu/types";
+
 export interface IHeaderProps {
   onOpenMenu?: () => void;
   onSettings?: () => void;
@@ -5,6 +7,5 @@ export interface IHeaderProps {
 
 export interface IMenuUserProps {
   username?: string;
-  logout: () => void;
-  onSettings?: () => void;
+  options: IUserMenuOption[];
 }

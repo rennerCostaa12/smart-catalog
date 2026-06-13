@@ -9,10 +9,11 @@ import { LogoApp } from "../LogoApp";
 import type { IHeaderProps } from "./types";
 import { MenuUserDesktop } from "./components/MenuUserDesktop";
 import { MenuUserMobile } from "./components/MenuUserMobile";
+import { options } from "./constant";
 
-export function Header({ onOpenMenu, onSettings }: IHeaderProps) {
+export function Header({ onOpenMenu }: IHeaderProps) {
   const { cart } = useCart();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const username = user?.name || user?.email;
 
@@ -41,16 +42,8 @@ export function Header({ onOpenMenu, onSettings }: IHeaderProps) {
 
           {user && (
             <>
-              <MenuUserDesktop
-                logout={logout}
-                onSettings={onSettings}
-                username={username}
-              />
-              <MenuUserMobile
-                logout={logout}
-                onSettings={onSettings}
-                username={username}
-              />
+              <MenuUserDesktop options={options} username={username} />
+              <MenuUserMobile options={options} username={username} />
             </>
           )}
         </div>

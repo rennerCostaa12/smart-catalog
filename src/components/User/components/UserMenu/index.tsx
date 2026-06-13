@@ -1,11 +1,14 @@
-import { LogOut, Settings } from "lucide-react";
-
 import { cn } from "../../../../utils/mergeClass";
 import type { IUserMenuProps } from "./types";
 
 import { menuItemClasses } from "./constants";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../../../context/auth/useAuth";
 
-export function UserMenu({ onSettings, onLogout, className }: IUserMenuProps) {
+export function UserMenu({ options, className }: IUserMenuProps) {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
   return (
     <div
       role="menu"
@@ -14,23 +17,24 @@ export function UserMenu({ onSettings, onLogout, className }: IUserMenuProps) {
         className,
       )}
     >
-      <button
-        type="button"
-        role="menuitem"
-        className={menuItemClasses}
-        onClick={onSettings}
-      >
-        <Settings size={18} />
-        Configurações
-      </button>
+      {options.map((option) => (
+        <button
+          key={option.name}
+          type="button"
+          role="menuitem"
+          className={menuItemClasses}
+          onClick={() => navigate(option.url)}
+        >
+          {option.name}
+        </button>
+      ))}
 
       <button
         type="button"
         role="menuitem"
         className={menuItemClasses}
-        onClick={onLogout}
+        onClick={logout}
       >
-        <LogOut size={18} />
         Sair
       </button>
     </div>

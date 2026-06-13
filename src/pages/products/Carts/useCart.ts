@@ -206,7 +206,7 @@ export function useCart() {
     } catch (error) {
       console.error(error);
       toast.error(
-        error?.message ??
+        (error instanceof Error ? error.message : undefined) ??
           "Não foi possível criar o pagamento. Verifique os dados e tente novamente.",
       );
     }

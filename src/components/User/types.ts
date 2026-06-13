@@ -1,12 +1,12 @@
+import type { IUserMenuOption } from "./components/UserMenu/types";
+
 export interface IUserProps {
   name: string;
   avatarSrc?: string;
-  onSettings?: () => void;
-  onLogout?: () => void;
+  options?: IUserMenuOption[];
   className?: string;
 }
 
-export interface IUseUserProps {
-  onSettings?: () => void;
-  onLogout?: () => void;
-}
+export type IUseUserProps = {
+  options: IUserMenuOption[];
+};
