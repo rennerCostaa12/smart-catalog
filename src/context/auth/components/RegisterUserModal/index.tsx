@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -28,8 +29,8 @@ export function RegisterUserModal({
     mode: "onChange",
   });
 
-  const handleRegister = handleSubmit(async (values) => {
-    try {
+  const registerMutation = useMutation({
+    mutationFn: async (values: AuthRegisterData) => {
       const email = values.email.trim();
 
       await usersService.createUser({
@@ -38,7 +39,13 @@ export function RegisterUserModal({
         phone: values.phone.trim(),
       });
 
-      const response = await authService.signInUser({ email });
+      return authService.signInUser({ email });
+    },
+  });
+
+  const handleRegister = handleSubmit(async (values) => {
+    try {
+      const response = await registerMutation.mutateAsync(values);
 
       onRegister({
         ...response.data.user,
@@ -133,7 +140,7 @@ export function RegisterUserModal({
             className="mt-5 cursor-pointer"
             type="submit"
             fullWidth
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || registerMutation.isPending}
           >
             Criar conta
           </Button>

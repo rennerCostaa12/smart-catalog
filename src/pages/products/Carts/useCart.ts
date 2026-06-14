@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -133,7 +134,7 @@ export function useCart() {
   const {
     control,
     handleSubmit,
-    formState: { isSubmitted, isSubmitting, isValid },
+    formState: { isSubmitted, isSubmitting: isFormSubmitting, isValid },
   } = useForm<CartFormData>({
     resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
     defaultValues: {
@@ -150,6 +151,22 @@ export function useCart() {
     0,
   );
   const hasFormError = isSubmitted && !isValid;
+  const paymentMutation = useMutation({
+    mutationFn: (values: CartFormData) => {
+      if (!user) {
+        throw new Error("Entre na sua conta antes de finalizar o pagamento.");
+      }
+
+      return createPayment(
+        cart,
+        values,
+        user.id,
+        user.token,
+        totalPrice,
+        user.name,
+      );
+    },
+  });
 
   const handleDecreaseProductQuantity = (productId: number) => {
     removeCart(productId);
@@ -174,14 +191,7 @@ export function useCart() {
     }
 
     try {
-      const payment = await createPayment(
-        cart,
-        values,
-        user.id,
-        user.token,
-        totalPrice,
-        user.name,
-      );
+      const payment = await paymentMutation.mutateAsync(values);
 
       const {
         deliveryDetails,
@@ -217,7 +227,7 @@ export function useCart() {
     totalPrice,
     control,
     hasFormError,
-    isSubmitting,
+    isSubmitting: isFormSubmitting || paymentMutation.isPending,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
     handleRemoveProduct,

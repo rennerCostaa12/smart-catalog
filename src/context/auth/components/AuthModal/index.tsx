@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -28,11 +29,14 @@ export function AuthModal({
     mode: "onChange",
   });
 
+  const signInMutation = useMutation({
+    mutationFn: (values: AuthLoginData) =>
+      authService.signInUser({ email: values.email.trim() }),
+  });
+
   const handleAuthenticate = handleSubmit(async (values) => {
     try {
-      const response = await authService.signInUser({
-        email: values?.email?.trim(),
-      });
+      const response = await signInMutation.mutateAsync(values);
 
       onAuthenticate({
         ...response.data?.user,
@@ -94,7 +98,7 @@ export function AuthModal({
             className="mt-5 cursor-pointer"
             type="submit"
             fullWidth
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || signInMutation.isPending}
           >
             Entrar
           </Button>
@@ -108,7 +112,7 @@ export function AuthModal({
               variant="outline"
               type="button"
               fullWidth
-              disabled={isSubmitting}
+              disabled={isSubmitting || signInMutation.isPending}
               onClick={onOpenRegister}
             >
               Criar Conta

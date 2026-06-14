@@ -13,10 +13,14 @@ import "react-toastify/dist/ReactToastify.css";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ThemeColors } from "../src/constants/themeColors";
-import { CartProvider } from "../src/context/cart";
+
+import { Providers } from "../src/providers";
 
 const themeCssVariables = Object.fromEntries(
-  Object.entries(ThemeColors).map(([name, value]) => [`--theme-${name}`, value]),
+  Object.entries(ThemeColors).map(([name, value]) => [
+    `--theme-${name}`,
+    value,
+  ]),
 ) as CSSProperties;
 
 export const links: Route.LinksFunction = () => [
@@ -58,9 +62,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <CartProvider>
+    <Providers>
       <Outlet />
-    </CartProvider>
+    </Providers>
   );
 }
 

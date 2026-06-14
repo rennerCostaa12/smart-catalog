@@ -1,9 +1,7 @@
-import type { modalListItemsSchema } from "./schema";
-import * as yup from "yup";
+import type { CartFormData } from "../../../../pages/products/Carts/types";
+
 export interface IModalListItemsProps {
   closeModal?: () => void;
 }
 
-export type IModalListItemsFormData = yup.InferType<
-  typeof modalListItemsSchema
->;
+export type IModalListItemsFormData = CartFormData;

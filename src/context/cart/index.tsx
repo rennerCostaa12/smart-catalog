@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import type { ReactNode } from "react";
 import type { ProductsProps } from "../../services/products/types";
 import type { CartProviderProps, ICartContextData, ICartItem } from "./types";
 

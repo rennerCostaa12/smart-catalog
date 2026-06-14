@@ -1,15 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router";
 import { useState, useMemo, useEffect } from "react";
 import { CategoryEnum, type ProductFilter } from "../types";
 import { useCart } from "../../../context/cart/useCart";
 
 import { useDebounceFn } from "../../../hooks/useDebounceFn";
-import { ProductsServices, type Products } from "../../../services";
+import type { ProductsProps } from "../../../services";
+import { productsQueryOptions } from "../../../services/products/queries";
 
 export function useListProducts() {
-  const { catalogClientName } = useParams();
-  const [products, setProducts] = useState<Products[]>([]);
-  const [productSelected, setProductSelected] = useState<Products | null>(null);
+  const { catalogClientName = "" } = useParams();
+  const [productSelected, setProductSelected] = useState<ProductsProps | null>(
+    null,
+  );
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -19,8 +22,15 @@ export function useListProducts() {
   const nameCategory = searchParams.get("categoria");
 
   const { addCart } = useCart();
+  const {
+    data: productsResponse,
+    error,
+    isPending,
+    refetch,
+  } = useQuery(productsQueryOptions({ catalogClientName }));
+  const products = productsResponse?.data?.products ?? [];
 
-  const handleSelectItem = (product: Products) => {
+  const handleSelectItem = (product: ProductsProps) => {
     setProductSelected(product);
   };
 
@@ -28,7 +38,7 @@ export function useListProducts() {
     setProductSelected(null);
   };
 
-  const handleAddInCart = (product: Products) => {
+  const handleAddInCart = (product: ProductsProps) => {
     addCart(product);
   };
 
@@ -51,19 +61,6 @@ export function useListProducts() {
     setSearchValue("");
     setSearchItem("");
     setProductSelected(null);
-  };
-
-  const getProductsByClient = async () => {
-    try {
-      const productsServices = new ProductsServices();
-      const response = await productsServices.getProducts({
-        catalogClientName: catalogClientName as string,
-      });
-
-      setProducts(response?.data?.products);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const itemsFiltered = useMemo(() => {
@@ -90,10 +87,6 @@ export function useListProducts() {
     }
   }, [nameCategory, setSearchParams]);
 
-  useEffect(() => {
-    getProductsByClient();
-  }, []);
-
   return {
     handleSelectItem,
     productSelected,
@@ -105,5 +98,8 @@ export function useListProducts() {
     searchValue,
     handleChangeSearch,
     handleClearSearch,
+    error,
+    isPending,
+    refetch,
   };
 }

@@ -12,7 +12,7 @@ export { productsServices, ProductsServices } from "./products";
 export type {
   IGetProductsRequest,
   IGetProductsResponse,
-  Products,
+  ProductsProps,
 } from "./products";
 export { usersService, UsersService } from "./users";
 export type { ICreateUsersRequest, ICreateUsersResponse } from "./users";

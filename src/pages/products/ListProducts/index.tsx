@@ -1,13 +1,15 @@
+import { Search, X } from "lucide-react";
 import { ProductsCard } from "../../../components/ProductsCard";
 import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
+import { ProductsDetails } from "../../../components/ProductsDetails";
+import { Input } from "../../../components/ui/input";
+
 import { productFilters } from "../constants";
 
-import { ProductsDetails } from "../../../components/ProductsDetails";
-
 import { useListProducts } from "./useListProducts";
-import { Input } from "../../../components/ui/input";
-import { Search, X } from "lucide-react";
+
+import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 
 export function ListProductsPage() {
   const {
@@ -21,6 +23,9 @@ export function ListProductsPage() {
     searchValue,
     handleChangeSearch,
     handleClearSearch,
+    error,
+    isPending,
+    refetch,
   } = useListProducts();
 
   return (
@@ -76,25 +81,48 @@ export function ListProductsPage() {
             )}
           </div>
 
+          {isPending && (
+            <LoadingSpinner
+              size={40}
+              className="w-full flex justify-center items-center mt-4"
+            />
+          )}
+
+          {error && (
+            <div className="mt-8 flex items-center gap-3">
+              <Typography color="danger">
+                Não foi possível carregar os produtos.
+              </Typography>
+              <Button variant="outline" onClick={() => refetch()}>
+                Tentar novamente
+              </Button>
+            </div>
+          )}
+
           <div className="mt-8 grid grid-cols-2 max-sm:grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
-            {itemsFiltered.map((product) => (
-              <ProductsCard.Root
-                className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
-                key={product.id}
-                onClick={() => handleSelectItem(product)}
-              >
-                <ProductsCard.Image src={product.imageUrl} alt={product.name} />
+            {!isPending &&
+              !error &&
+              itemsFiltered.map((product) => (
+                <ProductsCard.Root
+                  className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
+                  key={product.id}
+                  onClick={() => handleSelectItem(product)}
+                >
+                  <ProductsCard.Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                  />
 
-                <ProductsCard.Content>
-                  <ProductsCard.Title>{product.name}</ProductsCard.Title>
+                  <ProductsCard.Content>
+                    <ProductsCard.Title>{product.name}</ProductsCard.Title>
 
-                  <ProductsCard.Footer>
-                    <ProductsCard.Price price={product.value} />
-                    <ProductsCard.Icon className="max-sm:hidden" />
-                  </ProductsCard.Footer>
-                </ProductsCard.Content>
-              </ProductsCard.Root>
-            ))}
+                    <ProductsCard.Footer>
+                      <ProductsCard.Price price={product.value} />
+                      <ProductsCard.Icon className="max-sm:hidden" />
+                    </ProductsCard.Footer>
+                  </ProductsCard.Content>
+                </ProductsCard.Root>
+              ))}
           </div>
         </div>
 

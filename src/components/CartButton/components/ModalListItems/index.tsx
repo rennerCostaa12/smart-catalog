@@ -1,5 +1,4 @@
 import { X } from "lucide-react";
-import { Controller } from "react-hook-form";
 import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Button } from "../../../ui/button";
 import { Typography } from "../../../ui/typography";
@@ -16,16 +15,12 @@ import { DeliveryMethod } from "../DeliveryMethod";
 export function ModalListItems({ closeModal }: IModalListItemsProps) {
   const {
     control,
-    errors,
-    cardValues,
-    cardErrors,
     handleDecreaseCart,
     handleIncreaseCart,
     handleRemoveProductCart,
     totalPrice,
     items,
     handleBuyWpp,
-    handleCardValueChange,
   } = useModalListItems();
 
   return (
@@ -83,60 +78,8 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
       <div className="mt-4 border-t border-border pt-4 flex flex-col gap-4">
         {items?.length > 0 && (
           <div>
-            <Controller
-              name="deliveryMethod"
-              control={control}
-              render={({ field: deliveryMethodField }) => (
-                <Controller
-                  name="addressValue"
-                  control={control}
-                  render={({ field: addressField }) => (
-                    <Controller
-                      name="receiverNameValue"
-                      control={control}
-                      render={({ field: receiverNameField }) => (
-                        <Controller
-                          name="documentValue"
-                          control={control}
-                          render={({ field: documentField }) => (
-                            <DeliveryMethod
-                              value={deliveryMethodField.value}
-                              onValueChange={deliveryMethodField.onChange}
-                              addressValue={addressField.value ?? ""}
-                              onAddressChange={addressField.onChange}
-                              receiverNameValue={receiverNameField.value ?? ""}
-                              onReceiverNameChange={receiverNameField.onChange}
-                              documentValue={documentField.value ?? ""}
-                              onDocumentChange={documentField.onChange}
-                              addressError={errors.addressValue?.message}
-                              receiverNameError={
-                                errors.receiverNameValue?.message
-                              }
-                              documentError={errors.documentValue?.message}
-                              className="mb-4"
-                            />
-                          )}
-                        />
-                      )}
-                    />
-                  )}
-                />
-              )}
-            />
-
-            <Controller
-              name="methodPayment"
-              control={control}
-              render={({ field: methodPaymentField }) => (
-                <MethodPayment
-                  value={methodPaymentField.value}
-                  onValueChange={methodPaymentField.onChange}
-                  cardValues={cardValues}
-                  cardErrors={cardErrors}
-                  onCardValueChange={handleCardValueChange}
-                />
-              )}
-            />
+            <DeliveryMethod control={control} className="mb-4" />
+            <MethodPayment control={control} />
           </div>
         )}
 
