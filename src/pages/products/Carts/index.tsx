@@ -1,7 +1,7 @@
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Link } from "react-router";
 
-import { ROUTES } from "../../../../app/constants";
+import { ROUTE_SEGMENTS } from "../../../../app/constants";
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
 import { MethodPayment } from "../../../components/CartButton/components/MethodPayment";
 import { Button } from "../../../components/ui/button";
@@ -53,7 +53,9 @@ export function CartsPage() {
           </Typography>
 
           <Button className="mt-6" type="button">
-            <Link to={ROUTES.products.listProducts}>Ver catalogo</Link>
+            <Link to={`../${ROUTE_SEGMENTS.products.listProducts}`}>
+              Ver catalogo
+            </Link>
           </Button>
         </div>
       ) : (
@@ -62,22 +64,22 @@ export function CartsPage() {
             <div className="space-y-3">
               {cart.map((product) => (
                 <div
-                  key={product.title}
+                  key={product.id}
                   className="flex flex-col gap-4 rounded-2xl border border-border bg-surface-soft p-3 sm:flex-row sm:items-center"
                 >
                   <img
-                    src={product.url_img}
-                    alt={product.title}
+                    src={product.imageUrl}
+                    alt={product.name}
                     className="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-24"
                   />
 
                   <div className="min-w-0 flex-1">
                     <Typography className="line-clamp-2" weight="medium">
-                      {product.title}
+                      {product.name}
                     </Typography>
 
                     <Typography variant="bodySmall" color="muted">
-                      Unitario: {brlFormatter.format(product.price)}
+                      Unitario: {brlFormatter.format(product.value)}
                     </Typography>
 
                     <Typography
@@ -85,7 +87,7 @@ export function CartsPage() {
                       weight="bold"
                       color="primary"
                     >
-                      {brlFormatter.format(product.price * product.quantity)}
+                      {brlFormatter.format(product.value * product.quantity)}
                     </Typography>
                   </div>
 
@@ -95,9 +97,7 @@ export function CartsPage() {
                         size="sm"
                         variant="outline"
                         className="cursor-pointer"
-                        onClick={() =>
-                          handleDecreaseProductQuantity(product.title)
-                        }
+                        onClick={() => handleDecreaseProductQuantity(product.id)}
                         title="Diminuir quantidade"
                       >
                         <Minus size={16} />
@@ -122,7 +122,7 @@ export function CartsPage() {
                       title="Remover produto"
                       variant="outline"
                       className="cursor-pointer text-danger hover:border-red-200 hover:bg-red-50 hover:text-danger"
-                      onClick={() => handleRemoveProduct(product.title)}
+                      onClick={() => handleRemoveProduct(product.id)}
                     >
                       <Trash2 size={16} />
                     </Button>
@@ -169,7 +169,6 @@ export function CartsPage() {
               >
                 Finalizar Pedido
               </Button>
-
             </div>
           </aside>
         </div>

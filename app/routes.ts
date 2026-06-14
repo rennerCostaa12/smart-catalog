@@ -4,7 +4,7 @@ import { ROUTES, ROUTE_SEGMENTS } from "./constants";
 
 export const routesApplication = [
   index("routes/home.tsx"),
-  route(ROUTES.products.root, "routes/products.tsx", [
+  route(`${ROUTES.products.root}/:catalogClientName`, "routes/products.tsx", [
     index("routes/products/index.tsx"),
     route(
       ROUTE_SEGMENTS.products.listProducts,

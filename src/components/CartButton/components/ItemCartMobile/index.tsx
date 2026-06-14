@@ -14,8 +14,8 @@ export function ItemCartMobile({
     <div className="rounded-2xl border border-border bg-surface-soft p-3">
       <div className="flex items-center gap-3">
         <img
-          src={product.url_img}
-          alt={product.title}
+          src={product.imageUrl}
+          alt={product.name}
           className="h-16 w-16 rounded-xl object-cover"
         />
 
@@ -35,7 +35,7 @@ export function ItemCartMobile({
                 className="mt-1 line-clamp-2"
                 weight="medium"
               >
-                {product.title}
+                {product.name}
               </Typography>
             </div>
 
@@ -43,7 +43,7 @@ export function ItemCartMobile({
               title="Deletar produto"
               variant="outline"
               className="shrink-0 cursor-pointer text-danger border-red-200 bg-red-50 hover:text-danger"
-              onClick={() => handleRemoveProductCart(product.title)}
+              onClick={() => handleRemoveProductCart(product.id)}
               size="sm"
             >
               <Trash2 size={16} className="text-danger" />
@@ -56,7 +56,7 @@ export function ItemCartMobile({
                 <Button
                   variant="outline"
                   className="cursor-pointer"
-                  onClick={() => handleDecreaseCart(product.title)}
+                  onClick={() => handleDecreaseCart(product.id)}
                   title="Diminuir quantidade"
                   size="sm"
                 >
@@ -78,7 +78,7 @@ export function ItemCartMobile({
             </div>
 
             <Typography variant="bodySmall" weight="bold" color="primary">
-              {brlFormatter.format(product.price * product.quantity)}
+              {brlFormatter.format(product.value * product.quantity)}
             </Typography>
           </div>
         </div>

@@ -1,15 +1,14 @@
 import type { ReactNode } from "react";
-import type { IProductsMockProps } from "../../pages/products/types";
-
-export interface ICartItem extends IProductsMockProps {
+import { type ProductsProps } from "../../services/products/types";
+export interface ICartItem extends ProductsProps {
   quantity: number;
 }
 
 export interface ICartContextData {
   cart: ICartItem[];
-  addCart: (product: IProductsMockProps) => void;
-  removeCart: (productTitle: string) => void;
-  removeProductCart: (productTitle: string) => void;
+  addCart: (product: ProductsProps) => void;
+  removeCart: (productId: number) => void;
+  removeProductCart: (productId: number) => void;
 }
 
 export type CartProviderProps = {

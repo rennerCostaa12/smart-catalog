@@ -1,7 +1,7 @@
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router";
 
-import { ROUTES } from "../../../app/constants";
+import { ROUTE_SEGMENTS } from "../../../app/constants";
 import { Button } from "../ui/button";
 import type { ICartButtonProps } from "./types";
 import { Typography } from "../ui/typography";
@@ -19,11 +19,11 @@ export function CartButton({ itemsCart }: ICartButtonProps) {
 
   const handleRedirectCart = () => {
     if (hasExistItems && !isAuthenticated) {
-      requestAuthentication(() => navigate(ROUTES.products.carts));
+      requestAuthentication(() => navigate(ROUTE_SEGMENTS.products.carts));
       return;
     }
 
-    navigate(ROUTES.products.carts);
+    navigate(ROUTE_SEGMENTS.products.carts);
   };
 
   return (

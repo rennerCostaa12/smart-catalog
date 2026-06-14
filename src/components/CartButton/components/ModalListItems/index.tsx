@@ -58,7 +58,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
         )}
 
         {items.map((product) => (
-          <div key={product.title}>
+          <div key={product.id}>
             <div className="md:hidden">
               <ItemCartMobile
                 handleDecreaseCart={handleDecreaseCart}

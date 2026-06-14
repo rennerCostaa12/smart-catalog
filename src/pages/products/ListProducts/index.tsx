@@ -80,16 +80,16 @@ export function ListProductsPage() {
             {itemsFiltered.map((product) => (
               <ProductsCard.Root
                 className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
-                key={product.title}
+                key={product.id}
                 onClick={() => handleSelectItem(product)}
               >
-                <ProductsCard.Image src={product.url_img} alt={product.title} />
+                <ProductsCard.Image src={product.imageUrl} alt={product.name} />
 
                 <ProductsCard.Content>
-                  <ProductsCard.Title>{product.title}</ProductsCard.Title>
+                  <ProductsCard.Title>{product.name}</ProductsCard.Title>
 
                   <ProductsCard.Footer>
-                    <ProductsCard.Price price={product.price} />
+                    <ProductsCard.Price price={product.value} />
                     <ProductsCard.Icon className="max-sm:hidden" />
                   </ProductsCard.Footer>
                 </ProductsCard.Content>
@@ -113,17 +113,17 @@ export function ListProductsPage() {
                   onClick={handleCloseDetailsProduct}
                 />
                 <ProductsDetails.Image
-                  src={productSelected.url_img}
-                  alt={productSelected.title}
+                  src={productSelected.imageUrl}
+                  alt={productSelected.name}
                 />
                 <ProductsDetails.Content>
                   <ProductsDetails.Category>
-                    {productSelected.category}
+                    {productSelected.categoryName}
                   </ProductsDetails.Category>
                   <ProductsDetails.Title>
-                    {productSelected.title}
+                    {productSelected.name}
                   </ProductsDetails.Title>
-                  <ProductsDetails.Price price={productSelected.price} />
+                  <ProductsDetails.Price price={productSelected.value} />
                   <ProductsDetails.Button
                     onClick={() => handleAddInCart(productSelected)}
                   />

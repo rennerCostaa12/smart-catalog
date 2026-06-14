@@ -8,5 +8,11 @@ export type {
   CreatePixPaymentResponse,
   GetPixQrCodeResponse,
 } from "./payment";
+export { productsServices, ProductsServices } from "./products";
+export type {
+  IGetProductsRequest,
+  IGetProductsResponse,
+  Products,
+} from "./products";
 export { usersService, UsersService } from "./users";
 export type { ICreateUsersRequest, ICreateUsersResponse } from "./users";

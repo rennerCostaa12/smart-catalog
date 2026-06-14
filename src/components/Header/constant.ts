@@ -1,9 +1,9 @@
-import { ROUTES } from "../../../app/constants";
+import { ROUTE_SEGMENTS } from "../../../app/constants";
 
 export const options = [
   {
     name: "Meus pedidos",
-    url: ROUTES.products.myOrders,
+    url: ROUTE_SEGMENTS.products.myOrders,
   },
   {
     name: "Configurações",

@@ -32,14 +32,13 @@ async function createPayment(
   userName: string,
 ): Promise<AsaasPaymentResponse> {
   const description = cart
-    .map((item) => `${item.quantity}x ${item.title}`)
+    .map((item) => `${item.quantity}x ${item.name}`)
     .join(", ")
     .slice(0, 500);
 
   const commonPaymentData = {
     userId,
-    // TODO: DEPOIS IMPLEMENTAR VARIAVEL TOTALPRICE E RETIRAR O VALOR MOCKADO
-    value: 200,
+    value: totalPrice,
     dueDate: getCurrentDate(),
     description,
   };
@@ -147,21 +146,21 @@ export function useCart() {
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.value * item.quantity,
     0,
   );
   const hasFormError = isSubmitted && !isValid;
 
-  const handleDecreaseProductQuantity = (productTitle: string) => {
-    removeCart(productTitle);
+  const handleDecreaseProductQuantity = (productId: number) => {
+    removeCart(productId);
   };
 
   const handleIncreaseProductQuantity = (product: ICartItem) => {
     addCart(product);
   };
 
-  const handleRemoveProduct = (productTitle: string) => {
-    removeProductCart(productTitle);
+  const handleRemoveProduct = (productId: number) => {
+    removeProductCart(productId);
   };
 
   const handleBuyWpp = handleSubmit(async (values) => {

@@ -19,7 +19,7 @@ export function useModalListItems() {
   const { addCart, removeCart, removeProductCart, cart: items } = useCart();
 
   const totalPrice = items.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.value * item.quantity,
     0,
   );
 
@@ -92,16 +92,16 @@ export function useModalListItems() {
     });
   };
 
-  const handleDecreaseCart = (productTitle: string) => {
-    removeCart(productTitle);
+  const handleDecreaseCart = (productId: number) => {
+    removeCart(productId);
   };
 
   const handleIncreaseCart = (product: (typeof items)[number]) => {
     addCart(product);
   };
 
-  const handleRemoveProductCart = (productTitle: string) => {
-    removeProductCart(productTitle);
+  const handleRemoveProductCart = (productId: number) => {
+    removeProductCart(productId);
   };
 
   const handleBuyWpp = handleSubmit((values) => {

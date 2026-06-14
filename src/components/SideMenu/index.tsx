@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useResolvedPath } from "react-router";
 import type { MouseEvent } from "react";
-import { ROUTES, ROUTE_SEGMENTS } from "../../../app/constants";
+import { ROUTE_SEGMENTS } from "../../../app/constants";
 import { HelpCard } from "../HelpCard";
 import { LogoApp } from "../LogoApp";
 import { Typography } from "../ui/typography";
@@ -36,7 +36,7 @@ export function SideMenu({
 
     event.preventDefault();
     onNavigate?.();
-    requestAuthentication(() => navigate(ROUTES.products.carts));
+    requestAuthentication(() => navigate(ROUTE_SEGMENTS.products.carts));
   };
 
   return (

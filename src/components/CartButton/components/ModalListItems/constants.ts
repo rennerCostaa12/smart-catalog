@@ -26,7 +26,7 @@ export function getOrderWhatsAppMessage(
   const products = items
     .map(
       (item) =>
-        `- ${item.title} | Qtd: ${item.quantity} | Unitário: ${brlFormatter.format(item.price)} | Subtotal: ${brlFormatter.format(item.price * item.quantity)}`,
+        `- ${item.name} | Qtd: ${item.quantity} | Unitário: ${brlFormatter.format(item.value)} | Subtotal: ${brlFormatter.format(item.value * item.quantity)}`,
     )
     .join("\n");
 

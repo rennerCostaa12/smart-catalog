@@ -1,20 +1,15 @@
-import { useNavigate, useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 import { useState, useMemo, useEffect } from "react";
-import { ROUTES } from "../../../../app/constants";
-import {
-  CategoryEnum,
-  type IProductsMockProps,
-  type ProductFilter,
-} from "../types";
+import { CategoryEnum, type ProductFilter } from "../types";
 import { useCart } from "../../../context/cart/useCart";
 
-import { productsMock } from "../constants";
-
 import { useDebounceFn } from "../../../hooks/useDebounceFn";
+import { ProductsServices, type Products } from "../../../services";
 
 export function useListProducts() {
-  const [productSelected, setProductSelected] =
-    useState<IProductsMockProps | null>(null);
+  const { catalogClientName } = useParams();
+  const [products, setProducts] = useState<Products[]>([]);
+  const [productSelected, setProductSelected] = useState<Products | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -23,11 +18,9 @@ export function useListProducts() {
 
   const nameCategory = searchParams.get("categoria");
 
-  const navigate = useNavigate();
-
   const { addCart } = useCart();
 
-  const handleSelectItem = (product: IProductsMockProps) => {
+  const handleSelectItem = (product: Products) => {
     setProductSelected(product);
   };
 
@@ -35,7 +28,7 @@ export function useListProducts() {
     setProductSelected(null);
   };
 
-  const handleAddInCart = (product: IProductsMockProps) => {
+  const handleAddInCart = (product: Products) => {
     addCart(product);
   };
 
@@ -60,29 +53,46 @@ export function useListProducts() {
     setProductSelected(null);
   };
 
+  const getProductsByClient = async () => {
+    try {
+      const productsServices = new ProductsServices();
+      const response = await productsServices.getProducts({
+        catalogClientName: catalogClientName as string,
+      });
+
+      setProducts(response?.data?.products);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const itemsFiltered = useMemo(() => {
-    let product = productsMock.filter((product) =>
-      product.title
+    const filteredProducts = products.filter((product) =>
+      product.name
         .toLocaleLowerCase()
         .includes(searchItem?.toLocaleLowerCase()),
     );
 
     if (nameCategory !== CategoryEnum.ALL) {
-      return product.filter(
+      return filteredProducts.filter(
         (data) =>
-          data.category.toLocaleLowerCase() ===
+          data?.categoryName?.toLocaleLowerCase() ===
           nameCategory?.toLocaleLowerCase(),
       );
     }
 
-    return product;
-  }, [searchItem, productsMock, nameCategory]);
+    return filteredProducts;
+  }, [searchItem, products, nameCategory]);
 
   useEffect(() => {
     if (!nameCategory) {
-      navigate(`${ROUTES.products.listProducts}?categoria=todos`);
+      setSearchParams({ categoria: CategoryEnum.ALL }, { replace: true });
     }
-  }, [nameCategory]);
+  }, [nameCategory, setSearchParams]);
+
+  useEffect(() => {
+    getProductsByClient();
+  }, []);
 
   return {
     handleSelectItem,

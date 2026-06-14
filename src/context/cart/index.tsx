@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
-import type { IProductsMockProps } from "../../pages/products/types";
+import type { ProductsProps } from "../../services/products/types";
 import type { CartProviderProps, ICartContextData, ICartItem } from "./types";
 
 export const CartContext = createContext({} as ICartContextData);
@@ -8,15 +8,13 @@ export const CartContext = createContext({} as ICartContextData);
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<ICartItem[]>([]);
 
-  const addCart = (product: IProductsMockProps) => {
+  const addCart = (product: ProductsProps) => {
     setCart((prevCart) => {
-      const productExists = prevCart.find(
-        (item) => item.title === product.title,
-      );
+      const productExists = prevCart.find((item) => item.id === product.id);
 
       if (productExists) {
         return prevCart.map((item) =>
-          item.title === product.title
+          item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item,
         );
@@ -26,10 +24,10 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
-  const removeCart = (productTitle: string) => {
+  const removeCart = (productId: number) => {
     setCart((prevCart) =>
       prevCart.flatMap((item) => {
-        if (item.title !== productTitle) {
+        if (item.id !== productId) {
           return [item];
         }
 
@@ -42,8 +40,8 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   };
 
-  const removeProductCart = (productTitle: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.title !== productTitle));
+  const removeProductCart = (productId: number) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
   return (

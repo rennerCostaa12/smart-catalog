@@ -14,10 +14,3 @@ export enum CategoryEnum {
 }
 
 export type ProductCategory = Exclude<ProductFilter, "Todos">;
-
-export interface IProductsMockProps {
-  url_img: string;
-  title: string;
-  price: number;
-  category: ProductCategory;
-}
