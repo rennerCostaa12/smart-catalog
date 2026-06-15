@@ -1,5 +1,14 @@
 export { authService, AuthService } from "./auth";
 export type { ISignInUserRequest, ISignInUserResponse } from "./auth";
+export {
+  catalogsClientsService,
+  CatalogsClientsService,
+} from "./catalogs_clients";
+export type {
+  CatalogClient,
+  CatalogClientsRequest,
+  CatalogClientsResponse,
+} from "./catalogs_clients";
 export { paymentService, PaymentService } from "./payment";
 export type {
   CreateCreditCardPaymentRequest,

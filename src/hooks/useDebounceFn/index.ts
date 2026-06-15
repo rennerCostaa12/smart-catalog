@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-
-type Callback<T extends unknown[]> = (...args: T) => void;
-type DebouncedFunction<T extends unknown[]> = ((...args: T) => void) & {
-  cancel: () => void;
-};
+import type { Callback, DebouncedFunction } from "./types";
 
 export function useDebounceFn<T extends unknown[]>(
   callback: Callback<T>,

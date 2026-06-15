@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import { useState, useMemo, useEffect } from "react";
 import { CategoryEnum, type ProductFilter } from "../types";
 import { useCart } from "../../../context/cart/useCart";
+import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
 
 import { useDebounceFn } from "../../../hooks/useDebounceFn";
 import type { ProductsProps } from "../../../services";
 import { productsQueryOptions } from "../../../services/products/queries";
 
 export function useListProducts() {
-  const { catalogClientName = "" } = useParams();
+  const { getInfoCatalogClient } = useCatalogClient();
   const [productSelected, setProductSelected] = useState<ProductsProps | null>(
     null,
   );
@@ -21,13 +22,15 @@ export function useListProducts() {
 
   const nameCategory = searchParams.get("categoria");
 
+  const catalogClient = getInfoCatalogClient();
+
   const { addCart } = useCart();
   const {
     data: productsResponse,
     error,
     isPending,
     refetch,
-  } = useQuery(productsQueryOptions({ catalogClientName }));
+  } = useQuery(productsQueryOptions({ catalogClientName: catalogClient?.slug as string }));
   const products = productsResponse?.data?.products ?? [];
 
   const handleSelectItem = (product: ProductsProps) => {

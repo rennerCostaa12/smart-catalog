@@ -16,13 +16,14 @@ import { initialCartFormValues } from "./constants";
 import { cartSchema } from "./schema";
 import type { CartFormData } from "./types";
 import { useAuth } from "../../../context/auth/useAuth";
-import { paymentService } from "../../../services";
+import { paymentService, type CatalogClient } from "../../../services";
 import type { AsaasPaymentResponse } from "../../../services/payment/types";
 import { getCurrentDate } from "../../../utils/dates";
 import {
   formatPaymentStatus,
   SUCCESSFUL_CARD_PAYMENT_STATUSES,
 } from "../../../utils/formatStatusAsaas";
+import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
 
 async function createPayment(
   cart: ICartItem[],
@@ -31,6 +32,7 @@ async function createPayment(
   userToken: string,
   totalPrice: number,
   userName: string,
+  catalogClient: CatalogClient | undefined,
 ): Promise<AsaasPaymentResponse> {
   const description = cart
     .map((item) => `${item.quantity}x ${item.name}`)
@@ -42,6 +44,7 @@ async function createPayment(
     value: totalPrice,
     dueDate: getCurrentDate(),
     description,
+    catalogClientId: catalogClient?.id,
   };
 
   if (values.methodPayment === MethodPaymentEnum.CARD) {
@@ -131,6 +134,8 @@ export function useCart() {
   const { cart, addCart, removeCart, removeProductCart } = useCartContext();
   const { user } = useAuth();
 
+  const { getInfoCatalogClient } = useCatalogClient();
+
   const {
     control,
     handleSubmit,
@@ -151,6 +156,9 @@ export function useCart() {
     0,
   );
   const hasFormError = isSubmitted && !isValid;
+
+  const catalogClient = getInfoCatalogClient();
+
   const paymentMutation = useMutation({
     mutationFn: (values: CartFormData) => {
       if (!user) {
@@ -164,6 +172,7 @@ export function useCart() {
         user.token,
         totalPrice,
         user.name,
+        catalogClient,
       );
     },
   });

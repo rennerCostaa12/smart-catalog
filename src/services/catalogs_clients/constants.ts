@@ -1,0 +1,1 @@
+export const CATALOG_CLIENT_STORAGE_KEY = "smart_catalog_client";
