@@ -1,5 +1,4 @@
 import { Search, X } from "lucide-react";
-import { ProductsCard } from "../../../components/ProductsCard";
 import { Button } from "../../../components/ui/button";
 import { Typography } from "../../../components/ui/typography";
 import { ProductsDetails } from "../../../components/ProductsDetails";
@@ -10,6 +9,9 @@ import { productFilters } from "../constants";
 import { useListProducts } from "./useListProducts";
 
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
+import { Pagination } from "../../../components/Pagination";
+import { ProductsDesktop } from "./components/ProductsDesktop";
+import { ProductsMobile } from "./components/ProductsMobile";
 
 export function ListProductsPage() {
   const {
@@ -18,14 +20,21 @@ export function ListProductsPage() {
     handleCloseDetailsProduct,
     handleAddInCart,
     itemsFiltered,
+    mobileItemsFiltered,
     handleSelectCategory,
     nameCategory,
     searchValue,
     handleChangeSearch,
     handleClearSearch,
+    currentPage,
+    totalPages,
+    handlePageChange,
     error,
+    isFetching,
     isPending,
     refetch,
+    isMobile,
+    hasShowProducts,
   } = useListProducts();
 
   return (
@@ -99,31 +108,32 @@ export function ListProductsPage() {
             </div>
           )}
 
-          <div className="mt-8 grid grid-cols-2 max-sm:grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
-            {!isPending &&
-              !error &&
-              itemsFiltered.map((product) => (
-                <ProductsCard.Root
-                  className="h-auto w-full cursor-pointer transition-transform hover:scale-[1.02]"
-                  key={product.id}
-                  onClick={() => handleSelectItem(product)}
-                >
-                  <ProductsCard.Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                  />
+          {isMobile ? (
+            <ProductsMobile
+              handleSelectItem={handleSelectItem}
+              items={mobileItemsFiltered}
+              error={error}
+            />
+          ) : (
+            <ProductsDesktop
+              handleSelectItem={handleSelectItem}
+              items={itemsFiltered}
+              error={error}
+              isPending={isPending}
+            />
+          )}
 
-                  <ProductsCard.Content>
-                    <ProductsCard.Title>{product.name}</ProductsCard.Title>
-
-                    <ProductsCard.Footer>
-                      <ProductsCard.Price price={product.value} />
-                      <ProductsCard.Icon className="max-sm:hidden" />
-                    </ProductsCard.Footer>
-                  </ProductsCard.Content>
-                </ProductsCard.Root>
-              ))}
-          </div>
+          {!error && hasShowProducts && (
+            <div className="mt-8">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                disabled={isPending}
+                isLoadingMore={isFetching && currentPage > 1}
+              />
+            </div>
+          )}
         </div>
 
         {productSelected && (

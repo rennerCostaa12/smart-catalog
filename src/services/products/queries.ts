@@ -17,5 +17,6 @@ export function productsQueryOptions(params: IGetProductsRequest) {
     queryKey: productsQueryKeys.list(params),
     queryFn: () => productsServices.getProducts(params),
     enabled: Boolean(params.catalogClientName),
+    placeholderData: (previousData) => previousData,
   });
 }
