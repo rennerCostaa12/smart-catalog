@@ -174,7 +174,7 @@ export function useListProducts() {
     }
   }, [currentPage, pagination?.totalPages]);
 
-  const hasShowProducts =
+  const hasNotProducts =
     mobileItemsFiltered?.length > 0 || itemsFiltered?.length > 0;
 
   return {
@@ -197,6 +197,6 @@ export function useListProducts() {
     isPending,
     refetch,
     isMobile,
-    hasShowProducts,
+    hasNotProducts,
   };
 }

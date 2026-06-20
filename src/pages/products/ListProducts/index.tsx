@@ -12,6 +12,8 @@ import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 import { Pagination } from "../../../components/Pagination";
 import { ProductsDesktop } from "./components/ProductsDesktop";
 import { ProductsMobile } from "./components/ProductsMobile";
+import { EmptyProducts } from "./components/EmptyProducts";
+import { cn } from "../../../utils/mergeClass";
 
 export function ListProductsPage() {
   const {
@@ -34,12 +36,14 @@ export function ListProductsPage() {
     isPending,
     refetch,
     isMobile,
-    hasShowProducts,
+    hasNotProducts,
   } = useListProducts();
 
   return (
     <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-      <div className="flex max-lg:block gap-4">
+      <div
+        className={cn("max-lg:block gap-4", !hasNotProducts ? "block" : "flex")}
+      >
         <div>
           <div>
             <Typography variant="h1">Catálogo de Produtos</Typography>
@@ -108,7 +112,9 @@ export function ListProductsPage() {
             </div>
           )}
 
-          {isMobile ? (
+          {!hasNotProducts ? (
+            <EmptyProducts />
+          ) : isMobile ? (
             <ProductsMobile
               handleSelectItem={handleSelectItem}
               items={mobileItemsFiltered}
@@ -123,7 +129,7 @@ export function ListProductsPage() {
             />
           )}
 
-          {!error && hasShowProducts && (
+          {!error && hasNotProducts && (
             <div className="mt-8">
               <Pagination
                 currentPage={currentPage}
