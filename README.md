@@ -1,87 +1,113 @@
-# Welcome to React Router!
+# Smart Catalog
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Smart Catalog e uma aplicacao web para criacao e uso de catalogos digitais. O projeto entrega uma experiencia de vitrine para clientes finais, com listagem de produtos, carrinho, pedidos e informacoes do catalogo, alem de uma area administrativa para gerenciamento dos produtos.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## O que o projeto faz
 
-## Features
+A aplicacao e dividida em duas areas principais:
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- Catalogo de produtos: pagina publica por catalogo, listagem de produtos, detalhes do produto, carrinho, checkout, pedidos do usuario, pagina sobre e contato.
+- Administracao: painel administrativo com paginas para produtos, lista de produtos e configuracoes.
 
-## Getting Started
+O fluxo do cliente permite navegar pelos produtos de um catalogo, adicionar itens ao carrinho, escolher dados de entrega/pagamento e acompanhar pedidos. A aplicacao tambem possui autenticacao, contexto de carrinho, integracao com API HTTP e componentes reutilizaveis de interface.
 
-### Installation
+## Tecnologias usadas
 
-Install the dependencies:
+- React 19
+- React Router 7
+- TypeScript
+- Vite
+- Tailwind CSS
+- TanStack React Query
+- Axios
+- React Hook Form
+- Yup
+- Lucide React
+- React Toastify
+- Docker
+
+## Estrutura geral
+
+- `app/`: configuracao de rotas e arquivos raiz do React Router.
+- `src/pages/`: paginas de produto, carrinho, pedidos, contato, home e administracao.
+- `src/components/`: componentes reutilizaveis de layout, UI, modais, cards e detalhes de produto.
+- `src/context/`: contextos de autenticacao, carrinho e catalogo.
+- `src/services/`: servicos de comunicacao com a API.
+- `src/http/`: cliente HTTP baseado em Axios.
+- `src/utils/`: utilitarios de formatacao, datas, mascaras e helpers.
+
+## Requisitos
+
+- Node.js 20 ou superior
+- npm
+
+## Configuracao
+
+Crie um arquivo `.env` na raiz do projeto com a URL da API:
+
+```bash
+VITE_API_URL=http://localhost:3000
+```
+
+A URL deve apontar para o backend usado pelos servicos de produtos, usuarios, autenticacao, pagamentos, catalogos e pedidos.
+
+## Instalacao
 
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+## Desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+Por padrao, a aplicacao fica disponivel em:
 
-## Building for Production
+```bash
+http://localhost:5173
+```
 
-Create a production build:
+## Verificacao de tipos
+
+```bash
+npm run typecheck
+```
+
+Esse comando gera os tipos do React Router e executa o TypeScript.
+
+## Build de producao
 
 ```bash
 npm run build
 ```
 
-## Deployment
+## Execucao em producao
 
-### Docker Deployment
-
-To build and run using Docker:
+Depois do build:
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+npm run start
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+## Docker
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+Para construir a imagem:
 
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+```bash
+docker build -t smart-catalog .
 ```
 
-## Styling
+Para executar o container:
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+```bash
+docker run -p 3000:3000 smart-catalog
+```
 
----
+## Scripts disponiveis
 
-Built with ❤️ using React Router.
+- `npm run dev`: inicia o servidor de desenvolvimento.
+- `npm run build`: gera a build de producao.
+- `npm run start`: executa a aplicacao buildada.
+- `npm run typecheck`: valida os tipos do projeto.
