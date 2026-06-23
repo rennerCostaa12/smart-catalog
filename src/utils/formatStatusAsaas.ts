@@ -21,7 +21,6 @@ export const PAYMENT_STATUS_LABELS: Record<string, string> = {
   AWAITING_RISK_ANALYSIS: "Aguardando análise de risco",
 };
 
-
 export function formatPaymentStatus(status?: string) {
   if (!status) {
     return "Não informado";
