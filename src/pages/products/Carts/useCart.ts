@@ -1,9 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
+import { ROUTE_SEGMENTS } from "../../../../app/constants";
 import { DeliveryMethodEnum } from "../../../components/CartButton/components/DeliveryMethod/types";
 import { getOrderWhatsAppMessage } from "../../../components/CartButton/components/ModalListItems/constants";
 import { MethodPaymentEnum } from "../../../components/CartButton/components/MethodPayment/types";
@@ -131,8 +134,12 @@ function formatTemplateMessage(
 export function useCart() {
   const { cart, addCart, removeCart, removeProductCart } = useCartContext();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const { getInfoCatalogClient } = useCatalogClient();
+
+  const [openModalConfirmCheckout, setOpenModalConfirmCheckout] =
+    useState<boolean>(false);
 
   const {
     control,
@@ -233,11 +240,14 @@ export function useCart() {
           deliveryDetails,
           values.documentValue,
           methodPaymentLabel,
-          [`Pedido criado: #${order.id}`, paymentDetails]
+          [`Pedido criado: #${order?.data?.id}`, paymentDetails]
             .filter(Boolean)
             .join("\n"),
         ),
       );
+
+      setOpenModalConfirmCheckout(false);
+      navigate(`../${ROUTE_SEGMENTS.products.myOrders}`);
     } catch (error) {
       console.error(error);
       toast.error(
@@ -245,6 +255,10 @@ export function useCart() {
           "Não foi possível criar o pagamento. Verifique os dados e tente novamente.",
       );
     }
+  });
+
+  const handleOpenModalConfirmation = handleSubmit(() => {
+    setOpenModalConfirmCheckout(true);
   });
 
   return {
@@ -261,5 +275,8 @@ export function useCart() {
     handleIncreaseProductQuantity,
     handleRemoveProduct,
     handleBuyWpp,
+    openModalConfirmCheckout,
+    setOpenModalConfirmCheckout,
+    handleOpenModalConfirmation,
   };
 }

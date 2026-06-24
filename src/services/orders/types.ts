@@ -82,17 +82,19 @@ export interface CreateOrdersRequest {
 }
 
 export interface CreateOrdersResponse {
-  id: string;
-  userId: number;
-  catalogClientId: number;
-  total: number;
-  statusOrderId: number;
-  statusOrder: {
-    name: StatusOrderNameEnum;
+  data: {
+    id: string;
+    userId: number;
+    catalogClientId: number;
+    total: number;
+    statusOrderId: number;
+    statusOrder: {
+      name: StatusOrderNameEnum;
+    };
+    items: OrdersItems[];
+    createdAt: string;
+    updatedAt: string;
   };
-  items: OrdersItems[];
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface ListOrdersResponse {

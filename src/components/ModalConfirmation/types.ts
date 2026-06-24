@@ -1,3 +1,5 @@
+import type { ButtonVariant } from "../ui/button/types";
+
 export interface IModalConfirmationProps {
   open: boolean;
   title: string;
@@ -6,4 +8,6 @@ export interface IModalConfirmationProps {
   onCancel: () => void;
   labelConfirm: string;
   labelCancel: string;
+  isLoading?: boolean;
+  variantButtonConfirm?: ButtonVariant;
 }

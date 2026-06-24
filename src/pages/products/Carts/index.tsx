@@ -5,10 +5,11 @@ import { ROUTE_SEGMENTS } from "../../../../app/constants";
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
 import { MethodPayment } from "../../../components/CartButton/components/MethodPayment";
 import { Button } from "../../../components/ui/button";
+import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
 import { Typography } from "../../../components/ui/typography";
+import { ModalConfirmation } from "../../../components/ModalConfirmation";
 import { ThemeColors } from "../../../constants/themeColors";
 import { brlFormatter } from "../../../utils/brlFormatter";
-import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
 import { useCart } from "./useCart";
 
 export function CartsPage() {
@@ -23,6 +24,9 @@ export function CartsPage() {
     handleIncreaseProductQuantity,
     handleRemoveProduct,
     handleBuyWpp,
+    openModalConfirmCheckout,
+    setOpenModalConfirmCheckout,
+    handleOpenModalConfirmation,
   } = useCart();
 
   return (
@@ -97,7 +101,9 @@ export function CartsPage() {
                         size="sm"
                         variant="outline"
                         className="cursor-pointer"
-                        onClick={() => handleDecreaseProductQuantity(product.id)}
+                        onClick={() =>
+                          handleDecreaseProductQuantity(product.id)
+                        }
                         title="Diminuir quantidade"
                       >
                         <Minus size={16} />
@@ -163,7 +169,7 @@ export function CartsPage() {
                 fullWidth
                 variant="whatsapp"
                 leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
-                onClick={handleBuyWpp}
+                onClick={handleOpenModalConfirmation}
                 disabled={hasFormError || isSubmitting}
                 isLoading={isSubmitting}
               >
@@ -173,6 +179,18 @@ export function CartsPage() {
           </aside>
         </div>
       )}
+
+      <ModalConfirmation
+        open={openModalConfirmCheckout}
+        title="Alerta!"
+        description="Deseja confirmar a compra?"
+        labelCancel="Cancelar"
+        labelConfirm="Confirmar compra"
+        onCancel={() => setOpenModalConfirmCheckout(false)}
+        onConfirm={handleBuyWpp}
+        isLoading={isSubmitting}
+        variantButtonConfirm="primary"
+      />
     </div>
   );
 }

@@ -11,6 +11,8 @@ export function ModalConfirmation({
   onCancel,
   labelConfirm,
   labelCancel,
+  isLoading,
+  variantButtonConfirm = "danger",
 }: IModalConfirmationProps) {
   return (
     <Modal.Root open={open}>
@@ -36,15 +38,17 @@ export function ModalConfirmation({
               variant="outline"
               className="cursor-pointer"
               onClick={onCancel}
+              disabled={isLoading}
             >
               {labelCancel}
             </Button>
 
             <Button
               type="button"
-              variant="danger"
+              variant={variantButtonConfirm}
               className="cursor-pointer"
               onClick={onConfirm}
+              isLoading={isLoading}
             >
               {labelConfirm}
             </Button>
