@@ -24,12 +24,13 @@ import {
   SUCCESSFUL_CARD_PAYMENT_STATUSES,
 } from "../../../utils/formatStatusAsaas";
 import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
+import { ordersService } from "../../../services/orders";
+import { createOrderPayload } from "../../../services/orders/createOrderPayload";
 
 async function createPayment(
   cart: ICartItem[],
   values: CartFormData,
   userId: string | number,
-  userToken: string,
   totalPrice: number,
   userName: string,
   catalogClient: CatalogClient | undefined,
@@ -49,28 +50,25 @@ async function createPayment(
 
   if (values.methodPayment === MethodPaymentEnum.CARD) {
     const responseMethodPaymentCard =
-      await paymentService.createCreditCardPayment(
-        {
-          ...commonPaymentData,
-          creditCard: {
-            holderName: values.cardHolderName.trim(),
-            number: Mask.parseDocument(values.cardNumber),
-            expiryMonth: values.expirationMonth,
-            expiryYear: values.expirationYear,
-            ccv: values.cvv,
-          },
-          creditCardHolderInfo: {
-            name: values.holderName.trim(),
-            email: values.holderEmail.trim(),
-            cpfCnpj: Mask.parseDocument(values.holderDocument),
-            postalCode: Mask.parseDocument(values.holderZipCode),
-            addressNumber: values.holderAddressNumber.trim(),
-            phone: Mask.parseDocument(values.holderPhone),
-          },
-          remoteIp: window.location.hostname,
+      await paymentService.createCreditCardPayment({
+        ...commonPaymentData,
+        creditCard: {
+          holderName: values.cardHolderName.trim(),
+          number: Mask.parseDocument(values.cardNumber),
+          expiryMonth: values.expirationMonth,
+          expiryYear: values.expirationYear,
+          ccv: values.cvv,
         },
-        userToken,
-      );
+        creditCardHolderInfo: {
+          name: values.holderName.trim(),
+          email: values.holderEmail.trim(),
+          cpfCnpj: Mask.parseDocument(values.holderDocument),
+          postalCode: Mask.parseDocument(values.holderZipCode),
+          addressNumber: values.holderAddressNumber.trim(),
+          phone: Mask.parseDocument(values.holderPhone),
+        },
+        remoteIp: window.location.hostname,
+      });
 
     return responseMethodPaymentCard;
   }
@@ -84,7 +82,7 @@ async function createPayment(
     },
   };
 
-  return paymentService.createPixPayment(payloadPix, userToken);
+  return paymentService.createPixPayment(payloadPix);
 }
 
 function formatTemplateMessage(
@@ -150,8 +148,8 @@ export function useCart() {
     mode: "onChange",
   });
 
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = cart.reduce(
+  const totalItems = cart?.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = cart?.reduce(
     (total, item) => total + item.value * item.quantity,
     0,
   );
@@ -169,10 +167,26 @@ export function useCart() {
         cart,
         values,
         user.id,
-        user.token,
         totalPrice,
         user.name,
         catalogClient,
+      );
+    },
+  });
+
+  const orderMutation = useMutation({
+    mutationFn: () => {
+      if (!user) {
+        throw new Error("Entre na sua conta antes de finalizar o pedido.");
+      }
+
+      if (!catalogClient?.id) {
+        throw new Error("Não foi possível identificar o catálogo do pedido.");
+      }
+
+      return ordersService.createOrders(
+        createOrderPayload(cart, catalogClient.id, totalPrice),
+        String(user?.id),
       );
     },
   });
@@ -201,6 +215,7 @@ export function useCart() {
 
     try {
       const payment = await paymentMutation.mutateAsync(values);
+      const order = await orderMutation.mutateAsync();
 
       const {
         deliveryDetails,
@@ -218,7 +233,9 @@ export function useCart() {
           deliveryDetails,
           values.documentValue,
           methodPaymentLabel,
-          paymentDetails,
+          [`Pedido criado: #${order.id}`, paymentDetails]
+            .filter(Boolean)
+            .join("\n"),
         ),
       );
     } catch (error) {
@@ -236,7 +253,10 @@ export function useCart() {
     totalPrice,
     control,
     hasFormError,
-    isSubmitting: isFormSubmitting || paymentMutation.isPending,
+    isSubmitting:
+      isFormSubmitting ||
+      paymentMutation?.isPending ||
+      orderMutation?.isPending,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
     handleRemoveProduct,

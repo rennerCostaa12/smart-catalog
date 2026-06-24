@@ -10,7 +10,7 @@ import type {
 export class PaymentService {
   constructor(private readonly client: HttpClient = httpClient) {}
 
-  async createPixPayment(data: CreatePixPaymentRequest, token?: string) {
+  async createPixPayment(data: CreatePixPaymentRequest) {
     const response = await this.client.request<
       CreatePixPaymentResponse,
       CreatePixPaymentRequest
@@ -18,16 +18,12 @@ export class PaymentService {
       url: "/payments/pix",
       method: HttpMethod.Post,
       data,
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     return response.data;
   }
 
-  async createCreditCardPayment(
-    data: CreateCreditCardPaymentRequest,
-    token?: string,
-  ) {
+  async createCreditCardPayment(data: CreateCreditCardPaymentRequest) {
     const response = await this.client.request<
       CreateCreditCardPaymentResponse,
       CreateCreditCardPaymentRequest
@@ -35,7 +31,6 @@ export class PaymentService {
       url: "/payments/credit-card",
       method: HttpMethod.Post,
       data,
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     return response.data;

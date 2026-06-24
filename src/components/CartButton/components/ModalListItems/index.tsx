@@ -21,6 +21,7 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
     totalPrice,
     items,
     handleBuyWpp,
+    isSubmitting,
   } = useModalListItems();
 
   return (
@@ -98,6 +99,8 @@ export function ModalListItems({ closeModal }: IModalListItemsProps) {
             variant="whatsapp"
             leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
             onClick={handleBuyWpp}
+            disabled={isSubmitting}
+            isLoading={isSubmitting}
           >
             Finalizar no WhatsApp
           </Button>

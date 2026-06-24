@@ -1,3 +1,4 @@
+import { readAuthSessionCookie } from "../../context/auth/sessionCookie";
 import { httpClient, HttpMethod, type HttpClient } from "../../http";
 import type {
   CreateOrdersRequest,
@@ -8,11 +9,7 @@ import type {
 export class OrdersService {
   constructor(private readonly client: HttpClient = httpClient) {}
 
-  async createOrders(
-    data: CreateOrdersRequest,
-    userId: string,
-    token?: string,
-  ) {
+  async createOrders(data: CreateOrdersRequest, userId: string) {
     const response = await this.client.request<
       CreateOrdersResponse,
       CreateOrdersRequest
@@ -20,17 +17,15 @@ export class OrdersService {
       url: `/orders/${userId}`,
       method: HttpMethod.Post,
       data,
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     return response.data;
   }
 
-  async listOrders(userId: string, token?: string) {
+  async listOrders(userId: string) {
     const response = await this.client.request<ListOrdersResponse, unknown>({
       url: `/orders/${userId}`,
       method: HttpMethod.Get,
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     return response.data;

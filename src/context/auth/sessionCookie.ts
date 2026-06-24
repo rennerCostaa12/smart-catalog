@@ -27,7 +27,7 @@ function getTokenExpiration(token: string) {
 }
 
 export function isAuthSessionValid(user: AuthUser) {
-  const expiresAt = getTokenExpiration(user.token);
+  const expiresAt = getTokenExpiration(user?.token);
 
   return expiresAt !== null && expiresAt > Date.now();
 }
