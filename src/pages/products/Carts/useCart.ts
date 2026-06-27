@@ -29,6 +29,10 @@ import {
 import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
 import { ordersService } from "../../../services/orders";
 import { createOrderPayload } from "../../../services/orders/createOrderPayload";
+import {
+  getOrderDeliveryMethod,
+  getOrderMethodPayment,
+} from "../../../utils/orderMethods";
 
 async function createPayment(
   cart: ICartItem[],
@@ -132,7 +136,8 @@ function formatTemplateMessage(
 }
 
 export function useCart() {
-  const { cart, addCart, removeCart, removeProductCart } = useCartContext();
+  const { cart, addCart, removeCart, removeProductCart, resetCart } =
+    useCartContext();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -182,7 +187,7 @@ export function useCart() {
   });
 
   const orderMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: (values: CartFormData) => {
       if (!user) {
         throw new Error("Entre na sua conta antes de finalizar o pedido.");
       }
@@ -192,7 +197,13 @@ export function useCart() {
       }
 
       return ordersService.createOrders(
-        createOrderPayload(cart, catalogClient.id, totalPrice),
+        createOrderPayload(
+          cart,
+          catalogClient.id,
+          totalPrice,
+          getOrderMethodPayment(values.methodPayment),
+          getOrderDeliveryMethod(values.deliveryMethod),
+        ),
         String(user?.id),
       );
     },
@@ -222,7 +233,7 @@ export function useCart() {
 
     try {
       const payment = await paymentMutation.mutateAsync(values);
-      const order = await orderMutation.mutateAsync();
+      const order = await orderMutation.mutateAsync(values);
 
       const {
         deliveryDetails,
@@ -247,6 +258,7 @@ export function useCart() {
       );
 
       setOpenModalConfirmCheckout(false);
+      resetCart();
       navigate(`../${ROUTE_SEGMENTS.products.myOrders}`);
     } catch (error) {
       console.error(error);

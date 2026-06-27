@@ -9,6 +9,7 @@ export interface ICartContextData {
   addCart: (product: ProductsProps) => void;
   removeCart: (productId: number) => void;
   removeProductCart: (productId: number) => void;
+  resetCart: () => void;
 }
 
 export type CartProviderProps = {

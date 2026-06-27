@@ -22,12 +22,13 @@ export function ModalDetailsOrder({
       <Modal.Overlay onClick={onClose} />
 
       <Modal.Content className="p-4">
-        <section className="relative z-10 w-full max-w-2xl rounded-2xl border border-border bg-white shadow-xl">
+        <section className="relative z-10 max-h-[calc(100vh-2rem)] min-h-[70vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-white shadow-xl sm:min-h-0">
+          <Modal.CloseButton onClick={onClose} className="hidden max-sm:flex" />
           <div className="flex flex-col gap-5 p-5 sm:p-6">
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-start sm:justify-between">
               <div className="flex items-start gap-3">
-                <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-blue-600">
-                  <ShoppingBag size={24} />
+                <div className="max-sm:hidden flex size-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-blue-600">
+                  <ShoppingBag size={20} />
                 </div>
 
                 <div className="min-w-0">
@@ -38,16 +39,36 @@ export function ModalDetailsOrder({
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 sm:justify-end">
+              <div className="flex flex-wrap max-sm:flex-col items-center gap-3 sm:justify-end">
                 <StatusBadge status={order?.status} />
 
-                <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
-                  <Typography variant="caption" color="muted">
-                    Total
-                  </Typography>
-                  <Typography variant="body" weight="bold">
-                    {order?.total}
-                  </Typography>
+                <div className="flex gap-4 max-sm:flex-col w-full">
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                    <Typography variant="caption" color="muted">
+                      Pagamento
+                    </Typography>
+                    <Typography variant="body" weight="bold">
+                      {order?.methodPayment?.toLocaleUpperCase()}
+                    </Typography>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                    <Typography variant="caption" color="muted">
+                      Entrega
+                    </Typography>
+                    <Typography variant="body" weight="bold">
+                      {order?.deliveryMethod?.toLocaleUpperCase()}
+                    </Typography>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                    <Typography variant="caption" color="muted">
+                      Total
+                    </Typography>
+                    <Typography variant="body" weight="bold">
+                      {order?.total}
+                    </Typography>
+                  </div>
                 </div>
               </div>
             </div>

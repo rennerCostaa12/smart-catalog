@@ -13,6 +13,8 @@ export type OrderProps = {
   date: string;
   status: OrderStatus;
   total: string;
+  methodPayment: string;
+  deliveryMethod: string;
   items: ProductItem[];
 };
 

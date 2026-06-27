@@ -10,6 +10,10 @@ import { ordersService } from "../../../../services/orders";
 import { createOrderPayload } from "../../../../services/orders/createOrderPayload";
 import { brlFormatter } from "../../../../utils/brlFormatter";
 import { Mask } from "../../../../utils/mask";
+import {
+  getOrderDeliveryMethod,
+  getOrderMethodPayment,
+} from "../../../../utils/orderMethods";
 import { RedirectContact } from "../../../../utils/redirectContact";
 import { DeliveryMethodEnum } from "../DeliveryMethod/types";
 import {
@@ -114,7 +118,7 @@ export function useModalListItems() {
   };
 
   const orderMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: (values: IModalListItemsFormData) => {
       if (!user) {
         throw new Error("Entre na sua conta antes de finalizar o pedido.");
       }
@@ -124,9 +128,14 @@ export function useModalListItems() {
       }
 
       return ordersService.createOrders(
-        createOrderPayload(items, catalogClient.id, totalPrice),
+        createOrderPayload(
+          items,
+          catalogClient.id,
+          totalPrice,
+          getOrderMethodPayment(values.methodPayment),
+          getOrderDeliveryMethod(values.deliveryMethod),
+        ),
         String(user.id),
-        user.token,
       );
     },
   });
@@ -137,7 +146,7 @@ export function useModalListItems() {
     }
 
     try {
-      const order = await orderMutation.mutateAsync();
+      const order = await orderMutation.mutateAsync(values);
 
       const deliveryMethodLabel =
         values.deliveryMethod === DeliveryMethodEnum.DELIVERY
@@ -175,7 +184,7 @@ export function useModalListItems() {
           deliveryDetails,
           values.documentValue,
           values.methodPayment === MethodPaymentEnum.CARD ? "Cartão" : "Pix",
-          [`Pedido criado: #${order.id}`, paymentDetails]
+          [`Pedido criado: #${order.data.id}`, paymentDetails]
             .filter(Boolean)
             .join("\n"),
         ),

@@ -23,6 +23,16 @@ export enum StatusOrderIDEnum {
   DELIVERED = 6,
 }
 
+export enum MethodPaymentIDEnum {
+  CARD = 1,
+  PIX = 2,
+}
+
+export enum DeliveryMethodEnum {
+  PICKUP = "RETIRADA",
+  DELIVERY = "ENTREGA",
+}
+
 export type ProductsItemsResponse = {
   id: string;
   orderId: string;
@@ -69,6 +79,8 @@ export type OrdersResponse = {
   catalogClientId: number;
   total: number;
   statusOrderId: number;
+  methodPaymentId?: MethodPaymentIDEnum;
+  deliveryMethod?: DeliveryMethodEnum;
   items?: ProductsItemsResponse[];
   createdAt: string;
   updatedAt: string;
@@ -79,6 +91,8 @@ export interface CreateOrdersRequest {
   total: number;
   statusOrderId: number;
   items: ProductsItemsRequest[];
+  methodPaymentId: MethodPaymentIDEnum;
+  deliveryMethod: DeliveryMethodEnum;
 }
 
 export interface CreateOrdersResponse {

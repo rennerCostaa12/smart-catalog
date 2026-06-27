@@ -8,10 +8,38 @@ import { useAuth } from "../../../context/auth/useAuth";
 import { ordersService } from "../../../services/orders";
 import { brlFormatter } from "../../../utils/brlFormatter";
 import type { OrderProps } from "./components/OrderCard/types";
-import type { OrdersResponse } from "../../../services/orders/types";
+import {
+  DeliveryMethodEnum,
+  MethodPaymentIDEnum,
+  type OrdersResponse,
+} from "../../../services/orders/types";
 import { formatOrderDate } from "../../../utils/dates";
 
 import { OrderStatusEnum } from "../../../components/StatusBadge/types";
+
+function formatMethodPayment(methodPaymentId?: MethodPaymentIDEnum) {
+  if (methodPaymentId === MethodPaymentIDEnum.CARD) {
+    return "Cartão";
+  }
+
+  if (methodPaymentId === MethodPaymentIDEnum.PIX) {
+    return "Pix";
+  }
+
+  return "Não informado";
+}
+
+function formatDeliveryMethod(deliveryMethod?: DeliveryMethodEnum) {
+  if (deliveryMethod === DeliveryMethodEnum.DELIVERY) {
+    return "Entrega";
+  }
+
+  if (deliveryMethod === DeliveryMethodEnum.PICKUP) {
+    return "Retirada";
+  }
+
+  return "Não informado";
+}
 
 function mapOrder(order: OrdersResponse): OrderProps {
   return {
@@ -19,6 +47,8 @@ function mapOrder(order: OrdersResponse): OrderProps {
     date: formatOrderDate(order?.createdAt),
     status: OrderStatusEnum.Processing,
     total: brlFormatter.format(order?.total),
+    methodPayment: formatMethodPayment(order?.methodPaymentId),
+    deliveryMethod: formatDeliveryMethod(order?.deliveryMethod),
     items: (order?.items ?? []).map((item) => ({
       name:
         item.product?.name ??
@@ -48,7 +78,7 @@ export function useMyOrders() {
     refetch,
   } = useQuery({
     queryKey: ["orders", "list", userId],
-    queryFn: () => ordersService.listOrders(userId!, sessionUser?.token),
+    queryFn: () => ordersService.listOrders(userId!),
     enabled: Boolean(userId),
     select: (orders) => orders?.data?.map(mapOrder),
   });
