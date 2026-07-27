@@ -6,7 +6,7 @@ export const options = [
     url: ROUTE_SEGMENTS.products.myOrders,
   },
   {
-    name: "Configurações",
-    url: "/produtos/configuracoes",
+    name: "Configurações da conta",
+    url: ROUTE_SEGMENTS.products.accountSettings,
   },
 ];

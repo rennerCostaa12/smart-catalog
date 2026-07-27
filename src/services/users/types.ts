@@ -1,4 +1,4 @@
-export interface ICreateUsersRequest {
+export interface IUserRequest {
   name: string;
   email: string;
   phone: string;
@@ -9,4 +9,12 @@ export interface ICreateUsersResponse {
   name: string;
   email: string;
   phone: string;
+}
+
+export interface IUpdateUsersResponse {
+  data: {
+    name: string;
+    email: string;
+    phone: string;
+  };
 }

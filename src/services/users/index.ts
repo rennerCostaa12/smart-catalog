@@ -1,16 +1,33 @@
 import { httpClient, HttpMethod, type HttpClient } from "../../http";
-import type { ICreateUsersRequest, ICreateUsersResponse } from "./types";
+import type {
+  IUserRequest,
+  ICreateUsersResponse,
+  IUpdateUsersResponse,
+} from "./types";
 
 export class UsersService {
   constructor(private readonly client: HttpClient = httpClient) {}
 
-  async createUser(data: ICreateUsersRequest) {
+  async createUser(data: IUserRequest) {
     const response = await this.client.request<
       ICreateUsersResponse,
-      ICreateUsersRequest
+      IUserRequest
     >({
       url: "/users",
       method: HttpMethod.Post,
+      data,
+    });
+
+    return response.data;
+  }
+
+  async updateUser(data: IUserRequest, userId: number) {
+    const response = await this.client.request<
+      IUpdateUsersResponse,
+      IUserRequest
+    >({
+      url: `/users/${userId}`,
+      method: HttpMethod.Patch,
       data,
     });
 
@@ -20,4 +37,4 @@ export class UsersService {
 
 export const usersService = new UsersService();
 
-export type { ICreateUsersRequest, ICreateUsersResponse };
+export type { IUserRequest, ICreateUsersResponse, IUpdateUsersResponse };

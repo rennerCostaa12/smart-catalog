@@ -24,4 +24,4 @@ export type {
   ProductsProps,
 } from "./products";
 export { usersService, UsersService } from "./users";
-export type { ICreateUsersRequest, ICreateUsersResponse } from "./users";
+export type { IUserRequest, ICreateUsersResponse, IUpdateUsersResponse } from "./users";

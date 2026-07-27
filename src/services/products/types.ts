@@ -6,6 +6,7 @@ export type ProductsProps = {
   imageUrl: string;
   categoriesId: number;
   catalogClientId: number;
+  isActive: boolean;
   categoryName?: string;
   createdAt: string;
   updatedAt: string;

@@ -12,6 +12,10 @@ export const routesApplication = [
     ),
     route(ROUTE_SEGMENTS.products.carts, "routes/products/carts.tsx"),
     route(ROUTE_SEGMENTS.products.myOrders, "routes/products/myorders.tsx"),
+    route(
+      ROUTE_SEGMENTS.products.accountSettings,
+      "routes/products/accountsettings.tsx",
+    ),
     route(ROUTE_SEGMENTS.products.aboutUs, "routes/products/aboutus.tsx"),
     route(ROUTE_SEGMENTS.products.contact, "routes/products/contact.tsx"),
   ]),

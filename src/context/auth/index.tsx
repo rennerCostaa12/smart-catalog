@@ -30,10 +30,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const completeAuthentication = (authenticatedUser: AuthUser) => {
     const sessionUser = {
-      id: authenticatedUser.id,
-      email: authenticatedUser.email.trim(),
-      name: authenticatedUser.name.trim(),
-      token: authenticatedUser.token,
+      id: authenticatedUser?.id,
+      email: authenticatedUser?.email.trim(),
+      name: authenticatedUser?.name.trim(),
+      token: authenticatedUser?.token,
       phone: Mask.phone(authenticatedUser?.phone.trim()),
     };
 

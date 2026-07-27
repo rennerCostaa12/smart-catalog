@@ -7,7 +7,10 @@ import { useAuth } from "../../../../context/auth/useAuth";
 
 export function UserMenu({ options, className }: IUserMenuProps) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+  const menuOptions = options.filter(
+    (option) => isAuthenticated || option.name !== "Configurações da conta",
+  );
 
   return (
     <div
@@ -17,7 +20,7 @@ export function UserMenu({ options, className }: IUserMenuProps) {
         className,
       )}
     >
-      {options.map((option) => (
+      {menuOptions.map((option) => (
         <button
           key={option.name}
           type="button"
