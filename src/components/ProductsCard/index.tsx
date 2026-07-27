@@ -1,4 +1,5 @@
 import { ProductsCardButton } from "./ProductsCardButton";
+import { ProductsCardCategory } from "./ProductsCardCategory";
 import { ProductsCardContent } from "./ProductsCardContent";
 import { ProductsCardFooter } from "./ProductsCardFooter";
 import { ProductsCardIcon } from "./ProductsCardIcon";
@@ -17,6 +18,7 @@ export {
   ProductsCardPrice,
   ProductsCardRoot,
   ProductsCardTitle,
+  ProductsCardCategory,
 };
 
 export const ProductsCard: IProductsCardType = {
@@ -28,4 +30,5 @@ export const ProductsCard: IProductsCardType = {
   Footer: ProductsCardFooter,
   Price: ProductsCardPrice,
   Icon: ProductsCardIcon,
+  Category: ProductsCardCategory,
 };

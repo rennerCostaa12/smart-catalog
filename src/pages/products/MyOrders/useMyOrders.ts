@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { ROUTE_SEGMENTS } from "../../../../app/constants";
-import { readAuthSessionCookie } from "../../../context/auth/sessionCookie";
 import { useAuth } from "../../../context/auth/useAuth";
 import { ordersService } from "../../../services/orders";
 import { brlFormatter } from "../../../utils/brlFormatter";
@@ -65,7 +64,7 @@ function mapOrder(order: OrdersResponse): OrderProps {
 export function useMyOrders() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const sessionUser = user ?? readAuthSessionCookie();
+  const sessionUser = user;
   const userId = sessionUser?.id.toString();
 
   const [orderSelected, setOrderSelected] = useState<OrderProps | null>(null);
@@ -88,7 +87,7 @@ export function useMyOrders() {
   };
 
   useEffect(() => {
-    if (!user && !readAuthSessionCookie()) {
+    if (!user) {
       navigate(`../${ROUTE_SEGMENTS.products.listProducts}?categoria=todos`, {
         replace: true,
       });

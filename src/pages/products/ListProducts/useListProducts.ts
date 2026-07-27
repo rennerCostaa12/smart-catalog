@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CategoryEnum, type ProductFilter } from "../types";
 import { useCart } from "../../../context/cart/useCart";
 import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
@@ -10,7 +10,7 @@ import type { ProductsProps } from "../../../services";
 import { productsQueryOptions } from "../../../services/products/queries";
 import { useMobile } from "../../../hooks/useMobile";
 import { BREAKPOINTS } from "../../../hooks/useMobile/constants";
-import { PRODUCTS_PER_PAGE } from "./constants";
+import { PRODUCTS_PER_PAGE, getIdByCategoryName } from "./constants";
 
 export function useListProducts() {
   const { getInfoCatalogClient } = useCatalogClient();
@@ -22,7 +22,6 @@ export function useListProducts() {
 
   const [searchItem, setSearchItem] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
-  const [mobileProducts, setMobileProducts] = useState<ProductsProps[]>([]);
 
   const nameCategory = searchParams.get("categoria");
   const pageParam = Number(searchParams.get("pagina"));
@@ -30,6 +29,8 @@ export function useListProducts() {
     Number.isInteger(pageParam) && pageParam > 0 ? pageParam : 1;
 
   const catalogClient = getInfoCatalogClient();
+
+  const categoryData = getIdByCategoryName(nameCategory);
 
   const { addCart } = useCart();
   const {
@@ -43,6 +44,8 @@ export function useListProducts() {
       catalogClientName: catalogClient?.slug ?? "",
       page: currentPage,
       limit: PRODUCTS_PER_PAGE,
+      search: searchItem,
+      categoria: categoryData?.id,
     }),
   );
   const products = productsResponse?.data?.products ?? [];
@@ -61,14 +64,12 @@ export function useListProducts() {
   };
 
   const handleSelectCategory = (category: ProductFilter) => {
-    setMobileProducts([]);
     setSearchParams({ categoria: category.toLocaleLowerCase() });
   };
 
   const handleSearch = useDebounceFn((text: string) => {
     setSearchItem(text);
     setProductSelected(null);
-    setMobileProducts([]);
     setSearchParams((currentSearchParams) => {
       currentSearchParams.delete("pagina");
       return currentSearchParams;
@@ -102,66 +103,6 @@ export function useListProducts() {
 
   const isMobile = useMobile({ breakpoint: BREAKPOINTS.sm });
 
-  const itemsFiltered = useMemo(() => {
-    const filteredProducts = products?.filter((product) =>
-      product.name
-        .toLocaleLowerCase()
-        .includes(searchItem?.toLocaleLowerCase()),
-    );
-
-    if (nameCategory !== CategoryEnum.ALL) {
-      return filteredProducts?.filter(
-        (data) =>
-          data?.categoryName?.toLocaleLowerCase() ===
-          nameCategory?.toLocaleLowerCase(),
-      );
-    }
-
-    return filteredProducts;
-  }, [searchItem, products, nameCategory]);
-
-  const mobileItemsFiltered = useMemo(() => {
-    const loadedProducts = mobileProducts?.length ? mobileProducts : products;
-    const filteredProducts = loadedProducts?.filter((product) =>
-      product.name
-        .toLocaleLowerCase()
-        .includes(searchItem?.toLocaleLowerCase()),
-    );
-
-    if (nameCategory !== CategoryEnum.ALL) {
-      return filteredProducts?.filter(
-        (data) =>
-          data?.categoryName?.toLocaleLowerCase() ===
-          nameCategory?.toLocaleLowerCase(),
-      );
-    }
-
-    return filteredProducts;
-  }, [mobileProducts, nameCategory, products, searchItem]);
-
-  useEffect(() => {
-    const receivedProducts = productsResponse?.data?.products;
-
-    if (!receivedProducts) {
-      return;
-    }
-
-    setMobileProducts((currentProducts) => {
-      if (currentPage === 1) {
-        return receivedProducts;
-      }
-
-      const productsById = new Map(
-        [...currentProducts, ...receivedProducts]?.map((product) => [
-          product.id,
-          product,
-        ]),
-      );
-
-      return [...productsById?.values()];
-    });
-  }, [currentPage, productsResponse]);
-
   useEffect(() => {
     if (!nameCategory) {
       setSearchParams({ categoria: CategoryEnum.ALL }, { replace: true });
@@ -174,16 +115,13 @@ export function useListProducts() {
     }
   }, [currentPage, pagination?.totalPages]);
 
-  const hasNotProducts =
-    mobileItemsFiltered?.length > 0 || itemsFiltered?.length > 0;
+  const hasNotProducts = products?.length > 0;
 
   return {
     handleSelectItem,
     productSelected,
     handleCloseDetailsProduct,
     handleAddInCart,
-    itemsFiltered,
-    mobileItemsFiltered,
     handleSelectCategory,
     nameCategory,
     searchValue,
@@ -198,5 +136,6 @@ export function useListProducts() {
     refetch,
     isMobile,
     hasNotProducts,
+    products,
   };
 }

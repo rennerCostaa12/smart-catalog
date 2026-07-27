@@ -2,6 +2,7 @@ import { AxiosHttpClient } from "./AxiosHttpClient";
 
 export const httpClient = new AxiosHttpClient({
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 });
 
 export { AxiosHttpClient };

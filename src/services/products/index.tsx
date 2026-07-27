@@ -9,7 +9,7 @@ export class ProductsServices {
   constructor(private readonly client: HttpClient = httpClient) {}
 
   async getProducts({ page = 1, limit = 10, ...data }: IGetProductsRequest) {
-    const { catalogClientName, ...dataRequest } = data;
+    const { catalogClientName, search, categoria, ...dataRequest } = data;
 
     const response = await this.client.request<IGetProductsResponse>({
       url: `/products/catalog-client/${catalogClientName}`,
@@ -18,6 +18,8 @@ export class ProductsServices {
       params: {
         page,
         limit,
+        search,
+        categoria,
       },
     });
 

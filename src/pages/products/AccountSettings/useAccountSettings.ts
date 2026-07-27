@@ -7,7 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 
 import { ROUTE_SEGMENTS } from "../../../../app/constants";
-import { readAuthSessionCookie } from "../../../context/auth/sessionCookie";
 import { useAuth } from "../../../context/auth/useAuth";
 import { usersService } from "../../../services";
 import { Mask } from "../../../utils/mask";
@@ -17,7 +16,7 @@ import { accountSettingsSchema } from "./schema";
 export function useAccountSettings() {
   const { authenticate, user } = useAuth();
   const navigate = useNavigate();
-  const sessionUser = user ?? readAuthSessionCookie();
+  const sessionUser = user;
   const [isEditing, setIsEditing] = useState(false);
 
   const { control, reset, handleSubmit } = useForm<AccountSettingsSchemaProps>({

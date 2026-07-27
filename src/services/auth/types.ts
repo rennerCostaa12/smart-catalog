@@ -8,10 +8,17 @@ export type UserProps = {
 export interface ISignInUserResponse {
   data: {
     user: UserProps;
-    token: string;
   };
 }
 
 export interface ISignInUserRequest {
   email: string;
+}
+
+export interface ILogoutResponse {
+  data: null;
+}
+
+export interface IMeResponse {
+  data: UserProps;
 }

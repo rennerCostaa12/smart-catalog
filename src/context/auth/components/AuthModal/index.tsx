@@ -38,10 +38,7 @@ export function AuthModal({
     try {
       const response = await signInMutation.mutateAsync(values);
 
-      onAuthenticate({
-        ...response.data?.user,
-        token: response.data?.token,
-      });
+      onAuthenticate(response.data.user);
       reset(initialAuthValues);
     } catch (error) {
       console.error(error);

@@ -1,4 +1,3 @@
-import { readAuthSessionCookie } from "../../context/auth/sessionCookie";
 import { httpClient, HttpMethod, type HttpClient } from "../../http";
 import type {
   CreateOrdersRequest,

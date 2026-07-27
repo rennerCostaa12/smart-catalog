@@ -47,10 +47,7 @@ export function RegisterUserModal({
     try {
       const response = await registerMutation.mutateAsync(values);
 
-      onRegister({
-        ...response.data.user,
-        token: response.data.token,
-      });
+      onRegister(response.data.user);
       reset(initialRegisterUserValues);
     } catch (error) {
       console.error(error);

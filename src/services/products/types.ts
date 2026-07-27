@@ -24,6 +24,7 @@ export interface IGetProductsRequest {
   limit?: number;
   catalogClientName: string;
   categoria?: number | null;
+  search?: string;
 }
 
 export interface IGetProductsResponse {

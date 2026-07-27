@@ -18,7 +18,6 @@ export type AuthUser = {
   name: string;
   email: string;
   phone: string;
-  token: string;
 };
 
 export type AuthLoginData = {
@@ -39,6 +38,9 @@ export type AuthContextData = {
   logout: () => void;
   requestAuthentication: (onAuthenticated?: () => void) => void;
   closeAuthModal: () => void;
+  errorUserData: boolean;
+  refetchUserData: () => void;
+  isLoadingUserData: boolean;
 };
 
 export type AuthProviderProps = {

@@ -1,6 +1,11 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { useState } from "react";
 import type { QueryProviderProps } from "./types";
+import { toast } from "react-toastify";
 
 export function QueryProvider({ children }: QueryProviderProps) {
   const [queryClient] = useState(
@@ -16,6 +21,17 @@ export function QueryProvider({ children }: QueryProviderProps) {
             retry: 0,
           },
         },
+        queryCache: new QueryCache({
+          onError: (error, query) => {
+            const customMessage = query.meta?.errorMessage as string;
+
+            const messageError =
+              (error instanceof Error ? error.message : undefined) ??
+              customMessage;
+
+            toast.error(messageError);
+          },
+        }),
       }),
   );
 

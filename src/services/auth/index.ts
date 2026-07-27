@@ -1,5 +1,10 @@
 import { httpClient, HttpMethod, type HttpClient } from "../../http";
-import type { ISignInUserRequest, ISignInUserResponse } from "./types";
+import type {
+  ILogoutResponse,
+  IMeResponse,
+  ISignInUserRequest,
+  ISignInUserResponse,
+} from "./types";
 
 export class AuthService {
   constructor(private readonly client: HttpClient = httpClient) {}
@@ -12,6 +17,24 @@ export class AuthService {
       url: "/auth/users/login",
       method: HttpMethod.Post,
       data,
+    });
+
+    return response.data;
+  }
+
+  async logout() {
+    const response = await this.client.request<ILogoutResponse>({
+      url: "/auth/logout",
+      method: HttpMethod.Post,
+    });
+
+    return response.data;
+  }
+
+  async me() {
+    const response = await this.client.request<IMeResponse>({
+      url: "/auth/me",
+      method: HttpMethod.Get,
     });
 
     return response.data;

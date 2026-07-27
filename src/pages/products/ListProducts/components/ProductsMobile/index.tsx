@@ -6,7 +6,6 @@ export function ProductsMobile({
   items,
   handleSelectItem,
 }: IListProductsProps) {
-
   return (
     <div className="mt-8 grid grid-cols-2 gap-4 sm:hidden">
       {!error &&
@@ -20,6 +19,9 @@ export function ProductsMobile({
 
             <ProductsCard.Content>
               <ProductsCard.Title>{product.name}</ProductsCard.Title>
+              <ProductsCard.Category>
+                {product.categoryName}
+              </ProductsCard.Category>
 
               <ProductsCard.Footer>
                 <ProductsCard.Price price={product.value} />

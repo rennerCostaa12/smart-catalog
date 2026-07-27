@@ -10,10 +10,11 @@ import type { IHeaderProps } from "./types";
 import { MenuUserDesktop } from "./components/MenuUserDesktop";
 import { MenuUserMobile } from "./components/MenuUserMobile";
 import { options } from "./constant";
+import { LoadingSpinner } from "../ui/LoadingSpinner";
 
 export function Header({ onOpenMenu }: IHeaderProps) {
   const { cart } = useCart();
-  const { user } = useAuth();
+  const { user, errorUserData, refetchUserData, isLoadingUserData } = useAuth();
 
   const username = user?.name || user?.email;
 
@@ -40,11 +41,25 @@ export function Header({ onOpenMenu }: IHeaderProps) {
             <CartButton itemsCart={cart ?? []} />
           </div>
 
-          {user && (
-            <>
-              <MenuUserDesktop options={options} username={username} />
-              <MenuUserMobile options={options} username={username} />
-            </>
+          {isLoadingUserData && <LoadingSpinner size={25} />}
+
+          {errorUserData && !isLoadingUserData ? (
+            <Button
+              className="max-sm:w-[150px] w-[185px] cursor-pointer"
+              variant="outline"
+              onClick={refetchUserData}
+            >
+              Tentar Novamente
+            </Button>
+          ) : (
+            user &&
+            !errorUserData &&
+            !isLoadingUserData && (
+              <>
+                <MenuUserDesktop options={options} username={username} />
+                <MenuUserMobile options={options} username={username} />
+              </>
+            )
           )}
         </div>
       </Container>

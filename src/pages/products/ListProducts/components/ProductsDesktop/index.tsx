@@ -21,6 +21,9 @@ export function ProductsDesktop({
 
             <ProductsCard.Content>
               <ProductsCard.Title>{product.name}</ProductsCard.Title>
+              <ProductsCard.Category>
+                {product.categoryName}
+              </ProductsCard.Category>
 
               <ProductsCard.Footer>
                 <ProductsCard.Price price={product.value} />

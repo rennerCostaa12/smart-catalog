@@ -1,4 +1,5 @@
 import type { IProductsCardButtonProps } from "./ProductsCardButton/types";
+import type { IProductsCardCategoryProps } from "./ProductsCardCategory/types";
 import type { IProductsCardContentProps } from "./ProductsCardContent/types";
 import type { IProductsCardFooterProps } from "./ProductsCardFooter/types";
 import type { IProductsCardIconProps } from "./ProductsCardIcon/types";
@@ -27,4 +28,5 @@ export interface IProductsCardType {
   Footer: (props: IProductsCardFooterProps) => React.JSX.Element;
   Price: (props: IProductsCardPriceProps) => React.JSX.Element;
   Icon: (props: IProductsCardIconProps) => React.JSX.Element;
+  Category: (props: IProductsCardCategoryProps) => React.JSX.Element;
 }

@@ -7,10 +7,10 @@ export type ProductFilter =
 
 export enum CategoryEnum {
   ALL = "todos",
-  ELETRONIC = "eletronicos",
-  ACCESSORY = "acessorios",
+  ELETRONIC = "eletrônicos",
+  ACCESSORY = "acessórios",
   HOME = "casa",
-  ESCRITÓRIO = "escritorio",
+  DESK = "escritório",
 }
 
 export type ProductCategory = Exclude<ProductFilter, "Todos">;

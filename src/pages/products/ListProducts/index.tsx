@@ -21,8 +21,7 @@ export function ListProductsPage() {
     productSelected,
     handleCloseDetailsProduct,
     handleAddInCart,
-    itemsFiltered,
-    mobileItemsFiltered,
+    products,
     handleSelectCategory,
     nameCategory,
     searchValue,
@@ -117,13 +116,13 @@ export function ListProductsPage() {
           ) : isMobile ? (
             <ProductsMobile
               handleSelectItem={handleSelectItem}
-              items={mobileItemsFiltered}
+              items={products}
               error={error}
             />
           ) : (
             <ProductsDesktop
               handleSelectItem={handleSelectItem}
-              items={itemsFiltered}
+              items={products}
               error={error}
               isPending={isPending}
             />

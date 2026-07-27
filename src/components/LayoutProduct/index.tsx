@@ -6,7 +6,6 @@ import { SideMenu } from "../SideMenu";
 
 import type { ILayoutProps } from "./types";
 import { menuItemsProducts } from "./constants";
-import { AuthProvider } from "../../context/auth";
 
 export function LayoutProduct({ children }: ILayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,25 +15,23 @@ export function LayoutProduct({ children }: ILayoutProps) {
   };
 
   return (
-    <AuthProvider>
-      <main className="flex min-h-screen flex-col bg-background">
-        <Header
-          onOpenMenu={handleOpenMenu}
-        />
+    <main className="flex min-h-screen flex-col bg-background">
+      <Header
+        onOpenMenu={handleOpenMenu}
+      />
 
-        <MenuMobile
-          isMobileMenuOpen={isMobileMenuOpen}
-          setIsMobileMenuOpen={setIsMobileMenuOpen}
-          menuItems={menuItemsProducts}
-        />
+      <MenuMobile
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        menuItems={menuItemsProducts}
+      />
 
-        <Container className="flex flex-1 max-h-[89.3vh]">
-          <section className="flex flex-1 flex-col overflow-hidden bg-surface shadow-sm lg:flex-row max-h-screen">
-            <SideMenu className="max-lg:hidden" menuItems={menuItemsProducts} />
-            {children}
-          </section>
-        </Container>
-      </main>
-    </AuthProvider>
+      <Container className="flex flex-1 max-h-[89.3vh]">
+        <section className="flex flex-1 flex-col overflow-hidden bg-surface shadow-sm lg:flex-row max-h-screen">
+          <SideMenu className="max-lg:hidden" menuItems={menuItemsProducts} />
+          {children}
+        </section>
+      </Container>
+    </main>
   );
 }

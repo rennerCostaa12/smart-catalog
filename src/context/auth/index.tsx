@@ -2,15 +2,18 @@ import { createContext, useCallback, useEffect, useState } from "react";
 
 import { AuthModal } from "./components/AuthModal";
 import { RegisterUserModal } from "./components/RegisterUserModal";
-import {
-  clearAuthSessionCookie,
-  getAuthSessionExpiration,
-  isAuthSessionValid,
-  readAuthSessionCookie,
-  writeAuthSessionCookie,
-} from "./sessionCookie";
+import { AUTH_SESSION_FLAG_STORAGE_KEY } from "./constants";
 import type { AuthContextData, AuthProviderProps, AuthUser } from "./types";
 import { Mask } from "../../utils/mask";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { authService } from "../../services";
+import type { ILogoutResponse } from "../../services/auth/types";
+import { toast } from "react-toastify";
+import { authMeClientQueryOptions } from "../../services/auth/queries";
+import { useParams } from "react-router";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { subscribeUnauthorized } from "../../http/unauthorized";
 
 export const AuthContext = createContext({} as AuthContextData);
 
@@ -21,6 +24,48 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [pendingAction, setPendingAction] = useState<
     (() => void) | undefined
   >();
+  const { catalogClientName = "" } = useParams();
+  const { get: getAuthSessionFlag, setter: setAuthSessionFlag } =
+    useLocalStorage(AUTH_SESSION_FLAG_STORAGE_KEY);
+
+  const persistAuthSessionFlag = useCallback(
+    (hasSession: boolean) => {
+      setAuthSessionFlag(hasSession);
+    },
+    [setAuthSessionFlag],
+  );
+
+  useEffect(() => {
+    return subscribeUnauthorized(() => {
+      persistAuthSessionFlag(false);
+      setUser(null);
+      setIsRegisterUserModalOpen(false);
+      setIsAuthModalOpen(true);
+    });
+  }, [persistAuthSessionFlag]);
+
+  const shouldFetchUserData = Boolean(getAuthSessionFlag()) && !user;
+  const queryOptions = authMeClientQueryOptions(catalogClientName);
+  const {
+    data: userData,
+    isError: isErrorUser,
+    refetch: refetchUserData,
+    isFetching: isFetchingUser,
+  } = useQuery({
+    ...queryOptions,
+    enabled: shouldFetchUserData,
+  });
+
+  useEffect(() => {
+    if (userData) {
+      setUser({
+        id: userData.id,
+        email: userData.email.trim(),
+        name: userData.name.trim(),
+        phone: Mask.phone(userData.phone.trim()),
+      });
+    }
+  }, [userData]);
 
   const closeAuthModal = () => {
     setIsAuthModalOpen(false);
@@ -28,20 +73,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setPendingAction(undefined);
   };
 
+  const { mutateAsync: logoutMutateAsync } = useMutation<
+    ILogoutResponse,
+    Error
+  >({
+    mutationFn: () => authService.logout(),
+  });
+
   const completeAuthentication = (authenticatedUser: AuthUser) => {
     const sessionUser = {
       id: authenticatedUser?.id,
       email: authenticatedUser?.email.trim(),
       name: authenticatedUser?.name.trim(),
-      token: authenticatedUser?.token,
       phone: Mask.phone(authenticatedUser?.phone.trim()),
     };
 
-    if (!writeAuthSessionCookie(sessionUser)) {
-      setUser(null);
-      return;
-    }
-
+    persistAuthSessionFlag(true);
     setUser(sessionUser);
 
     setIsAuthModalOpen(false);
@@ -50,56 +97,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setPendingAction(undefined);
   };
 
-  const logout = useCallback(() => {
-    clearAuthSessionCookie();
-    setUser(null);
-    setPendingAction(undefined);
-  }, []);
+  const logout = useCallback(async () => {
+    try {
+      await logoutMutateAsync();
 
-  useEffect(() => {
-    setUser(readAuthSessionCookie());
-  }, []);
+      persistAuthSessionFlag(false);
+      setUser(null);
+      setPendingAction(undefined);
+    } catch (error) {
+      console.error(error);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+      persistAuthSessionFlag(false);
+      setUser(null);
+      setPendingAction(undefined);
 
-    const expiresAt = getAuthSessionExpiration(user);
-
-    if (!expiresAt || !isAuthSessionValid(user)) {
-      logout();
-      return;
-    }
-
-    let timeout: number;
-    const scheduleExpirationCheck = () => {
-      const remainingTime = expiresAt - Date.now();
-
-      if (remainingTime <= 0) {
-        logout();
-        return;
-      }
-
-      timeout = window.setTimeout(
-        scheduleExpirationCheck,
-        Math.min(remainingTime, 2_147_483_647),
+      toast.error(
+        (error instanceof Error ? error.message : undefined) ??
+          "Não foi possível realizar logout. Tente novamente!",
       );
-    };
-
-    scheduleExpirationCheck();
-
-    return () => window.clearTimeout(timeout);
-  }, [logout, user]);
+    }
+  }, [logoutMutateAsync, persistAuthSessionFlag]);
 
   const requestAuthentication = (onAuthenticated?: () => void) => {
-    if (user && isAuthSessionValid(user)) {
+    if (user) {
       onAuthenticated?.();
       return;
-    }
-
-    if (user) {
-      logout();
     }
 
     setPendingAction(() => onAuthenticated);
@@ -121,6 +143,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         logout,
         requestAuthentication,
         closeAuthModal,
+        errorUserData: shouldFetchUserData && isErrorUser,
+        refetchUserData,
+        isLoadingUserData: shouldFetchUserData && isFetchingUser,
       }}
     >
       {children}

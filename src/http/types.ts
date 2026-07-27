@@ -29,3 +29,5 @@ export interface HttpClient {
     request: HttpRequest<TData>,
   ): Promise<HttpResponse<TResponse>>;
 }
+
+export type UnauthorizedListener = () => void;

@@ -8,7 +8,7 @@ export function ProductsDetailsRoot({
   return (
     <section
       className={cn(
-        "relative flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm max-lg:rounded-b-none",
+        "relative flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm max-lg:rounded-b-none max-md:min-w-auto min-w-100",
         className,
       )}
     >
