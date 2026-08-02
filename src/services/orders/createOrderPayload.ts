@@ -12,6 +12,7 @@ export function createOrderPayload(
   total: number,
   methodPayment: MethodPaymentIDEnum,
   methodDelivery: DeliveryMethodEnum,
+  paymentId: number | null,
 ): CreateOrdersRequest {
   return {
     catalogClientId,
@@ -25,5 +26,6 @@ export function createOrderPayload(
       unitPrice: item.value,
       subtotal: item.value * item.quantity,
     })),
+    paymentId,
   };
 }

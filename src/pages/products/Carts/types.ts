@@ -10,4 +10,5 @@ export type CartFormData = ICardPaymentValues & {
   receiverNameValue: string;
   documentValue: string;
   methodPayment: MethodPaymentEnum;
+  paymentId?: number | null;
 };

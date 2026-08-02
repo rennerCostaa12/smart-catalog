@@ -163,6 +163,9 @@ export function ListProductsPage() {
                   <ProductsDetails.Category>
                     {productSelected.categoryName}
                   </ProductsDetails.Category>
+                  <ProductsDetails.Category className="text-[12px] text-gray-500">
+                    UNIDADES: {productSelected.stock}
+                  </ProductsDetails.Category>
                   <ProductsDetails.Title>
                     {productSelected.name}
                   </ProductsDetails.Title>

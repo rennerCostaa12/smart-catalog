@@ -74,7 +74,7 @@ export function CartsPage() {
                   <img
                     src={product.imageUrl}
                     alt={product.name}
-                    className="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-24"
+                    className="h-40 w-full rounded-xl object-cover sm:h-24 sm:w-24"
                   />
 
                   <div className="min-w-0 flex-1">

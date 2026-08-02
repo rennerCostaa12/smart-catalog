@@ -203,6 +203,7 @@ export function useCart() {
           totalPrice,
           getOrderMethodPayment(values.methodPayment),
           getOrderDeliveryMethod(values.deliveryMethod),
+          Number(values?.paymentId),
         ),
         String(user?.id),
       );
@@ -233,7 +234,10 @@ export function useCart() {
 
     try {
       const payment = await paymentMutation.mutateAsync(values);
-      const order = await orderMutation.mutateAsync(values);
+      const order = await orderMutation.mutateAsync({
+        ...values,
+        paymentId: payment.data.paymentId,
+      });
 
       const {
         deliveryDetails,

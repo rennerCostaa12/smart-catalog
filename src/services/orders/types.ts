@@ -93,6 +93,7 @@ export interface CreateOrdersRequest {
   items: ProductsItemsRequest[];
   methodPaymentId: MethodPaymentIDEnum;
   deliveryMethod: DeliveryMethodEnum;
+  paymentId?: number | null;
 }
 
 export interface CreateOrdersResponse {

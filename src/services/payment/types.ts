@@ -19,6 +19,7 @@ export interface AsaasPaymentResponse {
       creditCardBrand?: string;
       creditCardToken?: string;
     };
+    paymentId: number;
   };
 }
 
@@ -60,7 +61,7 @@ export type CustomerDataPix = {
   name: string;
   cpfCnpj: string;
   externalReference?: string;
-}
+};
 
 export interface CreatePixPaymentRequest {
   customer?: string;

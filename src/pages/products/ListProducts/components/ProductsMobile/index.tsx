@@ -19,6 +19,9 @@ export function ProductsMobile({
 
             <ProductsCard.Content>
               <ProductsCard.Title>{product.name}</ProductsCard.Title>
+              <ProductsCard.Category className="text-[12px] text-gray-500">
+                UNIDADES: {product.stock}
+              </ProductsCard.Category>
               <ProductsCard.Category>
                 {product.categoryName}
               </ProductsCard.Category>

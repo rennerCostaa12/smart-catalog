@@ -5,6 +5,7 @@ export type ProductsProps = {
   value: number;
   imageUrl: string;
   categoriesId: number;
+  stock: number;
   catalogClientId: number;
   isActive: boolean;
   categoryName?: string;

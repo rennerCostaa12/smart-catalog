@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CategoryEnum, type ProductFilter } from "../types";
 import { useCart } from "../../../context/cart/useCart";
 import { useCatalogClient } from "../../../context/catalogClient/useCatalogClient";
