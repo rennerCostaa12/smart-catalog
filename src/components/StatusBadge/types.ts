@@ -1,12 +1,15 @@
-export enum OrderStatusEnum {
-  Delivered = "Entregue",
-  InTransit = "Em transporte",
-  Processing = "Processando",
-  Canceled = "Cancelado",
-}
+import type { StatusOrderNameEnum } from "../../services/orders/types";
+import type { TypographyColor } from "../ui/typography/types";
 
-export type OrderStatus = `${OrderStatusEnum}`;
+export { StatusOrderNameEnum } from "../../services/orders/types";
+
+export type OrderStatus = `${StatusOrderNameEnum}`;
 
 export interface IStatusBadgeProps {
   status: OrderStatus;
 }
+
+export type OrderStatusColor = {
+  className: string;
+  color: TypographyColor;
+};

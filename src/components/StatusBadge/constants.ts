@@ -1,10 +1,28 @@
-import type { OrderStatus } from "./types";
+import { StatusOrderNameEnum, type OrderStatus, type OrderStatusColor } from "./types";
 
-export const statusStyles: Record<OrderStatus, string> = {
-  Entregue: "border-green-200 bg-green-50 text-green-700 before:bg-green-500",
-  "Em transporte":
-    "border-blue-200 bg-blue-50 text-blue-700 before:bg-blue-500",
-  Processando:
-    "border-orange-200 bg-orange-50 text-orange-700 before:bg-orange-500",
-  Cancelado: "border-red-200 bg-red-50 text-red-700 before:bg-red-500",
-};
+export const orderStatusColor = {
+  [StatusOrderNameEnum.PENDENTE]: {
+    className: "border-warning/20 bg-warning/10 before:bg-warning",
+    color: "warning",
+  },
+  [StatusOrderNameEnum.CONFIRMADO]: {
+    className: "border-primary/20 bg-primary-light before:bg-primary",
+    color: "primary",
+  },
+  [StatusOrderNameEnum.PREPARANDO]: {
+    className: "border-primary/20 bg-primary-light before:bg-primary",
+    color: "primary",
+  },
+  [StatusOrderNameEnum.PRONTO_PARA_ENTREGA]: {
+    className: "border-secondary/20 bg-secondary-light before:bg-success",
+    color: "success",
+  },
+  [StatusOrderNameEnum.PRONTO_PARA_RETIRADA]: {
+    className: "border-secondary/20 bg-secondary-light before:bg-success",
+    color: "success",
+  },
+  [StatusOrderNameEnum.ENTREGUE]: {
+    className: "border-border bg-surface-soft before:bg-text-muted",
+    color: "muted",
+  },
+} satisfies Record<OrderStatus, OrderStatusColor>;

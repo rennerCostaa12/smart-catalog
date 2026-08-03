@@ -1,3 +1,9 @@
+import type {
+  TypographyColor,
+  TypographyVariant,
+  TypographyWeight,
+} from "./types";
+
 const defaultElementByVariant: Record<TypographyVariant, React.ElementType> = {
   display: "h1",
   h1: "h1",
@@ -31,13 +37,14 @@ const typographyVariantClasses: Record<TypographyVariant, string> = {
 };
 
 const typographyColorClasses: Record<TypographyColor, string> = {
-  default: "text-slate-950",
-  muted: "text-slate-600",
-  soft: "text-slate-400",
-  primary: "text-blue-600",
-  success: "text-green-600",
-  danger: "text-red-500",
+  default: "text-text",
+  muted: "text-text-muted",
+  soft: "text-text-soft",
+  primary: "text-primary",
+  success: "text-success",
+  danger: "text-danger",
   white: "text-white",
+  warning: "text-warning",
 };
 
 const typographyWeightClasses: Record<TypographyWeight, string> = {

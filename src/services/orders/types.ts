@@ -6,12 +6,12 @@ type ProductsItemsRequest = {
 };
 
 export enum StatusOrderNameEnum {
-  PENDING = "PENDENTE",
-  CONFIRMED = "CONFIRMADO",
-  PREPARING = "PREPARANDO",
-  READY_FOR_DELIVERY = "PRONTO PARA ENTREGA",
-  READY_FOR_PICKUP = "PRONTO PARA RETIRADA",
-  DELIVERED = "ENTREGUE",
+  PENDENTE = "PENDENTE",
+  CONFIRMADO = "CONFIRMADO",
+  PREPARANDO = "PREPARANDO",
+  PRONTO_PARA_ENTREGA = "PRONTO PARA ENTREGA",
+  PRONTO_PARA_RETIRADA = "PRONTO PARA RETIRADA",
+  ENTREGUE = "ENTREGUE",
 }
 
 export enum StatusOrderIDEnum {
@@ -82,8 +82,10 @@ export type OrdersResponse = {
   methodPaymentId?: MethodPaymentIDEnum;
   deliveryMethod?: DeliveryMethodEnum;
   items?: ProductsItemsResponse[];
+  statusOrder: {
+    name: StatusOrderNameEnum
+  },
   createdAt: string;
-  updatedAt: string;
 };
 
 export interface CreateOrdersRequest {

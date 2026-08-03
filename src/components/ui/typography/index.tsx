@@ -7,6 +7,7 @@ import {
   typographyVariantClasses,
   typographyWeightClasses,
 } from "./constants";
+import type { TypographyProps } from "./types";
 
 export function Typography<T extends React.ElementType = "p">({
   as,

@@ -14,8 +14,6 @@ import {
 } from "../../../services/orders/types";
 import { formatOrderDate } from "../../../utils/dates";
 
-import { OrderStatusEnum } from "../../../components/StatusBadge/types";
-
 function formatMethodPayment(methodPaymentId?: MethodPaymentIDEnum) {
   if (methodPaymentId === MethodPaymentIDEnum.CARD) {
     return "Cartão";
@@ -44,7 +42,7 @@ function mapOrder(order: OrdersResponse): OrderProps {
   return {
     id: `#${order?.id}`,
     date: formatOrderDate(order?.createdAt),
-    status: OrderStatusEnum.Processing,
+    status: order.statusOrder.name,
     total: brlFormatter.format(order?.total),
     methodPayment: formatMethodPayment(order?.methodPaymentId),
     deliveryMethod: formatDeliveryMethod(order?.deliveryMethod),

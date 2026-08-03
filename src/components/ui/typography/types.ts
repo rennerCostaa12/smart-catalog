@@ -1,4 +1,4 @@
-type TypographyVariant =
+export type TypographyVariant =
   | "display"
   | "h1"
   | "h2"
@@ -13,18 +13,19 @@ type TypographyVariant =
   | "price"
   | "link";
 
-type TypographyColor =
+export type TypographyColor =
   | "default"
   | "muted"
   | "soft"
   | "primary"
   | "success"
   | "danger"
-  | "white";
+  | "white"
+  | "warning";
 
-type TypographyWeight = "regular" | "medium" | "semibold" | "bold";
+export type TypographyWeight = "regular" | "medium" | "semibold" | "bold";
 
-type TypographyProps<T extends React.ElementType> = {
+export type TypographyProps<T extends React.ElementType> = {
   as?: T;
   variant?: TypographyVariant;
   color?: TypographyColor;

@@ -134,6 +134,7 @@ export function useModalListItems() {
           totalPrice,
           getOrderMethodPayment(values.methodPayment),
           getOrderDeliveryMethod(values.deliveryMethod),
+          null,
         ),
         String(user.id),
       );
