@@ -73,6 +73,17 @@ type OrdersItems = {
   product: ProductItem;
 };
 
+export type UserAddressItem = {
+  label: string;
+  address: string;
+  neighborhood: string;
+  complement: string | null;
+  city: string;
+  state: string;
+  number: number;
+  postalCode: string;
+};
+
 export type OrdersResponse = {
   id: string;
   userId: number;
@@ -83,8 +94,9 @@ export type OrdersResponse = {
   deliveryMethod?: DeliveryMethodEnum;
   items?: ProductsItemsResponse[];
   statusOrder: {
-    name: StatusOrderNameEnum
-  },
+    name: StatusOrderNameEnum;
+  };
+  userAddress?: UserAddressItem | null;
   createdAt: string;
 };
 
@@ -96,6 +108,7 @@ export interface CreateOrdersRequest {
   methodPaymentId: MethodPaymentIDEnum;
   deliveryMethod: DeliveryMethodEnum;
   paymentId?: number | null;
+  userAddressId?: number | null;
 }
 
 export interface CreateOrdersResponse {

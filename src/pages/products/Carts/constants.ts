@@ -23,5 +23,6 @@ export const initialCartFormValues: CartFormData = {
   receiverNameValue: "",
   documentValue: "",
   methodPayment: MethodPaymentEnum.CARD,
+  userAddressId: null,
   ...initialCardValues,
 };

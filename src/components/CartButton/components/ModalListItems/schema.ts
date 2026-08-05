@@ -11,9 +11,17 @@ const modalListItemsSchema = yup
       .required(),
     addressValue: yup.string().when("deliveryMethod", {
       is: DeliveryMethodEnum.DELIVERY,
-      then: (schema) =>
-        schema.trim().required("Informe o endereco de entrega").defined(),
+      then: (schema) => schema.default("").defined(),
       otherwise: (schema) => schema.default("").defined(),
+    }),
+    userAddressId: yup.number().nullable().when("deliveryMethod", {
+      is: DeliveryMethodEnum.DELIVERY,
+      then: (schema) =>
+        schema
+          .typeError("Selecione um endereco de entrega")
+          .required("Selecione um endereco de entrega")
+          .defined(),
+      otherwise: (schema) => schema.nullable().default(null).defined(),
     }),
     receiverNameValue: yup.string().when("deliveryMethod", {
       is: DeliveryMethodEnum.DELIVERY,

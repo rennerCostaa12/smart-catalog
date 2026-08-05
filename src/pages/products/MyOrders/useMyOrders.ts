@@ -11,6 +11,7 @@ import {
   DeliveryMethodEnum,
   MethodPaymentIDEnum,
   type OrdersResponse,
+  type UserAddressItem,
 } from "../../../services/orders/types";
 import { formatOrderDate } from "../../../utils/dates";
 
@@ -38,7 +39,16 @@ function formatDeliveryMethod(deliveryMethod?: DeliveryMethodEnum) {
   return "Não informado";
 }
 
+function getOrderUserAddress(order: OrdersResponse): UserAddressItem | null {
+  return (
+    (order as OrdersResponse & { userAddress?: UserAddressItem | null })
+      .userAddress ?? null
+  );
+}
+
 function mapOrder(order: OrdersResponse): OrderProps {
+  const userAddress = getOrderUserAddress(order);
+
   return {
     id: `#${order?.id}`,
     date: formatOrderDate(order?.createdAt),
@@ -46,6 +56,7 @@ function mapOrder(order: OrdersResponse): OrderProps {
     total: brlFormatter.format(order?.total),
     methodPayment: formatMethodPayment(order?.methodPaymentId),
     deliveryMethod: formatDeliveryMethod(order?.deliveryMethod),
+    userAddress: userAddress ? userAddress : null,
     items: (order?.items ?? []).map((item) => ({
       name:
         item.product?.name ??

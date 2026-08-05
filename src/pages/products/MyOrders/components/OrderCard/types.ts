@@ -1,4 +1,5 @@
 import type { OrderStatus } from "../../../../../components/StatusBadge/types";
+import { type UserAddressItem } from "../../../../../services/orders/types";
 
 export type ProductItem = {
   name: string;
@@ -15,6 +16,7 @@ export type OrderProps = {
   total: string;
   methodPayment: string;
   deliveryMethod: string;
+  userAddress: UserAddressItem | null;
   items: ProductItem[];
 };
 

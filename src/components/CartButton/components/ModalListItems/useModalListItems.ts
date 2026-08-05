@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -29,6 +29,7 @@ export function useModalListItems() {
   const { addCart, removeCart, removeProductCart, cart: items } = useCart();
   const { user } = useAuth();
   const { getInfoCatalogClient } = useCatalogClient();
+  const queryClient = useQueryClient();
   const catalogClient = getInfoCatalogClient();
 
   const totalPrice = items.reduce(
@@ -52,6 +53,7 @@ export function useModalListItems() {
       receiverNameValue: "",
       documentValue: "",
       methodPayment: MethodPaymentEnum.CARD,
+      userAddressId: null,
       cardHolderName: "",
       cardNumber: "",
       expirationMonth: "",
@@ -135,6 +137,7 @@ export function useModalListItems() {
           getOrderMethodPayment(values.methodPayment),
           getOrderDeliveryMethod(values.deliveryMethod),
           null,
+          values.userAddressId ?? null,
         ),
         String(user.id),
       );
@@ -148,6 +151,9 @@ export function useModalListItems() {
 
     try {
       const order = await orderMutation.mutateAsync(values);
+      await queryClient.invalidateQueries({
+        queryKey: ["orders", "list", String(user?.id)],
+      });
 
       const deliveryMethodLabel =
         values.deliveryMethod === DeliveryMethodEnum.DELIVERY

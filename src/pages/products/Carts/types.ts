@@ -11,4 +11,5 @@ export type CartFormData = ICardPaymentValues & {
   documentValue: string;
   methodPayment: MethodPaymentEnum;
   paymentId?: number | null;
+  userAddressId?: number | null;
 };

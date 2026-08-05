@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import type { Resolver } from "react-hook-form";
@@ -140,6 +140,7 @@ export function useCart() {
     useCartContext();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { getInfoCatalogClient } = useCatalogClient();
 
@@ -204,6 +205,7 @@ export function useCart() {
           getOrderMethodPayment(values.methodPayment),
           getOrderDeliveryMethod(values.deliveryMethod),
           Number(values?.paymentId),
+          Number(values?.userAddressId),
         ),
         String(user?.id),
       );
@@ -237,6 +239,9 @@ export function useCart() {
       const order = await orderMutation.mutateAsync({
         ...values,
         paymentId: payment.data.paymentId,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["orders", "list", String(user.id)],
       });
 
       const {

@@ -1,10 +1,11 @@
-import { PackageOpen, ShoppingBag } from "lucide-react";
+import { MapPin, PackageOpen, ShoppingBag } from "lucide-react";
 
 import { Modal } from "../../../../../components/Modal";
 import { StatusBadge } from "../../../../../components/StatusBadge";
 import { Button } from "../../../../../components/ui/button";
 import { Typography } from "../../../../../components/ui/typography";
 import type { IModalDetailsOrderProps } from "./types";
+import { formatUserAddress } from "../../../../../utils/formatUserAddress";
 
 export function ModalDetailsOrder({
   open,
@@ -16,6 +17,7 @@ export function ModalDetailsOrder({
   }
 
   const hasItems = order?.items?.length > 0;
+  const hasAddress = Boolean(order.userAddress);
 
   return (
     <Modal.Root open={open}>
@@ -72,6 +74,30 @@ export function ModalDetailsOrder({
                 </div>
               </div>
             </div>
+
+            {hasAddress && (
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex gap-3">
+                  <div className="max-md:hidden flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                    <MapPin size={20} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <Typography variant="caption" color="muted">
+                      Endereco de entrega
+                    </Typography>
+                    <Typography variant="body" weight="bold">
+                      {order.userAddress?.label}
+                    </Typography>
+                    {order?.userAddress ? (
+                      <Typography variant="bodySmall" color="muted">
+                        {formatUserAddress(order.userAddress)}
+                      </Typography>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div>
               <Typography variant="body" weight="bold">
