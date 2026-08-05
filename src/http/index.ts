@@ -5,6 +5,10 @@ export const httpClient = new AxiosHttpClient({
   withCredentials: true,
 });
 
+export const httpClientCep = new AxiosHttpClient({
+  baseURL: import.meta.env.VITE_API_CEP,
+});
+
 export { AxiosHttpClient };
 export { HttpMethod } from "./types";
 export type {

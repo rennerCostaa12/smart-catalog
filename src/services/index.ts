@@ -23,5 +23,17 @@ export type {
   IGetProductsResponse,
   ProductsProps,
 } from "./products";
+export { cepServices, CepServices } from "./cep";
+export type { ICepResponse } from "./cep";
+export { userAddressServices, UserAddressServices } from "./user_address";
+export type {
+  IUserAddressRequest,
+  IUserAddressResponse,
+  UserAddressProps,
+} from "./user_address";
 export { usersService, UsersService } from "./users";
-export type { IUserRequest, ICreateUsersResponse, IUpdateUsersResponse } from "./users";
+export type {
+  IUserRequest,
+  ICreateUsersResponse,
+  IUpdateUsersResponse,
+} from "./users";

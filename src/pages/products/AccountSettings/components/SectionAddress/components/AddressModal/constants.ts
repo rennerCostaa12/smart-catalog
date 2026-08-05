@@ -1,0 +1,1 @@
+export const ZIP_CODE_DIGITS_LENGTH = 8;

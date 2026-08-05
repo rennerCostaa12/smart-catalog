@@ -1,35 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 
-import { ROUTE_SEGMENTS } from "../../../../app/constants";
-import { useAuth } from "../../../context/auth/useAuth";
-import { usersService } from "../../../services";
-import { Mask } from "../../../utils/mask";
-import { type AccountSettingsSchemaProps } from "./types";
-import { accountSettingsSchema } from "./schema";
+import { ROUTE_SEGMENTS } from "../../../../../../app/constants";
+import { useAuth } from "../../../../../context/auth/useAuth";
+import { usersService } from "../../../../../services";
+import { Mask } from "../../../../../utils/mask";
+import { sectionAccountSchema } from "./schema";
+import { type SectionAccountFormData } from "./types";
 
-export function useAccountSettings() {
+export function useSectionAccount() {
   const { authenticate, user } = useAuth();
   const navigate = useNavigate();
   const sessionUser = user;
   const [isEditing, setIsEditing] = useState(false);
 
-  const { control, reset, handleSubmit } = useForm<AccountSettingsSchemaProps>({
+  const { control, reset, handleSubmit } = useForm<SectionAccountFormData>({
     defaultValues: {
       name: sessionUser?.name,
       email: sessionUser?.email,
       phone: sessionUser?.phone,
     },
-    resolver: yupResolver(accountSettingsSchema),
+    resolver: yupResolver(sectionAccountSchema),
   });
 
   const updateUserMutation = useMutation({
-    mutationFn: (values: AccountSettingsSchemaProps) => {
+    mutationFn: (values: SectionAccountFormData) => {
       if (!sessionUser) {
         throw new Error("Entre na sua conta antes de atualizar seus dados.");
       }
@@ -61,6 +61,7 @@ export function useAccountSettings() {
   }, [
     navigate,
     reset,
+    sessionUser,
     sessionUser?.email,
     sessionUser?.name,
     sessionUser?.phone,
@@ -80,7 +81,7 @@ export function useAccountSettings() {
     setIsEditing(false);
   };
 
-  const handleSaveInfo = handleSubmit((data: AccountSettingsSchemaProps) => {
+  const handleSaveInfo = handleSubmit((data: SectionAccountFormData) => {
     if (!sessionUser) {
       return;
     }
