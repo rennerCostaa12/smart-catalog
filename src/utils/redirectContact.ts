@@ -1,5 +1,7 @@
+import { WHATSAPP_SELLER } from "../pages/products/Carts/constants";
+
 export function RedirectContact(
-  number = "5585989734951",
+  number = WHATSAPP_SELLER,
   messageWhatsApp?: string,
 ) {
   window.open(

@@ -1,4 +1,5 @@
 export const ROUTE_SEGMENTS = {
+  pixCheckout: "checkout-pix",
   products: {
     listProducts: "listar-produtos",
     carts: "carrinhos",
@@ -16,6 +17,7 @@ export const ROUTE_SEGMENTS = {
 
 export const ROUTES = {
   home: "/",
+  checkoutPix: `/${ROUTE_SEGMENTS.pixCheckout}`,
   products: {
     root: "/produtos",
     listProducts: `/produtos/${ROUTE_SEGMENTS.products.listProducts}`,

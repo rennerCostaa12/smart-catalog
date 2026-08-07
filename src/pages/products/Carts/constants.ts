@@ -26,3 +26,6 @@ export const initialCartFormValues: CartFormData = {
   userAddressId: null,
   ...initialCardValues,
 };
+
+
+export const WHATSAPP_SELLER = import.meta.env.VITE_WHATSAPP_SELLER;

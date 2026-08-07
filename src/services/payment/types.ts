@@ -25,9 +25,11 @@ export interface AsaasPaymentResponse {
 
 export type AsaasPixQrCodeResponse = {
   data: {
+    success: boolean;
     encodedImage: string;
     payload: string;
     expirationDate: string;
+    description?: string;
   };
 };
 

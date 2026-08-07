@@ -2,7 +2,9 @@ import { httpClient, HttpMethod, type HttpClient } from "../../http";
 import type {
   CreateOrdersRequest,
   CreateOrdersResponse,
+  GetOrderResponse,
   ListOrdersResponse,
+  OrderResponse,
 } from "./types";
 
 export class OrdersService {
@@ -24,6 +26,15 @@ export class OrdersService {
   async listOrders(userId: string) {
     const response = await this.client.request<ListOrdersResponse, unknown>({
       url: `/orders/${userId}`,
+      method: HttpMethod.Get,
+    });
+
+    return response.data;
+  }
+
+  async getOrderById(userId: string, orderId: string) {
+    const response = await this.client.request<GetOrderResponse, unknown>({
+      url: `/orders/${userId}/${orderId}`,
       method: HttpMethod.Get,
     });
 

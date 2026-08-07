@@ -24,6 +24,7 @@ import {
 import { getOrderWhatsAppMessage } from "./constants";
 import { modalListItemsSchema } from "./schema";
 import type { IModalListItemsFormData } from "./types";
+import { WHATSAPP_SELLER } from "../../../../pages/products/Carts/constants";
 
 export function useModalListItems() {
   const { addCart, removeCart, removeProductCart, cart: items } = useCart();
@@ -183,7 +184,7 @@ export function useModalListItems() {
           : "";
 
       RedirectContact(
-        "5585989734951",
+        WHATSAPP_SELLER,
         getOrderWhatsAppMessage(
           items,
           brlFormatter.format(totalPrice),

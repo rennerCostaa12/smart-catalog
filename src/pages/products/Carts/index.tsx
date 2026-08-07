@@ -5,12 +5,11 @@ import { ROUTE_SEGMENTS } from "../../../../app/constants";
 import { DeliveryMethod } from "../../../components/CartButton/components/DeliveryMethod";
 import { MethodPayment } from "../../../components/CartButton/components/MethodPayment";
 import { Button } from "../../../components/ui/button";
-import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
 import { Typography } from "../../../components/ui/typography";
 import { ModalConfirmation } from "../../../components/ModalConfirmation";
-import { ThemeColors } from "../../../constants/themeColors";
 import { brlFormatter } from "../../../utils/brlFormatter";
 import { useCart } from "./useCart";
+import type { ButtonVariant } from "../../../components/ui/button/types";
 
 export function CartsPage() {
   const {
@@ -20,11 +19,14 @@ export function CartsPage() {
     control,
     hasFormError,
     isSubmitting,
+    openModalConfirmCheckout,
+    variantBtnCheckout,
+    iconBtnCheckout,
+    labelBtnCheckout,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
     handleRemoveProduct,
     handleBuyWpp,
-    openModalConfirmCheckout,
     setOpenModalConfirmCheckout,
     handleOpenModalConfirmation,
   } = useCart();
@@ -164,16 +166,16 @@ export function CartsPage() {
               </div>
 
               <Button
-                title="Finalizar compra"
+                title={labelBtnCheckout}
                 className="mt-4 cursor-pointer"
                 fullWidth
-                variant="whatsapp"
-                leftIcon={<WhatsAppIcon color={ThemeColors.white} />}
+                variant={variantBtnCheckout as ButtonVariant}
+                leftIcon={iconBtnCheckout}
                 onClick={handleOpenModalConfirmation}
                 disabled={hasFormError || isSubmitting}
                 isLoading={isSubmitting}
               >
-                Finalizar Pedido
+                {labelBtnCheckout}
               </Button>
             </div>
           </aside>

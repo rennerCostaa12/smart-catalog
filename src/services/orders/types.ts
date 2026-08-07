@@ -52,10 +52,13 @@ export type ProductsItemsResponse = {
 };
 
 type ProductItem = {
+  id?: number;
   name: string;
+  title?: string;
   description: string | null;
   value: number;
   imageUrl: string | null;
+  image?: string;
   catalogClient: {
     name: string;
     description: string | null;
@@ -67,6 +70,7 @@ type ProductItem = {
 };
 
 type OrdersItems = {
+  productId?: number;
   quantity: number;
   unitPrice: number;
   subtotal: number;
@@ -84,19 +88,27 @@ export type UserAddressItem = {
   postalCode: string;
 };
 
-export type OrdersResponse = {
+type MethodPaymentItem = {
+  name: string;
+  description: string | null;
+};
+
+export type OrderResponse = {
   id: string;
   userId: number;
   catalogClientId: number;
   total: number;
   statusOrderId: number;
-  methodPaymentId?: MethodPaymentIDEnum;
-  deliveryMethod?: DeliveryMethodEnum;
-  items?: ProductsItemsResponse[];
+  methodPaymentId: number;
+  paymentId: number | null;
+  deliveryMethod: DeliveryMethodEnum;
+  userAddress?: UserAddressItem | null;
+  methodPayment?: MethodPaymentItem | null;
+  payment?: PaymentItem | null;
   statusOrder: {
     name: StatusOrderNameEnum;
   };
-  userAddress?: UserAddressItem | null;
+  items?: OrdersItems[];
   createdAt: string;
 };
 
@@ -128,5 +140,9 @@ export interface CreateOrdersResponse {
 }
 
 export interface ListOrdersResponse {
-  data: OrdersResponse[];
+  data: OrderResponse[];
+}
+
+export interface GetOrderResponse {
+  data: OrderResponse;
 }

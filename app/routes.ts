@@ -4,6 +4,7 @@ import { ROUTES, ROUTE_SEGMENTS } from "./constants";
 
 export const routesApplication = [
   index("routes/home.tsx"),
+  route(`:catalogClientName/${ROUTE_SEGMENTS.pixCheckout}/:paymentId`, "routes/checkout-pix.tsx"),
   route(`${ROUTES.products.root}/:catalogClientName`, "routes/products.tsx", [
     index("routes/products/index.tsx"),
     route(

@@ -10,7 +10,7 @@ import type { OrderProps } from "./components/OrderCard/types";
 import {
   DeliveryMethodEnum,
   MethodPaymentIDEnum,
-  type OrdersResponse,
+  type OrderResponse,
   type UserAddressItem,
 } from "../../../services/orders/types";
 import { formatOrderDate } from "../../../utils/dates";
@@ -39,14 +39,14 @@ function formatDeliveryMethod(deliveryMethod?: DeliveryMethodEnum) {
   return "Não informado";
 }
 
-function getOrderUserAddress(order: OrdersResponse): UserAddressItem | null {
+function getOrderUserAddress(order: OrderResponse): UserAddressItem | null {
   return (
-    (order as OrdersResponse & { userAddress?: UserAddressItem | null })
+    (order as OrderResponse & { userAddress?: UserAddressItem | null })
       .userAddress ?? null
   );
 }
 
-function mapOrder(order: OrdersResponse): OrderProps {
+function mapOrder(order: OrderResponse): OrderProps {
   const userAddress = getOrderUserAddress(order);
 
   return {

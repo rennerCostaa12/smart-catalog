@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 
 import { ROUTE_SEGMENTS } from "../../../../app/constants";
@@ -15,7 +15,7 @@ import type { ICartItem } from "../../../context/cart/types";
 import { brlFormatter } from "../../../utils/brlFormatter";
 import { Mask } from "../../../utils/mask";
 import { RedirectContact } from "../../../utils/redirectContact";
-import { initialCartFormValues } from "./constants";
+import { initialCartFormValues, WHATSAPP_SELLER } from "./constants";
 import { cartSchema } from "./schema";
 import type { CartFormData } from "./types";
 import { useAuth } from "../../../context/auth/useAuth";
@@ -33,6 +33,9 @@ import {
   getOrderDeliveryMethod,
   getOrderMethodPayment,
 } from "../../../utils/orderMethods";
+import { QrCode } from "lucide-react";
+import { WhatsAppIcon } from "../../../components/WhatsAppIcon";
+import { ThemeColors } from "../../../constants/themeColors";
 
 async function createPayment(
   cart: ICartItem[],
@@ -147,9 +150,12 @@ export function useCart() {
   const [openModalConfirmCheckout, setOpenModalConfirmCheckout] =
     useState<boolean>(false);
 
+  const { catalogClientName = "" } = useParams();
+
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitted, isSubmitting: isFormSubmitting, isValid },
   } = useForm<CartFormData>({
     resolver: yupResolver(cartSchema) as Resolver<CartFormData>,
@@ -166,6 +172,7 @@ export function useCart() {
     (total, item) => total + item.value * item.quantity,
     0,
   );
+  const methodPayment = watch("methodPayment");
   const hasFormError = isSubmitted && !isValid;
 
   const catalogClient = getInfoCatalogClient();
@@ -252,7 +259,7 @@ export function useCart() {
       } = formatTemplateMessage(values, payment);
 
       RedirectContact(
-        "5585989734951",
+        WHATSAPP_SELLER,
         getOrderWhatsAppMessage(
           cart,
           brlFormatter.format(totalPrice),
@@ -278,9 +285,73 @@ export function useCart() {
     }
   });
 
-  const handleOpenModalConfirmation = handleSubmit(() => {
+  const handleOpenModalConfirmation = handleSubmit(async (values) => {
+    if (values.methodPayment === MethodPaymentEnum.PIX) {
+      if (cart.length === 0) {
+        return;
+      }
+
+      if (!user) {
+        toast.error("Entre na sua conta antes de finalizar o pagamento.");
+        return;
+      }
+
+      try {
+        const payment = await paymentMutation.mutateAsync(values);
+        const pixPaymentId = payment.data.paymentId;
+
+        if (!pixPaymentId) {
+          throw new Error("Nao foi possivel identificar o pagamento Pix.");
+        }
+
+        const userAddressId =
+          values?.userAddressId === 0 ? null : values?.userAddressId;
+
+        const order = await orderMutation.mutateAsync({
+          ...values,
+          paymentId: pixPaymentId,
+          userAddressId: userAddressId ?? null,
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["orders", "list", String(user.id)],
+        });
+
+        const orderIdSearchParam = order?.data?.id
+          ? `?orderId=${encodeURIComponent(order.data.id)}`
+          : "";
+
+        navigate(
+          `/${catalogClientName}/${ROUTE_SEGMENTS.pixCheckout}/${payment?.data?.id}${orderIdSearchParam}`,
+        );
+      } catch (error) {
+        console.error(error);
+        toast.error(
+          (error instanceof Error ? error.message : undefined) ??
+            "Não foi possível criar o pagamento Pix. Verifique os dados e tente novamente.",
+        );
+      }
+
+      return;
+    }
+
     setOpenModalConfirmCheckout(true);
   });
+
+  const variantBtnCheckout =
+    methodPayment === MethodPaymentEnum.PIX ? "primary" : "whatsapp";
+
+  const iconBtnCheckout =
+    methodPayment === MethodPaymentEnum.PIX ? (
+      <QrCode size={18} />
+    ) : (
+      <WhatsAppIcon color={ThemeColors.white} />
+    );
+
+  const labelBtnCheckout =
+    methodPayment === MethodPaymentEnum.PIX
+      ? "Pagar com Pix"
+      : "Finalizar Pedido";
 
   return {
     cart,
@@ -299,5 +370,8 @@ export function useCart() {
     openModalConfirmCheckout,
     setOpenModalConfirmCheckout,
     handleOpenModalConfirmation,
+    variantBtnCheckout,
+    iconBtnCheckout,
+    labelBtnCheckout,
   };
 }
