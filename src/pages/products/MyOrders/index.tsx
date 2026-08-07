@@ -1,3 +1,5 @@
+import { RefreshCw } from "lucide-react";
+
 import { Button } from "../../../components/ui/button";
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 import { Typography } from "../../../components/ui/typography";
@@ -12,6 +14,7 @@ export function MyOrdersPage() {
     orders,
     error,
     hasOrders,
+    isFetching,
     isPending,
     refetch,
     handleCloseModal,
@@ -28,10 +31,22 @@ export function MyOrdersPage() {
         </Typography>
       </div>
 
+      <div className="mt-6 flex justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          leftIcon={<RefreshCw size={18} />}
+          isLoading={isFetching && !isPending}
+          onClick={() => refetch()}
+        >
+          Atualizar pedidos
+        </Button>
+      </div>
+
       {isPending && (
         <LoadingSpinner
           size={40}
-          className="mt-8 flex w-full items-center justify-center"
+          className="mt-6 flex w-full items-center justify-center"
         />
       )}
 

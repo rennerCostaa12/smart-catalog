@@ -71,7 +71,7 @@ function mapOrder(order: OrderResponse): OrderProps {
 }
 
 export function useMyOrders() {
-  const { user } = useAuth();
+  const { user, isLoadingUserData } = useAuth();
   const navigate = useNavigate();
   const sessionUser = user;
   const userId = sessionUser?.id.toString();
@@ -96,7 +96,7 @@ export function useMyOrders() {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoadingUserData) {
       navigate(`../${ROUTE_SEGMENTS.products.listProducts}?categoria=todos`, {
         replace: true,
       });

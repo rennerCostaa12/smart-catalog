@@ -19,6 +19,8 @@ export function CartsPage() {
     control,
     hasFormError,
     isSubmitting,
+    hasInsufficientStock,
+    stockBlockingMessage,
     openModalConfirmCheckout,
     variantBtnCheckout,
     iconBtnCheckout,
@@ -172,11 +174,19 @@ export function CartsPage() {
                 variant={variantBtnCheckout as ButtonVariant}
                 leftIcon={iconBtnCheckout}
                 onClick={handleOpenModalConfirmation}
-                disabled={hasFormError || isSubmitting}
+                disabled={hasFormError || isSubmitting || hasInsufficientStock}
                 isLoading={isSubmitting}
               >
                 {labelBtnCheckout}
               </Button>
+
+              {hasInsufficientStock ? (
+                <div className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3">
+                  <Typography variant="bodySmall" color="danger">
+                    {stockBlockingMessage}
+                  </Typography>
+                </div>
+              ) : null}
             </div>
           </aside>
         </div>

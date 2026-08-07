@@ -44,8 +44,8 @@ export function ModalDetailsOrder({
               <div className="flex flex-wrap max-sm:flex-col items-center gap-3 sm:justify-end">
                 <StatusBadge status={order?.status} />
 
-                <div className="flex gap-4 max-sm:flex-col w-full">
-                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                <div className="flex gap-4 max-sm:gap-2 w-full">
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full max-sm:border-none max-sm:p-0">
                     <Typography variant="caption" color="muted">
                       Pagamento
                     </Typography>
@@ -54,7 +54,7 @@ export function ModalDetailsOrder({
                     </Typography>
                   </div>
 
-                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full max-sm:border-none max-sm:p-0">
                     <Typography variant="caption" color="muted">
                       Entrega
                     </Typography>
@@ -63,7 +63,7 @@ export function ModalDetailsOrder({
                     </Typography>
                   </div>
 
-                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full">
+                  <div className="rounded-xl border border-slate-200 px-3 py-2 max-sm:w-full max-sm:border-none max-sm:p-0">
                     <Typography variant="caption" color="muted">
                       Total
                     </Typography>

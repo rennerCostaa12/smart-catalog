@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Resolver } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
@@ -138,6 +138,28 @@ function formatTemplateMessage(
   };
 }
 
+function getStockBlockingMessage(cart: ICartItem[]) {
+  const itemsWithInsufficientStock = cart.filter(
+    (item) => item.quantity > item.stock,
+  );
+
+  if (!itemsWithInsufficientStock.length) {
+    return "";
+  }
+
+  if (itemsWithInsufficientStock.length === 1) {
+    const [item] = itemsWithInsufficientStock;
+
+    return `Nao e possivel finalizar a compra: ${item.name} tem ${item.stock} unidade(s) em estoque, mas ha ${item.quantity} no carrinho.`;
+  }
+
+  const productNames = itemsWithInsufficientStock
+    .map((item) => item.name)
+    .join(", ");
+
+  return `Nao e possivel finalizar a compra: os produtos ${productNames} estao com quantidade acima do estoque disponivel.`;
+}
+
 export function useCart() {
   const { cart, addCart, removeCart, removeProductCart, resetCart } =
     useCartContext();
@@ -174,6 +196,11 @@ export function useCart() {
   );
   const methodPayment = watch("methodPayment");
   const hasFormError = isSubmitted && !isValid;
+  const stockBlockingMessage = useMemo(
+    () => getStockBlockingMessage(cart),
+    [cart],
+  );
+  const hasInsufficientStock = Boolean(stockBlockingMessage);
 
   const catalogClient = getInfoCatalogClient();
 
@@ -236,6 +263,10 @@ export function useCart() {
       return;
     }
 
+    if (hasInsufficientStock) {
+      return;
+    }
+
     if (!user) {
       toast.error("Entre na sua conta antes de finalizar o pagamento.");
       return;
@@ -286,6 +317,10 @@ export function useCart() {
   });
 
   const handleOpenModalConfirmation = handleSubmit(async (values) => {
+    if (hasInsufficientStock) {
+      return;
+    }
+
     if (values.methodPayment === MethodPaymentEnum.PIX) {
       if (cart.length === 0) {
         return;
@@ -363,6 +398,8 @@ export function useCart() {
       isFormSubmitting ||
       paymentMutation?.isPending ||
       orderMutation?.isPending,
+    hasInsufficientStock,
+    stockBlockingMessage,
     handleDecreaseProductQuantity,
     handleIncreaseProductQuantity,
     handleRemoveProduct,
